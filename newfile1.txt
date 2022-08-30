@@ -1,1 +1,2 @@
-Changes made in branch1 for the second time
+Text added in master
+
