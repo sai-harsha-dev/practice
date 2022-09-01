@@ -117,10 +117,10 @@ Students:
 --- 
       # Flow Style
 [
-class1:{
+class1: {
  rep: harsha,
  ass.rep: varsha} ,
-class2:{
+class2: {
  rep: vijay,
  ass.rep: udhaya}
 ]
