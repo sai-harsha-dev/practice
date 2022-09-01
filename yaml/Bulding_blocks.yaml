@@ -1,0 +1,127 @@
+# Important building blocks of yaml
+
+# 1) Sequences ---> similar to list and arrays
+# block styles
+- yaml
+- github
+- linux
+- networking
+---
+# flow style
+[yaml, github, linux, networking]
+---
+
+# 2) Mappings --> Similar to dictionaries, hasmaps
+#                 Consists of Key: value pairs
+#                 Valid key enteries ---> All types of scalars (must be unique within an mapping)
+#                 Valid value enteries ----> All types of scalars, sequences, mapping,nested datatypes
+
+# block style
+Technologies: devops 
+"My goal is": 60000000
+1: "I like devops"
+2.0: "Decimal entry"
+---
+
+# flow style
+{Technologies: devops, 
+"My goal is": 60000000,
+1: "I like devops",
+2.0: "Decimal entry"}
+---
+
+# 3) Scalars 
+# NUMBERS
+  # a.Intergers numbers -----> Whole numbers
+number: 10
+  # b.Binary numbers ----> 0's & 1's starts with 0b
+Binary: 0b1010
+  # c.Floating point numbers ---->  decimal numbers
+floating: 10.00
+  # d.Octal numbers ----> starts with 0
+Octal: 010
+  # e.Hexadecimal numbers ----> starts with 0x
+hex: 0x90AB
+---
+# STRINGS
+  # a. Simple String ---> escape sequences cannot be used
+name: Venkata Naga Sai Harsha Nara
+  # b. Single Quote String ---> Used when "" need to be used with an string
+single-qoute: 'Venkata "Naga" Sai Harsha Nara'  
+  # c. Double Qoute String ---> escape sequences can be used
+double-quotes: "Venkata \"Naga\" \\Sai\\ \\nHarsha\\n Nara"
+---
+
+  # d. Single-line String ---> To avoide inbetween spaces
+
+  # > --> all the inbetween line breaks are avoided, succesive line breaks are pratially avoided
+name: >
+ Venkata
+ Naga Sai 
+
+ Harsha 
+ Nara
+---
+  # >- --> all the inbetween line breaks are avoided, succesive line breaks are avoided
+name: >-
+ Venkata
+ Naga Sai 
+
+ Harsha 
+ Nara
+
+
+---  
+  # >+ --> all the inbetween line breaks are avoided, succesive line breaks are considered
+name: >+
+ Venkata
+ Naga Sai 
+
+ Harsha 
+ Nara
+
+
+---  
+  # e. Multi-line String
+    # |  --> all the inbetween line breaks are considered, succesive line breaks are pratially avoided
+name: |
+ Venkata
+ Naga Sai 
+
+ Harsha 
+ Nara
+---
+    # |- --> all the inbetween line breaks are considered, succesive line breaks are avoided
+name: |-
+ Venkata
+ Naga Sai 
+
+ Harsha 
+ Nara
+
+
+--- 
+    # |+ --> all the inbetween line breaks are considered, succesive line breaks are considered
+name: |+
+ Venkata
+ Naga Sai 
+
+ Harsha 
+ Nara
+
+
+--- 
+
+# BOOLEAN ---> True or false
+true-value: True # --> can also be yes,YES,y,Y,TRUE,true
+False-value: False #--> can also be no,NO,n,N,FALSE,false
+
+# NULL
+null-value: Null #---> can also be NULL,null,N,n
+
+# DATETIME
+canonical: 2001-12-15T02:59:43.1Z
+valid iso8601: 2001-12-14t21:59:43.10-05:00
+space separated: 2001-12-14 21:59:43.10 -5
+no time zone (Z): 2001-12-15 2:59:43.10
+date (00:00:00Z): 2002-12-14

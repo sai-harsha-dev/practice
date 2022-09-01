@@ -1,0 +1,307 @@
+# NESTED DATATYPES
+
+
+
+
+  # a. Sequence within mappings
+  # Single level
+  # Block Style
+Students:
+  -harsha
+  -varsha
+---
+  # Flow Style
+{
+ Students: [harsha, varsha]
+}
+---
+  # Block-Flow style (flow can be used within a block but vice versa not possible)
+Students: [harsha, varsha]
+---
+
+
+
+  # Multi-level
+  # Block Style
+Students:
+  -class1: 
+   -harsha
+   -varsha
+  -class2: 
+   -vijay
+   -udhaya
+---
+  # Flow Style
+{
+ Students: [
+            class1: [harsha, varsha], 
+            class2: [vijay, udhaya]
+           ]
+}
+---
+ # Block-Flow style (flow can be used within a block but vice versa not possible)
+Students: [
+            class1: [harsha, varsha], 
+            class2: [vijay, udhaya]
+           ]
+---
+
+
+
+  # b. mappings within mappings
+
+
+  # Single Level
+   # Block Style
+Students:
+  rep: harsha
+  ass.rep: varsha
+---
+   # Flow Style
+{ 
+ Students: { rep: harsha } ,
+           { ass.rep: varsha }
+}
+---
+
+
+  # Multi-level
+    # Block Style
+Students:
+  class1 : 
+   rep: harsha
+   ass.rep: varsha
+  class2 :
+   rep: vijay
+   ass.rep: udhaya
+--- 
+   # Flow Style
+{ 
+ Students: {
+           { class1 :
+             { rep: harsha } ,
+             { ass.rep: varsha }
+           } ,
+           { class2 :
+             { rep: vijay },
+             { ass.rep: udhaya}
+           }
+ }
+}
+---
+# Block-Flow style (flow can be used within a block but vice versa not possible) 
+ Students: {
+           { class1 :
+             { rep: harsha } ,
+             { ass.rep: varsha }
+           } ,
+           { class2 :
+             { rep: vijay },
+             { ass.rep: udhaya}
+           }
+ }
+---
+
+
+
+
+  # c. mappings within Sequence
+    # Single Level
+      # Block Style
+-class1:
+ rep: harsha
+ ass.rep: varsha 
+-class2:
+ rep: vijay
+ ass.rep: udhaya
+--- 
+      # Flow Style
+[
+class1:{
+ rep: harsha,
+ ass.rep: varsha} ,
+class2:{
+ rep: vijay,
+ ass.rep: udhaya}
+]
+---
+      # Block-Flow style (flow can be used within a block but vice versa not possible) 
+-class1: {
+ rep: harsha,
+ ass.rep: varsha} 
+-class2: {
+ rep: vijay,
+ ass.rep: udhaya}
+--- 
+
+
+
+    # Multi-level
+      # Block Style
+-class1:
+  rep:
+   harsha
+   badri
+  ass.rep: 
+   varsha
+   subi 
+-class2:
+  rep: 
+   vijay
+   udhaya
+  ass.rep: 
+   priyanka
+   satz
+--- 
+      # Flow Style
+[
+class1: {
+          rep: {
+              harsha ,
+              badri
+          } ,
+          ass.rep: {
+              varsha ,
+              subi
+          } 
+        } , 
+class2: {
+            rep: { 
+              vijay ,
+              udhaya
+          } ,
+            ass.rep: { 
+              priyanka ,
+              satz
+          }
+        }
+]
+--- 
+      # Block-Flow style (flow can be used within a block but vice versa not possible)
+-class1: {
+          rep: {
+              harsha ,
+              badri
+          } ,
+          ass.rep: {
+              varsha ,
+              subi
+          } 
+        } 
+-class2: {
+            rep: { 
+              vijay ,
+              udhaya
+          } ,
+            ass.rep: { 
+              priyanka ,
+              satz
+          }
+        }      
+---
+
+
+  # d. Sequence within Sequence 
+
+
+    # Single Level
+      # Block Style
+-class1:
+ -harsha
+ -varsha
+-class2:
+ -udhaya
+ -vijay
+---
+      # Flow Style
+[
+class1: [
+        harsha, 
+        varsha
+        ] ,
+class2: [
+        udhaya,
+        vijay
+        ]
+]
+
+---
+      # Block-Flow style (flow can be used within a block but vice versa not possible) 
+-class1: 
+ [
+  harsha, 
+  varsha
+ ] 
+-class2: 
+ [
+  udhaya,
+  vijay
+  ]    
+---
+    
+    # Multi-level
+      # Block Style
+-Students:
+ -class1:
+  -harsha
+  -varsha
+ -class2:
+  -udhaya
+  -vijay
+---
+      # Flow Style
+[
+Students: [
+class1: [
+        harsha, 
+        varsha
+        ] ,
+class2: [
+        udhaya,
+        vijay
+        ]
+          ]
+]
+
+---
+      # Block-Flow style (flow can be used within a block but vice versa not possible)
+-Students: [
+ class1: [
+        harsha, 
+        varsha
+        ] ,
+ class2: [
+        udhaya,
+        vijay
+        ]
+          ]
+---
+
+# EXPLICIT TAGS ---> use to mention explicitely the type datatype of scalars
+ #   types
+  #  ------
+  #  a. !!str
+  #  b. !!int
+  #  c. !!null
+  #  d. !!bool
+  #  e. !!float
+  #  f. !!map
+  #  g. !!seq etc...
+
+# REPEATING NODES ---> used to copy the data from a specific key
+  # 1) Copying the same data
+Students: &value # --> &<name> give and identifier for copied data 
+  rep: harsha
+  ass.rep: varsha
+Cpy_students : *value #---> *<identifier> to copy data
+---
+
+  # 2) Changing parts of data
+Students: &value # --> &<name> give and identifier for copied data 
+  rep: harsha
+  ass.rep: varsha
+Cpy_students : 
+ <<: *value #---> <<: *<identifier> to change value of data
+ rep: vijay
+
+---
