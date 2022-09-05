@@ -1,0 +1,9 @@
+docker volume create <volume name> ===> create a volume in that host alone
+
+docker volume ls ==> list available volumes 
+
+docker container --mount storage=<volume name>, target=<which directory of container to mount the volume> ====> to mount a volume to a container
+
+docker volume inspect <volumenmae> ===> get details of the volume
+
+docker volume rm <volumename> ===> to delete the volume (remember to delete the linked container before deleting the volume)

@@ -1,0 +1,16 @@
+docker container run <-d/-it/exec> -name <container name> -p <local host port>:<container port> <image location> <process to run>  ===> used to create containers 
+   :- -d flag ==> runs container in detached mode (p flag to be mentioned)
+      -it flag ==> runs container in interactive mode
+       exec flag ==> used to execute a process within a container
+      
+docker container ls <container name> ===> list details of container running in local host
+
+docker container -la <container name> ==> list all details of container running in local host
+
+docker container start <container name> ===> Start a stopped container
+
+docker container stop <container name> ==> Stop a running container
+
+docker container rm <container name> ==> delete a stopped container
+
+docker container rm <container name> -f ==>  delete a running container 

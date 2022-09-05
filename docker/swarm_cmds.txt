@@ -1,0 +1,19 @@
+docker swarm init ===> to initialise a swarm
+
+docker swarm join-tocken manager ==> to get the join tocken for joining managers
+
+docker swarm join-tocken worker ==> to get the join tocken for joining workers
+
+docker swarm join-tocken --rotate manager ==> to change the tocken for joining managers
+
+docker swarm join-tocken --rotate worker ==> to change the token for joining workers
+
+docker swarm leave ==> leave the swarm
+
+docker swarm leave <-f/--force> ==> force leave the swarm
+
+docker swarm init --autolock ==> to enable autolocking while creating a swarm 
+
+docker swarm update --autolock ==> to enable autolocking after creating a swarm 
+
+   ( autoloacking prevents managers from autojoining after restart, they have produce a key that is generated)

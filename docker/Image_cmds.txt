@@ -1,0 +1,12 @@
+WORKING WITH IMAGES       ( docker <command> --help ===> to see all options of command )
+-----------------------
+docker image build -t <repository>/<directory>:<imagename>  <Folder path for image content>  ===> create images
+docker image ls ==> list all the images in the local repo
+docker image ls <tag:name>* ===> list specific image in local repo
+docker image ls -a ==> list all details of all images
+docker image ls <tag:name>* ===> list all details of specific image in local repo
+docker image inspect <tag:name> ==> to list manifest file details of a image
+docker image --digest ==> to see distribution hash of all images in local repo
+docker image --digest <tag:name>* ==> to see distribution hash of specific image in local repo
+docker image push <reponame>/<directory>:<tag> ===> push image to dockerhub
+docker image pull <reponame>/<directory>:<tag> ===> pull image to dockerhub

@@ -1,0 +1,13 @@
+docker network create -d <bridge/overlay> <networkname>  ===> to create a network
+  :-- a overlay network get replicated all over the swarm and needs swarm mode enabled
+      port mapping for a overlay network get replicated in all the nodes in the swarn
+
+docker <container/service> --network <network name> ===> to connect service/container to network
+
+docker network ls ==> list the available networks
+
+docker network inspect <networkname> ===> to see the details(ipaddrs, linked containers) of available networks
+
+docker network rm <networkname> ===> to delete the network
+
+(for bridge or for overlay for the containers to talk to outerworld they need a port mapping to the host machine)
