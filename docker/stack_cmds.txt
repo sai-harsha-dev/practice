@@ -1,0 +1,7 @@
+docker stack -c <docker sompose file name/path> <stack name> ===> to create stack
+
+docker stack ls ==> to list all created stacks
+
+docker stack ps <stack name> ==> to list the detailed service in a stack
+
+docker stack rm <stack name> ==> to delete stack 
