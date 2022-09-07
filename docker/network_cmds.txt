@@ -1,6 +1,10 @@
-docker network create -d <bridge/overlay> <networkname>  ===> to create a network
+docker network create -d <bridge/overlay/macvlan/ipvlan> <networkname> --ip-range <ip address/subnet mask> --sunbet <ip range/subnetmask>  ===> to create a network
   :-- a overlay network get replicated all over the swarm and needs swarm mode enabled
       port mapping for a overlay network get replicated in all the nodes in the swarn
+
+docker network connect <networkname> <container/service> ====> to connect container/service to a existing network
+
+docker network disconnect <networkname> <container/service> ===> to disconnect container/service from exisiting network
 
 docker <container/service> --network <network name> ===> to connect service/container to network
 
