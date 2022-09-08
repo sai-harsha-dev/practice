@@ -1,4 +1,4 @@
-docker stack -c <docker sompose file name/path> <stack name> ===> to create stack
+docker stack deploy -c <docker sompose file name/path> <stack name> ===> to create stack
 
 docker stack ls ==> to list all created stacks
 
