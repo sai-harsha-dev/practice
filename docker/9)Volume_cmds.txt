@@ -1,3 +1,11 @@
+THEORY
+------
+- Volumes are used to create persistant storage ( useful when a service is spread across containers and need to data stored (statefull))
+- They are only created in a specific host not across swarm
+- To create a swarm spread volume make an NFS store and create an volume
+
+COMMANDS
+---------
 docker volume create <volume name> ===> create a volume in that host alone
 
 docker volume ls ==> list available volumes 

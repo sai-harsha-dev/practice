@@ -1,3 +1,36 @@
+THEORY
+-------
+- Containers are the running instances of an image.
+- They are non persistant 
+
+RUNNING IMAGES/CONTAINERS
+--------------------------
+- Containers are OS specific i.e Linux containers run on linux and windows container on windows host.
+- For cross platform usage we must run Hyper-V containers
+- The containers are run as per the following process:-
+
+  1.  STACK ALL THE LAYERS OF AN IMAGE 
+  ---------------------------------------
+  - This is done by unified file system driver eg:- aufs, overlay2
+  - This creates an environment where all layers are stacked to use a specific filesystem.
+  - Location :- /<usernmae>/docker/<device driver>/<containername>
+
+  2. CREATE A READ WRITE COPY OF AN IMAGE
+  ----------------------------------------
+  - Add a thin layer of for writting content to a container.
+  - This is non persistant , deleted once container is deleted
+  - For persistant strorage use volumes
+
+  3. ALLOCATE OS RESOURCES TO CONTAINERS
+  ---------------------------------------
+   - runc process is reponsible for this
+   - Each container is given an isolated area within an OS initialixed by runc, this consists of :-
+      1. NAMESPACES ==> Specificying the boundaries of a container
+      2. CONTROL GROUPS ==> Specifying the resources the container can use from  OS
+
+
+COMMANDS
+---------
 docker container run <-d/-it/exec> -name <container name> -p <local host port>:<container port> <image location> <process to run>  ===> used to create containers 
    :- -d flag ==> runs container in detached mode (p flag to be mentioned)
       -it flag ==> runs container in interactive mode

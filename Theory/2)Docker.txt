@@ -1,0 +1,49 @@
+DOCKER BASICS
+--------------
+- Docker is a containerization runtime which was invented by Docker.Inc
+- At first it was single monolithic package, but now is set of microservices running together as a whole as Docker Engine
+- Its main function is to create, maintain, delete containers.
+- Initially there existed many runtimes which perfomed containerization in a different way
+- The Open Container Initiative (OCI) regulated this by creating a common 
+	a. Image specification
+	b. Runtime specification
+-Docker uses runc which is OCI complaint hence it can run on and orchestrator that uses OCI complaint runtime
+
+DOCKER CLI 
+--------------
+- Responsible for parsing the commands from the user to the docker engine.
+- It is interface where user interacts with the Docker engine.
+- It is the layer which interacts with the Docker Engine through the endpoint REST API.
+
+DOCKER ENGINE
+-------------
+- Docker Engine is the component responsible for creating, deleting, stoping, starting container.
+- Docker Engine consists of 3 layer/ main sub modules.
+
+  1. DOCKER DEAMON  ( BOTH IN LINUX & WINDOWS )
+ ------------------
+ - It is a background process.
+ - It is the one which exposes the REST API endpoint.
+ - It is responsible for :-
+    a. Passing on the commands to containerD process
+ - It is the one to which CLI interacts.
+
+  2. ContainerD ( only for linux )
+ ----------------
+ - It is a CNCF project.
+ - It is reponsible for :-
+    a. Initializing shim process
+    b. Passing on the commands to runc process
+ - It maintains a account of all the container running by be connected with shim process associated with each container
+  
+  3. Shim &  runc (only for linux)
+  ----------------
+  - The containerd process calls up the shim which in turn runs the runc process.
+  - runc is the one which is reposible for creating containers.
+  - The runc process allocats namespaces and control groups by interacting with host OS.
+  - runc terminated and forcks the container to shim process.
+  - shim maitains the running container
+  - runc is shortlived, shim is long lived.
+
+- For windows the containerd and runc are maintainer by a conpute service process.
+  

@@ -1,4 +1,13 @@
-docker stack deploy -c <docker sompose file name/path> <stack name> ===> to create stack
+THEORY
+-------
+- Deploys multiple services as an whole (similar to kubernetees service object)
+- Declaritive way of managing an application
+- Make use of compose file to build the application services
+- Define configuration (images to use, port mapping) of all the individual services in the compose file.
+
+COMMANDS
+---------
+docker stack deploy -c <docker compose file name/path> <stack name> ===> to create stack
 
 docker stack ls ==> to list all created stacks
 

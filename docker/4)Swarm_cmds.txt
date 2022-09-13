@@ -1,3 +1,27 @@
+THEORY
+-------
+- It is a built in orchestration toll for docker.
+- It is used to maintain and run containers on multiple docker hosts.
+
+SWARM ARCHIETECTURE 
+--------------------
+- Docker swarm is made up two types of docker nodes
+
+  1. MANAGER NODE :-
+  -----------------
+  - These are nodes where control plain of the cluster exists ( alaways use odd number )
+  - These take orchestration decisions.
+  - The make use of RAFT Consensus meaning the work is distributed
+  - The leader node among all the master nodes is the one which takes the final decision.
+  - All the manager nodes share a distributed cluster store (etcd distributed cluster store).
+  - All the certificates, join token, cluster data is stored in distributed cluster store
+ 
+  2. WORKER NODE :-
+  -----------------
+  - These are the nodes which run the containers/work.
+
+COMMANDS
+--------
 docker swarm init ===> to initialise a swarm
 
 docker swarm join-tocken manager ==> to get the join tocken for joining managers

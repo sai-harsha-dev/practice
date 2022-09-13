@@ -1,0 +1,6 @@
+1) kubectl version --short  ===> shows the version client and server (must vary only by +-1 not more than that)
+
+(* rememeber for the cluster to show up on docker desktop update configuration in .kube\confg file under user pofile)
+
+
+2) kubectl get nodes ===> show the details of the nodes in the cluster

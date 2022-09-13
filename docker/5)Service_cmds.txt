@@ -1,3 +1,11 @@
+THEORY
+-------
+- Available only in swarm mode
+- Imperative way of deploying self depent pieces of an application
+- Deployes multiple only pieces of an app, i.e only multiple indivual containers not the app as an whole.
+
+COMMANDS
+--------
 docker service create <-d> --name <service name> <File path to use for service creation> 
 -p <host port>:<service port> --replicas <number of replicas>  ===> to create service
 
@@ -5,6 +13,6 @@ docker service ls ==> to list the services
 
 docker service ps <service name>  ===> to see the service container mapping to the host
 
-docker service inspect <service name> ===> to seed details of the service
+docker service inspect <service name> ===> to see details of the service
 
 docker service rm <service name> ===> to delete services 

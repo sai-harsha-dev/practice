@@ -1,12 +1,88 @@
-WORKING WITH IMAGES       ( docker <command> --help ===> to see all options of command )
------------------------
-docker image build -t <repository>/<directory>:<imagename>  <Folder path for image content>  ===> create images
+THEORY
+-------
+- An image is a package of the the depencies, source code of needed to run an application.
+
+IMAGE BUILDING BLOCKS
+-------------
+- The image is made of following :-
+  a. LAYERS 
+  ----------
+  - Each Image Consists of multiple layer.
+  - Each layer is reponsible for the building a specific depency eg :- OS, installing packages
+  
+  b. MANIFEST FILE
+  -----------------
+  - The details needed to doundle all the layer together is present here.
+  - The manifest file is json formatted file containing:-
+    a. Layer hash ==> Content hash of each layer
+    b. Image hash ==> Combined hash of layer hashes
+
+BUILDING AN IMAGE
+-----------------
+- The Docker Engine builds the image by following the instruction in the Dockerfile (dont change the file name).
+- The Dockerfile should be in the root folder of the where the application is written.
+- The image creating process is of 3 steps :-
+
+                     1. RUN THROUGH COMMANDS IN Dockerfile
+					|
+					|
+	       2. BUILD INDIVIDUAL LAYER & CREATE HASH FOR EACH LAYER	
+ 					|	 
+					|
+		   3. BUILD MANIFEST FILE & CREATE CONTENT HASH
+
+
+- The hash of a local manifest file is called Content Hash
+
+STORING AN IMAGE
+-------------------
+- Usually images are stored in online repositories so that they can be accessed remotely.
+- There are many different repositories availble such dockerhub (public) , Docker trusted Registories (private).
+- PUSHING IMAGES
+ ----------------
+ - This is the process of pushing an locally built image to an repository
+ - The process of pushing and local image is as foollows
+
+   	                1. COMPRESS EACH LAYER OF IMAGE 
+					|
+					|
+   	2. CREATE AN MANIFEST FILE WITH CONTENT HASH OF COMPRESSED IMAGES
+					|
+					|	
+			3. UPLOAD MANIFEST FILE
+					|
+					|	
+   	4. UPLOAD COMPRESSED LAYERS VERIFYING THEIR HASHES WITH MANIFEST FILE HASH ENTERIES 
+
+- The hash of a manifest file in repository is called Distribution hash.
+
+PULLING IMAGES 
+---------------
+  - The process of downloading images from online repository is called pulling
+  - The image tag used to pull images consists of :-  <Registory>/<repository>:<TAG>
+  - Docker always defaults to :- docker.io/<repository>:latest unless specified.
+  - The pull process is as follows
+
+    	1. CHECK THE FAT MANIFEST FILE (HAS THE INFORMATION FOR ARCHIECTURE SPECIFIC IMAGE)
+						|
+						|
+    				  2. PULL THE MANIFEST FILE
+						|
+						|
+    				  3. PULL THE IMAGE LAYERS
+
+
+
+COMMANDS ( docker <command> --help ===> to see all options of command )
+---------
+docker image build -t <Registory>/<repository>:<TAG> <Folder path for image content>  ===> create images
 docker image ls ==> list all the images in the local repo
-docker image ls <tag:name>* ===> list specific image in local repo
+docker image ls <repository>:<TAG>===> list specific image in local repo
 docker image ls -a ==> list all details of all images
-docker image ls <tag:name>* ===> list all details of specific image in local repo
-docker image inspect <tag:name> ==> to list manifest file details of a image
-docker image --digest ==> to see distribution hash of all images in local repo
-docker image --digest <tag:name>* ==> to see distribution hash of specific image in local repo
-docker image push <reponame>/<directory>:<tag> ===> push image to dockerhub
-docker image pull <reponame>/<directory>:<tag> ===> pull image to dockerhub
+docker image ls <repository>:<TAG>===> list all details of specific image in local repo
+docker image inspect <repository>:<TAG>==> to list manifest file details (configuration) of a image
+docker image --digests ==> to see distribution hash of all images in local repo
+docker image --digests <repository>:<TAG>==> to see distribution hash of specific image in local repo
+docker image push <Registory>/<repository>:<TAG>===> push image to dockerhub
+docker image pull <Registory>/<repository>:<TAG>===> pull image to dockerhub
+docker history <imagename> ===> gives the details of how the image layers are built

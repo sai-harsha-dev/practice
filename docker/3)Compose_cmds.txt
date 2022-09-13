@@ -1,3 +1,12 @@
+THEORY
+--------
+- It is a declaritive way of spinning up container.
+- It requires images to be pre built
+- Define all the necessary container configuration in docker-compose.yaml (dont change name) file and put the file in the root directory of the application repository
+
+ 
+COMMANDS
+---------
 docker compose up <path to the image files>  ==> to create images and start containers
 
 docker compose down  ==> to stop the app

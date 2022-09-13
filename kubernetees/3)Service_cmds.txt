@@ -1,0 +1,42 @@
+Notes :-
+--------
+* Pods are not easily accessible, be they can be scaled up and down dynamically
+* They dont have only cluster IP meaning that its private to within cluster
+* Cannot be accessed from the internet due to dynamic nature
+
+Properties :-
+------------
+* They are accessible internally , externally because of the DNS labelling used to address pods running an particular service.
+* These API object for service is service
+* They work by creating and DNS route for the pods with same labels as the work name and 
+  they are load balanced in the backend.
+* They are of 3 types
+  1) CLUSTER IP ( Internal Cluster Access )
+  ------------------------------------------
+* Kuberneets creates and Cluster wide unique IP for the and work with specific label, which has
+  enteries in CoreDNS within the service with enteries of all the pods with same work label
+  So when an Pod/container/app within the cluster access this work label they are routed to the
+  unique ClusterIP which is further resolved by CoreDNS to the specific pods
+
+  2) NODEIP ( External Acesses via public IP of node in cluster )
+  --------------------------------------------------------------- 
+* For access from conputer outside the cluster with public IP of the nodes in internal cluster
+  they can accessed by NodePort object, which works by establishing a particular port as 
+  mapped to the CoreDNS label of that specific work meaning traffic to that port(30000-35000)
+  is routed to the specific Pods running the specific work.
+
+  3) LOAD BALANCER ( External Access via a single Public IP)
+  ----------------------------------------------------------
+* For access from the internet (public IP of internal nodes not known) we use load balancer
+  which routes the traffic from specific port to the load balacer IP to the cluster IP which 
+  is further directed to the NodePort and then to the CoreDNS and PODS servicing the work
+
+(Its not necessary create all service individually, if the top level serive is created bottom level service are automatically created by kubernetees)
+
+Commands :-
+----------
+kubectl apply -f <yaml configuration file path> ===> to create service 
+
+kubectl describe svc <service name> ===> detailed information about the service
+
+

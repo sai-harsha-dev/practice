@@ -1,0 +1,13 @@
+VIRTUALIZATION (HARDWARE VIRTUALIZATION)
+---------------
+- Virtualization solved the problem of hardware wastage
+- Virtualization was capable of partisioning the hardware resources but needed individual OS for each VM
+- Virtualized VM's are heavy and they take time to boot up and occupy lot of system resources.
+- Virtualized VM's needed additional software packages (dependencies) to be instatlled in top of OS to run software
+
+CONTANERIZATION (OS VIRTUALIZATION)
+----------------
+- Containirization was capable of virtualizing the Host OS itself.
+- Containerized Applications (Containers) were more light weight since they need worked on top of Host OS itself.
+- Containers package all the software dependencies meaning that a containerized app can run in can compatible OS platform
+- Linux based containers run only on Linux & Windows based containers run only on windows

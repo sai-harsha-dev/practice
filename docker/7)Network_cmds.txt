@@ -1,4 +1,120 @@
-docker network create -d <bridge/overlay/macvlan/ipvlan> <networkname> --ip-range <ip address/subnet mask> --sunbet <ip range/subnetmask>  ===> to create a network
+THEORY
+-------
+- The networking module in docker can be split into following modules
+
+1. CONTAINER NETWORK MODEL
+-------------------------
+- This defines the basic specification for how docker handles networking, like OSI
+- Its specifies 3 building blocks for the container networking :-
+
+  a.  SANDBOX
+  ------------
+  - This is a isolated namespace of host kernel called net namespace.
+  - This provides the each container within host with virtual enthernet interface, IP etc..
+
+  b. ENDPOINT
+  ------------
+  - This the endpoint on the container through which communication can take place.
+  - Its like a virtual interface card for the container.
+
+  c. NETWORK
+  -----------
+  - This is network connection the container to the network within the host and external world
+
+2. IMPLEMENTATION 
+------------------
+- This is the module/code which implements the CNM specifications.
+- This is known as libnetwork.
+- This gives the basic OS specifics (like ethernet interfaces) within container to implement complex networks
+
+3. NETWORK DRIVERS
+-------------------
+- These are add-on's that docker provides to implement complex networks on CNM model
+- These are basically of the following types :-
+
+  a. BRIDGE (LINUX) / L2BRIDGE (WIN)
+  ----------------------------------
+  - This is default network type which is created by docker.
+  - Default available network of this type created by docker is the "bridge"
+  - The default "bridge" network only allows IP address access, accessing using container names is not allowed.
+  - Its not recommended to attach container to the default "bridge" network.
+  - The network specification for containers within this network is as follows :-
+
+    a. SCOPE ==> Internal to specific host, meaning its only available for container running within that host.
+    b. INTER-NETWORK ACCESS ==> Using containername,IP address (only for user created bridge networks)
+    c. EXTERNAL-NETWORK ACCESS ==> Using  <host public ip : Host Port no on which the container listen's>
+    
+  b. OVERLAY 
+  -----------
+  - This type of network is supported if :-
+    1. SWARM MODE IS ENABLED
+       -  Enabling swarm mode create 2 default network :
+          a. ingress - OVERLAY ===> used to route traffic coming through a specific port accross all nodes in swarm to container running specific service 
+          b. docker_gwbridge - BRIDGE ===> Used to connect a default container to ingress network to route traffic to route traffic coming through a specific port accross all nodes in swarm to container running specific service
+
+
+    2. THE ACTUAL HOST NETWORK (PHYSICAL NETWORK) ALLOWS TRAFFIC IN FOLLOWING PORTS
+       a.2733/tcp
+       b.4789/udp
+       c.7946/tcp,udp
+  
+  - The network specification for containers within this network is as follows :-
+
+    a. SCOPE ==> Swarm wide access for containers connected that specific network.
+    b. INTER-NETWORK ACCESS ==> Using containername,IP address, service name.
+    c. EXTERNAL-NETWORK ACCESS ==> Using  <host public ip : Host Port no on which the container listen's>
+
+  c. MACVLAN (LINUX) / NAT (WIN)
+  ------------------------------
+  - Used to connect containers as a separate physical machine to existing VLANS
+  - Need promiscious mode enables ( meaning single NIC card can publish multiple IP's)
+  - Provides and VM a seperate MAC Address ( can be verified by using arp -n in any host within that network )
+  - This is achieved by connecting the network with parent interface
+  - Multiple MACVLAN networks can be created for a single host by truncking the parent interaface, eg eth0.100,etho0.200 etc..
+  - The network specification for containers within this network is as follows :-
+
+    a. SCOPE ==> Internal to individual host
+    b. INTER-NETWORK ACCESS ==> Using containername,IP address.
+    c. EXTERNAL-NETWORK ACCESS ==> Using  <host public ip : Host Port no on which the container listen's> (cannot be done in localhost)
+
+  d. IPVLAN (LINUX) / TRANSPARENT (WIN)
+  -------------------------------------
+  - Used to connect containers as a separate physical machine to existing VLANS.
+  - Allows the container to use the same MAC Address of host it is running in.( can be verified by using arp -n in any host within that network )
+  - The network specification for containers within this network is as follows :-
+
+    a. SCOPE ==> Internal to individual host
+    b. INTER-NETWORK ACCESS ==> Using containername,IP address.
+    c. EXTERNAL-NETWORK ACCESS ==> Using  <host public ip : Host Port no on which the container listen's> (cannot be done in localhost)
+
+
+SERVICE DISCOVERY
+------------------
+- Each service running in cluster is discoverable by any other service using service name/VIP of the service.
+- The docker achieves this by creating registeries with container mappings for each service.
+- The registeries consists of the following:-
+  a. DNS enteries for each service (i.e service name)
+  b. IP Address, Hostname mappings of active containers running the service.
+- It works as follows :-
+  a. Each service is given an VIP (common IP to all nodes running the service)
+  b. Traffie to the service is routed to the VIP
+  c. Which is further routed to the specific containers running the service by finding the mappinf in registry
+
+INGRESS NETWORKING
+-------------------
+- This is mechanism of HA.
+- The traffic hitting any host in the swarm at specific port is automatically routed to a specific service.
+- This makes the service available cluster wide and not only in node running the specific service containers
+- This is achieved using the following networks :-
+  a. ingress - OVERLAY ===> used to route traffic coming through a specific port accross all nodes in swarm to container running specific service 
+  b. docker_gwbridge - BRIDGE ===> Used to connect a default container to ingress network to route traffic to route traffic coming through a specific port accross all nodes in swarm to container running specific service
+- Enabling swarm mode creates these two networks by default.
+- Enternet access can be done by providing public host ip or the loadbalanced IP of any of the host in swarm and routing traffic to the specific port to which service is listening.
+
+
+COMMANDS
+--------
+docker network create -d <bridge/overlay/macvlan/ipvlan> <networkname> --ip-range <ip address/subnet mask> --sunbet <ip range/subnetmask> -o parent = <interface name> ===> to create a network
   :-- a overlay network get replicated all over the swarm and needs swarm mode enabled
       port mapping for a overlay network get replicated in all the nodes in the swarn
 
