@@ -1,13 +1,36 @@
-*Note :-
+THEORY
 ----------
-1) Inorder to create pods first create an image and upload it in some repository
-2) Create an yaml file consiting of configuration instruction(such as path to image,
-   pods name etc..) and put it in the git hub repo of the project
-3) While creating pods point the command to the path of the yaml file.
-4) Container within PODS communicate via portnumber through the localhost interface
+- Pods are the atomic units in Kubernetees cluster ( same as containers in docker )
+- Each node in the cluster runs multiple pods.
+- Each pod uses a fixed amount of resource (CPU,RAM, storage) of a node.
+- Each pod can run single or mutiple containers.
+- Pods are stateless and shortlived.
+
+PODS SPECIFICATIONS
+-------------------
+- IP ADDRESS ===> SINGLE IP PER POD
+- INTERNAL ACCESS ===> INTERNAL ACCESS ONLY WITHIN THE CLUSTER AND SAME NETWORK
+- EXTERNAL ACCESS ===> THROUGH SERVICE OBJECT
+
+PROCESS OF PODS CREATIONS
+-------------------------
+
+     1. CREATE THE IMAGE FOR THE APP AND PUBLISH IT IN A REGISTRY (PRIVATE OR PUBLIC)
+                                            | 
+                                            |
+2. Create an yaml file consiting of pod configuration instruction(such as path to image, pods name etc..)
+                                            |
+                                            |
+              3. Give commands in kubectl to use the yaml file and create pods
+                                            |
+                                            |
+                              4. API SERVER CREATES PODS.
+                                            |                              
+                                            |
+                               5. SCHEDULER DEPLOYS PODS
 
 
-Command
+COMMANDS
 --------
 1) kubectl apply -f <path of the configuration yaml file>  ==> to create pod
 
@@ -15,7 +38,7 @@ Command
 
 2) kubectl get pods --watch ===> to get information about all the pods in cluster
 
-3) kubectl get pods -o wide ===> gives detailed information of all the pod in cluster
+3) kubectl get pods -o wide ===> gives IP, Labels of all the pod in cluster
 
 4) kubectl describe pods <pod name> ====> gives detailed information of the specific pod in cluster
  

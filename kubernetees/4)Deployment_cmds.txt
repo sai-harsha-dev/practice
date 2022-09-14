@@ -1,0 +1,74 @@
+THEORY
+-------
+- Deployment objects are the once which maintain the desired state of services.
+- The desired state of service (configuration yaml) is maintianed in Cluster Store.
+- They take care of :-
+  1. DYNAMICALLY SCALLING / SELF HEAING / DELETING PODS
+  2. PERFORMING ROLLING UPDATES / ROLLBACKS AT RUNTIME
+
+- The deployments objects are made up to Kubernetees objects.
+  1. REPLICA SETS  ===> Handle dynamic scalling of pods
+  2. DEPLOYMENT ===> Handle rolling updates and rollback
+
+CREATING DEPLOYMENT OBJECTS
+---------------------------
+
+1. CREATE CONFIGURATION FILE FOR DEPLOYMENTS ( SERVICE LABEL AND DEPLOYMENT LABEL MUST BE SAME)
+                                         |
+                                         |
+              2. RUN COMMAND IN KUBECTL POINTING TO CONFIGURATION FILE
+                                         |
+                                         |
+  3. A STATEFUL COPY OF THE DESIRED CONFIGURATION IS STORED IN CLUSTER STORE AS REFERENCE
+                                         |
+                                         |
+               4. API SERVER CREATES DEPLOYMETS AND REPLICA SET OBJECTS
+                                         |
+                                         |
+      5. DEPLOYMENT AND REPLICA SET CONTROLLER MONITOR THE STATE OF PODS RUNNING SERVICE
+
+
+PERFORMING ROLLING UPDATES 
+--------------------------
+
+  1. MAKE CHANGES IN DEPLOYMENT CONFIGURATION FILE (CHANGE THE OLDER IMAGE TO NEWER IMAGE)
+                                         |
+                                         |
+               2. RUN COMMAND IN KUBECTL POINTING TO CONFIGURATION FILE
+                                         |
+                                         |
+  3. A STATEFUL COPY OF THE DESIRED CONFIGURATION IS STORED IN CLUSTER STORE AS REFERENCE
+                                         |
+                                         |
+               4. API SERVER CREATES DEPLOYMETS AND REPLICA SET OBJECTS
+                                         |
+                                         |
+      5. DEPLOYMENT AND REPLICA SET CONTROLLER MONITOR THE STATE OF PODS RUNNING SERVICE
+
+
+PERFORMING ROLLBACKS ( Always the pervious replica set configuration is stored in the cluster store for roll backs) 
+---------------------
+
+     1. RUN COMMAND IN KUBECTL POINTING TO REPLICA SET CONTAINING OLDER CONFIGURATION FILE
+                                         |
+                                         |
+  2. A STATEFUL COPY OF THE DESIRED CONFIGURATION IS STORED IN CLUSTER STORE AS REFERENCE
+                                         |
+                                         |
+               3. API SERVER CREATES DEPLOYMETS AND REPLICA SET OBJECTS
+
+COMMANDS
+---------
+kubectl apply -f < path to deployment configuration yaml file > ---> create deployements and replica sets
+
+kubectl apply -f < path to new deployment configuration yaml file > ---> create newer version of deployements and replica sets
+
+kubectl get deploy <label of deployment> ---> get the information of deployments
+
+kubectl get rs <label of replica set> ---> get the information of replica sets
+
+kubectl describe deploy <label of deployment> ---> get the detailed information of deployments
+
+kubectl describe rs <label of replica set> ---> get the detailed information of replica sets
+
+kubectl rollback deploy -to--version = <label of the replica set> ---> to rollback to previous deployment

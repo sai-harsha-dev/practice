@@ -1,0 +1,124 @@
+KUBERNETEES BASICS
+-------------------
+- Kubernetees is container orchestration tool. (similar to Docker swarm).
+- Kubernetees cluster is the main building block of kubernetees.
+
+KUBERNETEES CLUSTER
+--------------------
+- Kubernetees cluster manages deployment,management of containers/pods.
+- Kubernetees cluster is a pool of computer node each performing different tasks.
+- Kubernetees custer consists of two types of nodes :-
+
+  a. MASTER NODE
+  ---------------
+  - These are the nodes which perform the control plain decisions.
+  - Their reposibilities include :-
+
+    1. Managing the state of cluster
+    ---------------------------------
+    - This includes checking the heath of the nodes in the cluster.
+    - Checking and deploying work throughout the cluster.
+    - Maintaining a jist of the overall compute,storage,other resources of the whole cluster.
+
+    2. Distributing work load throughout the cluster.
+    -------------------------------------------------
+    - This includes deploying pods for different services.
+    - Recurssively checking the status of pods and maintaining the desired state.
+  
+  - Each node acting as master runs the following components.
+    
+    1. API SERVER ( REST API ENDPOINT TO ACCESS KUBERNETEES API )
+    -------------------------------------------------------------
+    - It acts as an end point to create kubernetees API object.
+    - Parses the cluster configuration YAML file given by the user and creates Kubernetees object
+    - Kubectl command line tool is used to talk with the API server.
+
+    2. CLUSTER STORE ( DISTRIBUTED STATEFULL DATABASE OF CLUSTER CONFIGURATION DATA)
+    --------------------------------------------------------------------------------
+    - It is and etcd database (NOSQL) maintaining all the details of the cluster such as :-
+      a. RESOURCE POOL
+      b. DESIRED CONFIGURATION FILES (YAML) etc...
+    - It is a stateful component and must be highly available.
+
+    3. SCHEDULER ( TAKES CARE OF RUNNING WORK LOAD)
+    -----------------------------------------------
+    - It takes care of scheduling work to differnet nodes in the cluster.
+    - Takes care of load balancing the resources of the cluster
+
+    4. MANAGER CONTROLLER (RESPONSILBLE TO PERFORM STATUS CHECKS OF WORKS RUNNING IN WORKER NODES)
+   -----------------------------------------------------------------------------------------
+    - It is manager to all the controllers running in different nodes of the cluster
+    - It runs reconsilation loops checking the status of different controllers in the worker nodes.
+    - It is combination of many controllers.
+
+  - MASTER NODE OPERATION 
+   -----------------------
+    - The master nodes should be odd multiple i.e 1,3,5 etc ..( to avoide split brain )
+    - They operate in passive/active model.
+    - One of the nodes serve as an Leader and rest as Slave node.
+    - The leader node takes all the decisions.
+    - The slave nodes route all the commands to the leader nodes.
+    - They must be layed out in highly available HA networks.
+
+  b. WORKER NODES
+  ----------------
+  - These are the nodes which run the cluster work.
+  - They are made up of the following components.
+    
+    1. KUBELET (RESPONSIBLE TO SHARE STATUS PODS TO MASTER NODE)
+    ------------------------------------------------------------
+    - It is the manager for all the Pods running within a node.
+    - This component communicates with manager controller in the master nodes.
+    - It shares the status of all Pods running in a node.
+
+    2. CONTAINER RUNTIME (RESPONSIBLE TO CREATE CONTAINERS)
+    --------------------------------------------------------
+    - It is responsible to communicate with the OS and create containers.
+    - Similar to containerd in docker engine.
+
+    3. KUBEPROXY (MANAGES NETWORKS FOR PODS)
+    ----------------------------------------
+    - Responsible to provide IP's to the all the pods within the container.
+    - Maintain routing to all the different pods within each node.
+
+
+DEPLOYING WORK TO KUBERNETEES CLUSTER
+----------------------------------------
+- The process deploying work to cluster is performed as follows :- 
+ 
+  
+          1. DEPLOY THE MANIFEST TO API SERVER ENDPOINT OF MASTER  NODE USING KUBECTL TOOL.
+                                              |
+                                              |
+           2. THE DESIRED CONFIFURATION IS STORED IN THE CLUSTER STORE FOR FUTURE REFERENCE.
+                                              |
+                                              |
+                      3. API OBJECT IS CREATED (PODS, DEPLOYMENTS, SERVICE).
+                                              |
+                                              |
+               4. THE SCHEDULER DEPLOYS OBJECT IN DIFFERENT NODE BASED ON THE LOAD.
+                                              |
+                                              |
+      5. MANAGER CONTROLLER RUNS RECONSILIATION LOOPS TO CHECK THE STATUS OF DEPLOYMENTS IN EACH NODES 
+
+
+
+KUBERNETEES OBJECT
+------------------
+- The kubernetees object are categorised in the kubernetees API.
+- The API SERVER acts as an end point to communicate with API through command line tool and create Kubernetees objects
+- The different Kubernetees objects are as sub divided into differnt categories.
+- Each category has a set of objects with similar functionalities.
+- Some of the differnet objects and their functions are as follows.
+
+             OBJECT                |                  FUNCTIONALITY                         
+  ---------------------------------|----------------------------------------------------------------------
+  1. PODS                          | Used to run containers
+  2. SERVICE                       | Used to establish network connectivity within different services
+  3. DEPLOYMENT                    | Used to spin up, stop, rollback, perform roling updates to pods
+
+INSTALLING KUBERNETEES
+----------------------
+- The tools needed to use kubernetees are as follows :-
+  1. KUBECTL ===> used to communicate with Master nodes from remote destop command line.
+  2. LOCAL/ CLOUD KUBERNETEES CLUSTER ===> update the configuration in user/.kube/config. to establish communication.

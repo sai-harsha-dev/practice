@@ -1,35 +1,89 @@
-Notes :-
+THEORY
 --------
-* Pods are not easily accessible, be they can be scaled up and down dynamically
-* They dont have only cluster IP meaning that its private to within cluster
-* Cannot be accessed from the internet due to dynamic nature
+- Service provide external and internal access to pods.
+- Pods are not easily accessible, because pods are dynamic in nature and dont have stable IP.
+- Service object act a layer on top of pods to provide stable access to pods running a service.
 
-Properties :-
-------------
-* They are accessible internally , externally because of the DNS labelling used to address pods running an particular service.
-* These API object for service is service
-* They work by creating and DNS route for the pods with same labels as the work name and 
-  they are load balanced in the backend.
-* They are of 3 types
-  1) CLUSTER IP ( Internal Cluster Access )
+SERVICE OBJECT WORKING:-
+---------------------------
+- Service object run in control plain of the Kubernetees cluster.
+- They constantly look for new service label within the cluster and create DNS mapping
+- They work as follows
+  -Service object have two endpoints :-
+  
+  1. FRONT END ( PROVIDES DNS-IP-PORT MAPPING)
+  ---------------------------------------------
+  - The service object registers the service label and provides a cluster IP and port maapping.
+  - It makes use of COOREDNS service running in control paint to create these enteries.
+  - Every node/Pod in the cluster is can access this CoreDNS through the mappings present in /etc/resolv.confg file.
+
+  2. BACKEND (LOADBALANCER)
+  --------------------------
+  - This is and endpoint object.
+  - It load balances the traffic to each service.
+  - This is doe by equally routing traffic to all the pods running that specifc service.
+ 
+-Service objects are of 3 types
+
+  1. CLUSTER IP ( Internal Cluster Access )
   ------------------------------------------
-* Kuberneets creates and Cluster wide unique IP for the and work with specific label, which has
-  enteries in CoreDNS within the service with enteries of all the pods with same work label
-  So when an Pod/container/app within the cluster access this work label they are routed to the
-  unique ClusterIP which is further resolved by CoreDNS to the specific pods
+  - This makes the pods running service accessible to all the other pods within the cluster.
+  - This is achieved by providing each specific service with a common Cluster wide IP CALLED CLUSTER ip
+  - The cluster ip is registered in CoreDNS.
 
-  2) NODEIP ( External Acesses via public IP of node in cluster )
-  --------------------------------------------------------------- 
-* For access from conputer outside the cluster with public IP of the nodes in internal cluster
-  they can accessed by NodePort object, which works by establishing a particular port as 
-  mapped to the CoreDNS label of that specific work meaning traffic to that port(30000-35000)
-  is routed to the specific Pods running the specific work.
+  - TRAFFIC ROUTING PROCESS 
+  --------------------------
 
-  3) LOAD BALANCER ( External Access via a single Public IP)
+     1. INTERNAL CLUSTER PODS ACCESS THE COREDNS USING THE MAPPING PERSENT IN /ETC/RESOLV.CONF FILE
+                                                |
+                                                |
+       2. COREDNS ROUTES THE TRAFFIC TO THE CLUSTER IP MAPPED TO THE SPECIFIC SERVICE LABEL.
+                                                |
+                                                |
+       3. THE CLUSTER IP SERVICE OBJECT ROUTES THE TRAFFIC TO THE PODS RUNNING THE SERVICE
+
+  2) NODEPORT ( External Acesses via Common port published across cluster ) - SIMILAR TO INGRESS
+  ------------------------------------------------------------------------
+  - This publishes a specific port across the whole cluster.
+  - Each service is given a specific port in the range between 30000 - 32737.
+  - External traffic hitting any node in cluster to that port is routed to the service pods.
+
+  - TRAFFIC ROUTING PROCESS 
+  --------------------------
+  
+    1. EXTERNAL TRAFFIC HITTING THE NODEPORT ACROSS ANY NODE IN CLUSTER VIA PUBLIC IP OF NODE.
+                                                |
+                                                |
+                                2. TRAFFIC ROUTED TO THE COREDNS
+                                                |
+                                                |
+      3. COREDNS ROUTES THE TRAFFIC TO THE CLUSTER IP MAPPED TO THE SPECIFIC SERVICE LABEL.
+                                                |
+                                                |
+       4. THE CLUSTER IP SERVICE OBJECT ROUTES THE TRAFFIC TO THE PODS RUNNING THE SERVICE
+
+
+  3) LOAD BALANCER ( External Access via a single Load balanced Public IP)
   ----------------------------------------------------------
-* For access from the internet (public IP of internal nodes not known) we use load balancer
-  which routes the traffic from specific port to the load balacer IP to the cluster IP which 
-  is further directed to the NodePort and then to the CoreDNS and PODS servicing the work
+  - Creates a load balancer for all the worker node and maps it to the NODEPORT.
+  - Services can be accessed just with public ip of load balancer.
+
+  - TRAFFIC ROUTING PROCESS 
+  --------------------------
+
+            1. EXTERNAL TRAFFIC HITTING THE LOADBALANCERS PUBLIC IP AT A SPECIFIC PORT
+                                                |
+                                                |
+                             2. TRAFFIC ROUTED TO THE NODEPORT
+                                                |
+                                                |
+                              3.TRAFFIC ROUTED TO THE COREDNS
+                                                |
+                                                |
+      3. COREDNS ROUTES THE TRAFFIC TO THE CLUSTER IP MAPPED TO THE SPECIFIC SERVICE LABEL.
+                                                |
+                                                |
+       4. THE CLUSTER IP SERVICE OBJECT ROUTES THE TRAFFIC TO THE PODS RUNNING THE SERV
 
 (Its not necessary create all service individually, if the top level serive is created bottom level service are automatically created by kubernetees)
 
