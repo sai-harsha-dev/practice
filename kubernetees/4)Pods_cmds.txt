@@ -1,0 +1,268 @@
+THEORY
+----------
+- Pods are the atomic units in Kubernetees cluster ( same as containers in docker )
+- Each node in the cluster runs multiple pods.
+- Each pod uses a fixed amount of resource (CPU,RAM, storage) of a node.
+- Each pod can run single or mutiple containers.
+- Pods are stateless and shortlived.
+
+PODS SPECIFICATIONS
+-------------------
+- IP ADDRESS ===> SINGLE IP PER POD
+- INTERNAL ACCESS ===> INTERNAL ACCESS ONLY WITHIN THE CLUSTER AND SAME NETWORK
+- EXTERNAL ACCESS ===> THROUGH SERVICE OBJECT
+
+
+PODS LIFECYCLE
+---------------
+- Consists of 3 stages
+   
+  1. CREATION -------- 2. RUNNING ------ 3. TERMINATED
+
+
+TYPES
+------
+1. STATIC PODS
+---------------
+ - These are the pods which run the kubernetees core resources such Scheduler, Controller manager etc..
+ - They are automatically created by the kubelet in individual nodes.
+ - They are defined in /etc/kubernetes/manifests ( can be change by editing kubelet configuration in /var/lib/kubelet config.yml)
+ - Cretaing and deleting static pods can only be done permanently changing the configuration file in /etc/kubernetes/manifests 
+
+PROCESS OF STATIC PODS CREATIONS
+-------------------------
+
+     1. CREATE THE IMAGE FOR THE APP AND PUBLISH IT IN A REGISTRY (PRIVATE OR PUBLIC)
+                                            | 
+                                            |
+2. Edit yaml file consiting of static pod configuration instruction in /etc/kubernetes/manifest directory
+                                            |
+                                            |
+                    3. KUBELET AUTOMATICALLY CREATES PODS DEPLOYS PODS
+
+
+
+2. USER CREATED PODS
+---------------------
+ - These are the application pods.
+ - These can run single or multiple containers
+ - The types of containers within a pods are :-
+   a. CONTAINERS ===> These run the application  
+   b. INIT CONTAINERS ===> Startup containers with setup the necessary platform for application containers to run 
+
+PROCESS OF PODS CREATIONS
+-------------------------
+
+     1. CREATE THE IMAGE FOR THE APP AND PUBLISH IT IN A REGISTRY (PRIVATE OR PUBLIC)
+                                            | 
+                                            |
+2. Create an yaml file consiting of pod configuration instruction(such as path to image, pods name etc..)
+                                            |
+                                            |
+              3. Give commands in kubectl to use the yaml file and create pods
+                                            |
+                                            |
+                              4. API SERVER CREATES PODS.
+                                            |                              
+                                            |
+                               5. SCHEDULER DEPLOYS PODS
+
+
+- A pod can be terminated due to any of the following reason 
+  a. Application error
+  b. Node failure
+  c. Pod deletion
+
+RESTARTING CONTAINERS
+---------------------
+- If there is can error in application container kubernetes implements restart policy
+- It is pod level property and applies to all containers running in that pod.
+- It is of 3 types :-
+  1. Always --- restarts containers always not just for application error 
+  2. Onfailure --- restarts containers only when there is an application error
+  3. Never --- never does kubernetes restart a container upon termination
+ 
+
+CONTAINER PROBES
+-----------------
+- Probes are specifically used to monitor the status of each container within a pod.
+- They are container level objects. i.e defined for each container.
+- Some types of probes include :-
+
+  1. Startup probe
+  -----------------
+  - Runs startup checks before containers is made to ready state.
+  - Other probes run only after this probe checks are complete.
+  - Restart policy is implemented when the checks fail
+  
+  2. Liveness probes
+  -------------------
+  - Runs while the container is in running state.
+  - Does diagonostists checks as mentioned in manifest file for the pod.
+  - Restart policy is implemented when the checks fail
+ 
+  3. Readiness probe
+  -------------------
+  - Runs while the container is in running state.
+  - Checks if the container is ready to server request and establishes its status to service object
+  - If non complaint the pods entry is removed from the service DNS mapping.
+
+ 
+PROBE CONFIGURATION PROPERTIES
+--------------------------------
+ a. PROBE DIAGNOSTICS POLICIES TYPES
+ ---------------------------------
+ - Each probe can run each or mutiple of these.
+ - Few of the popular diagonostics types are
+    1. Exec 
+    --------
+    - Checks the exit code of arbitary process to determine container status
+
+    2. tcpSocket 
+    -------------
+    - Checks if a particular port can be opened in a container
+
+    3. httpGet
+    -----------
+    - Checks if a container is responfind to particular URL
+
+
+ b. initialDelaySeconds 
+   ---------------------
+   - Defines the amount of time the probe runs after container starts.
+   - deafult 0 
+
+ c. periodSeconds
+   ---------------
+   - Defines the time interval for the probes to re-run
+   - default 10
+
+ d. timeoutSeconds
+    ---------------
+   - Defines the time to wait for the probe for response for container
+   - default 1
+
+ e. failureThreshold
+    -----------------
+    - Defines the number of times to perform the check before reporting failure
+    - default 3
+
+ f. successThreshold
+    -----------------
+    - Defines the number of times to perform the check before reporting success
+    - default 1
+
+
+TERMINATING/DELETING PODS
+-------------------------
+- The process takes places ad follows.
+
+1. Grace period timer starts ---> 2. Pods status changed to terminated ----> 3. SIGTERM signal sent
+
+----> 4.Pods entry removed from DNS ---> 5. If grace period limit reached SIGKILL signal send ----
+
+-----> 5. Staus updated in etcd by API SERVER.
+
+- Grace period for termination can be changed :-
+  1. imperatively using --grace-period=<seconds> in kubectl delete pods
+  2. declaritively by changing pods manifest configuration using TerminationGracePeriodSeconds tag.
+ 
+
+YAML CONFIGURATION
+-------------------
+
+1. SINGLE CONTAINER POD
+------------------------                       
+apiVersion: v1
+kind: Pod
+metadata:
+ name: <name for the pod>
+ labels:
+  <key>:<value>
+  .
+  .
+spec:
+ containers:
+ - name: <name of the container>
+   image: <image path>
+   restartPolicy: <never/alawys/onFailure>
+   <probe type>:
+    <probe diagnostics type>:
+     .
+     .
+   intitalDelaySeconds: <number>
+   periodSeconds: <number>
+   timeoutSeconds: <number>
+   failureThreshold: <number>
+   successThreshold: <number>
+   
+
+2. MULTI CONTAINER POD
+------------------------                       
+apiVersion: v1
+kind: Pod
+metadata:
+ name: <name for the pod>
+ labels:
+  <key>:<value>
+  .
+  .
+spec:
+ containers:
+ - name: <name of the container>
+   image: <image path>
+      restartPolicy: <never/alawys/onFailure>
+   <probe type>:
+    <probe diagnostics type>:
+     .
+     .
+   intitalDelaySeconds: <number>
+   periodSeconds: <number>
+   timeoutSeconds: <number>
+   failureThreshold: <number>
+   successThreshold: <number>
+
+ - name: <name of the container>
+   image: <image path>
+      restartPolicy: <never/alawys/onFailure>
+   <probe type>:
+    <probe diagnostics type>:
+     .
+     .
+   intitalDelaySeconds: <number>
+   periodSeconds: <number>
+   timeoutSeconds: <number>
+   failureThreshold: <number>
+   successThreshold: <number>
+
+
+3. INIT CONTAINERS PODS
+------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+ name: <name for the pod>
+ labels:
+  <key>:<value>
+  .
+  .
+spec:
+ initContainers:
+  ...
+ containers:
+  ...
+   
+-------------------------------------------------------------------------------------------
+COMMANDS
+--------
+kubectl apply -f <path of the configuration yaml file>  ==> to create pod
+
+(* to create poda with multiple containers, create two container in yaml file attributes)
+
+kubectl get pods --watch ===> to get information about all the pods in cluster
+
+kubectl get pods -o wide ===> gives IP, Labels of all the pod in cluster
+
+kubectl describe pods <pod name> ====> gives detailed information of the specific pod in cluster
+ 
+kubectl delete pods <pod name> ===> to delete pods

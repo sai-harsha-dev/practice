@@ -1,0 +1,94 @@
+THEORY
+------
+- Labels are added to resources for identification purposes
+
+- PROPERTIES
+--------------
+1. They are key:value pairs.
+2. Each resource can have mutiple labels.
+3. Different resources can have same labels.
+
+- USES
+-------
+1. Used to identify a set of resources.
+2. Used make changes to set of resources (create, delete , modify)
+3. Services, deployment use label selectors to deploy and manage resources.
+
+
+YAML DECLERATION
+----------------
+1.PODS                       2. DEPLOYMENTS              3. SERVICES
+---------                    ----------------            ------------  
+ apiVersion: v1              ....                        ....
+ kind: Pod                   kind: Deployment            kind: Service
+ metadata:                   matedata:                   metadata:
+  name: <name of pod>        .....                       ......
+  labels:                    spec:                       spec:
+    <key1> : <value1>          selector:                  selector: 
+    .                            matchLabels:               <key1> : <value1>                
+    .                              <key1> : <value1>        ......      
+    .                              ......
+ spec:                         template: 
+  .....                          metadata: 
+                                    labels:
+                                      <key1> : <value1>
+                                      ......
+                                 spec:
+                                  container:
+
+-------------------------------------------------------------------------------------------
+
+
+COMMANDS
+---------
+
+1. CREATING LABELS
+------------------
+kubectl apply -f <yaml file>
+
+
+2. ADDING LABELS
+-----------------
+kubectl label pod <name of pod> <key>=<value>  ===> add label of specific pod
+
+kubectl label pod all <key>=<value> ===> add label of all the pods in default namespace
+
+
+3. MODIFYING LABEL
+-------------------
+kubectl label pod <name of pod> <key>=<value> --overwrite ===> change label of specific pod
+
+kubectl label pod all <key>=<value> --overwrite ===> change label of all the pods in default namespace
+
+
+4. QUERYING RESOURCES WITH LABELS
+----------------------------------
+kubectl pods --show-labels ===> list the labels all the the pods indefault namespace
+
+kubectl pods --selector <key>=<value> ===> list pods with single label match
+
+kubectl pods -l <key>=<value> ===> list pods with single label match
+
+kubectl pods -l '<key><logical operator><value>,<key><logical operator><value>' ===> list pods with multiple label match
+            :-<logical operator> :- a. = ==> equals
+                                    b. != ==> not equals
+                                    c. in() ==> equals to all or one key specifies with ()
+                                    d. not in() ==> not equals to all or one key specifies with ()
+
+
+kubectl node --selector <key>=<value> ===> list nodes with single label match
+
+kubectl node -l <key>=<value> ===> list nodes with single label match
+
+kubectl node -l '<key><logical operator><value>,<key><logical operator><value>' ===> list nodes with multiple label match
+            :-<logical operator> :- a. = ==> equals
+                                    b. != ==> not equals
+                                    c. in() ==> equals to all or one key specifies with ()
+                                    d. not in() ==> not equals to all or one key specifies with ()
+
+
+5.DELETING LABELS
+------------------
+kubectl label pod <name of the pod> <key>-
+                                 
+

@@ -1,0 +1,80 @@
+THEORY
+-------
+- Namescapes are used to group a set of kubernetes resources.
+
+- PROPERTIES
+  ----------
+  1. Every namespaces should have a unique name (can't start with capital letters).
+  2. Not all the resources can be put in a namespace eg:- NODES, VOLUMES
+  3. A resource can only be a part of single namespace.
+  4. Resources names(not labels) within the same namespace should be unique.
+
+- USES
+  -----
+  1. Grouping resources based on teams
+  2. Applying access policies on set of resources etc..
+
+- TYPES
+  -------
+  1. default ===> default namespace for user created resources ( if user defined namespace not created )
+  2. kube-system ===> system resources used this namespace eg :- CoreDNS, scheduler, manager controller
+  3. kube-public ===> used for shared resources ( resources used by all )
+
+
+YAML DEFINITION
+----------------
+apiVersion: v1
+kind: Namespace
+metadata:
+ name: <name of namespace>
+-----------------------------
+(* to add resources to namespaces add namespace:<name of namespace> in metadata section of yaml configuration of resource)
+
+COMMANDS
+--------
+1. CREATING NAMESPACES
+-----------------------
+kubectl apply -f <yaml file>  ===> declaritive way
+
+kubectl create namespace <namespace name> ===> imperative way
+
+
+2. QUERING  NAMESPACES DETAILS
+-------------------------------
+kubectl get namespaces ===> list all the available namespaces
+
+kubectl describe namespaces ===> get indepth details of a default namespace
+
+kubectl describe namespaces <namespace name> ===> get indepth details of custom namespace
+
+
+3. QUERING NAMESPACE RESOURCES DETAILS
+-------------------------------------- 
+kubectl get <resource kind :- pods,deploy etc..> namespaces ===> list resources in default namespace
+
+kubectl get all --all-namespaces ===> list all resources in all namespaces
+
+kubectl get <resource kind :- pods,deploy etc..> --all-namespaces ===> list resources in all namespaces
+
+kubectl get all --namespaces <name of namespace> ===> list all resources in specific name space
+
+kubectl get <resource kind :- pods,deploy etc..> --namespaces <name of namespace> ===> list specific resources in specific name space
+
+
+4. DELETING NAMESPACES
+-----------------------
+kubectl detele namespaces <name of namespace>
+
+
+5. DELETING NAMESPACE RESOURCES 
+-------------------------------- 
+kubectl delete <resource kind :- pods,deploy etc..> namespaces ===> delete specifc resources in default namespace
+
+kubectl delete all --all-namespaces ===> delete all resources in all namespaces
+
+kubectl delete  <resource kind :- pods,deploy etc..> --all-namespaces ===> delete resources in all namespaces
+
+kubectl delete all --namespaces <name of namespace> ===> delete all resources in specific name space
+
+kubectl delete <resource kind :- pods,deploy etc..> --namespaces <name of namespace> ===> delete specific resources in specific name space
+

@@ -1,0 +1,104 @@
+THEORY
+-------
+- Kubernetees API defines the different kubernetees resources.
+- Each Kubernetees resouce is categorized under the following sections in Kubernetees API
+  1. Kind
+  --------
+  - It is the name given to each resource.
+  - These include :-
+    a. pods
+    b. deployment
+    c. service etc...
+
+  2. Group 
+  ---------
+  - This is grouping os serveral simialr resources.
+  - There are many differnet groups such as :-
+    a. CORE ===> pods,nodes,presistant volumes
+    b. APPs ===> deployment
+    c. STORAGE.K8.IO ===> StorageClass
+
+ 3. Version
+ -----------
+  - This determines the state of resource
+  - There are 3 versions available :-
+    a. ALPHA ==> newest unstable
+    b. BETA ==> Tested mostly stable
+    c. GA/STATE ==> Stable/ Generally Available
+
+CREATING KUBERNETES RESOURCES
+------------------------------
+- The Kubernetes API exposes and REST API endpoint through which we can create resources.
+- The process is as follows.
+ 
+                1. CREATE THE CONFIGURATION/MANIFEST YAML FILE FOR RESOURCE
+                                           |
+                                           |
+           2. SEND COMMANDS TO THE API SERVER THROUGH A HTTP CLIENT TOOL (KUBECTL)  
+                                           |
+                                           |
+       3. SERVER AUTHORISES, AUTHENTICATES , CREATES RESOURCES AND SENDS RESPONSE CODE
+
+
+API SERVER
+---------- 
+- The API SERVER is the one which which handles the REST API.
+- Its responsible for creating kubernetes resources.
+- Its function in a client-server model and works over HTTP,TLS
+- Its open in the port number 6443.
+
+
+HTTP CLIENT COMMAND LINE TOOL (KUBECTL)
+------------------------------
+- It is the tool used to send HTTP request (GET, POST,DELETE ETC..) to the API SERVER.
+- Kubectl is a command line interface which interacts with the API servers REST API endpoint in the master/Control plane nodes.
+- The cluster configuration are maintained in the configuration file present in users/.kube/confg.
+
+PHASES OF COMMUNICATION
+------------------------
+- The connection between Kubectl and API SERVER has the following 4 stages :-
+  1. CONNECTION  ===> Connection takes place to the API SERVER ( using config file )
+  2. AUTHENTICATION ===> Checks if the user is valid
+  3. AUTHERIZATION ===> Checks if the user has permission to perform the action
+  4. ADMISSION CONTROL ===> Checks syntax an creates object.
+
+API SERVER RESPONSE CODES
+--------------------------
+- This indicates status of operation
+- There are three categories of response codes :-
+
+  1. 2** (SUCCESS)          2. 4** (CLIENT SIDE ERROR)    3. 5** (SERVER SIDE ERROR)   
+  -----------------         --------------------------    --------------------------
+  - 200 ==> Ok              - 401 ==> Unauthorized        - 500 ==> Internal error
+  - 201 ==> CREATED         - 402 ==> Access denied
+  - 203 ==> ACCEPTED        - 403 ==> Not found
+ 
+  
+COMMANDS
+---------
+kubectl config get-context ===> to see all the available contexts
+
+kubectl config use-context <context name> ===> to use that context
+
+kubectl config view ====> shows the details of the cluster configuration file (context file)
+
+kubectl version --short  ===> shows the version client and server (must vary only by +-1 not more than that)
+
+(* rememeber for the cluster to show up on docker desktop update configuration in .kube\confg file under user pofile)
+
+kubectl get nodes ===> show the details of the nodes in the cluster
+ 
+kubectl dashboard ===> open a web dashboard on local host showing detailed status of cluster
+
+kubectl api-resources ====> to get deatiled description all the available API resources (version, kind,group)
+
+kubectl api-resources --api-group=<group name> ===> to see all objects of that group
+
+kubectl explain <resource kind>.<properties name> ===> to details of properties value of each resource
+
+kubectl -f <yaml file> --dry-run=server ===> to validate all the configuration YAML from server side
+
+kubectl -f <yaml file> --dry-run=client ===> to check configuration YAML from client side , only checks syntactical correctness
+
+kubectl <commads> -v <number> ===> to get verbose of the client API server interactions
+ 
