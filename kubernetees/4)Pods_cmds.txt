@@ -185,7 +185,6 @@ spec:
  containers:
  - name: <name of the container>
    image: <image path>
-   restartPolicy: <never/alawys/onFailure>
    <probe type>:
     <probe diagnostics type>:
      .
@@ -195,6 +194,7 @@ spec:
    timeoutSeconds: <number>
    failureThreshold: <number>
    successThreshold: <number>
+ restartPolicy: <never/alawys/onFailure>
    
 
 2. MULTI CONTAINER POD
@@ -211,7 +211,6 @@ spec:
  containers:
  - name: <name of the container>
    image: <image path>
-      restartPolicy: <never/alawys/onFailure>
    <probe type>:
     <probe diagnostics type>:
      .
@@ -221,10 +220,10 @@ spec:
    timeoutSeconds: <number>
    failureThreshold: <number>
    successThreshold: <number>
+
 
  - name: <name of the container>
    image: <image path>
-      restartPolicy: <never/alawys/onFailure>
    <probe type>:
     <probe diagnostics type>:
      .
@@ -234,7 +233,7 @@ spec:
    timeoutSeconds: <number>
    failureThreshold: <number>
    successThreshold: <number>
-
+ restartPolicy: <never/alawys/onFailure>
 
 3. INIT CONTAINERS PODS
 ------------------------
