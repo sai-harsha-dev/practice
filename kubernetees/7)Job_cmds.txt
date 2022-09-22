@@ -1,0 +1,7 @@
+THEORY
+------
+- These are used schedule specific code/job that should execute at any time in the cluster.
+- They are off two types :-
+  1. JOBS ===> these schedule and run jobs once.
+  2. CRONJOBS ====> these run repeatedly at scheduled hours.
+

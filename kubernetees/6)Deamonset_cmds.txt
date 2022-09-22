@@ -1,0 +1,151 @@
+THEORY
+-------
+- Deamon sets are used to deploy a specific application pod on each in all or a subset of nodes in cluster.
+- These are usually like system process(deamons) which need to run in background in cluster.
+- Eg:- Kubeproxy 
+
+SPECIFICATIONS
+---------------
+- Controller : Deamonset controller
+- Operations : CREATE, UPDATE/ROLLOUT (Rollback and pausing and restrating rollout not possible), DELETE
+
+
+CREATING A DEAMON SET
+----------------------
+
+1. CREATE CONFIGURATION FILE FOR DEAMONSET (SERVICE LABEL AND DEPLOYMENT LABEL MUST BE SAME)
+                                         |
+                                         |
+              2. RUN COMMAND IN KUBECTL POINTING TO CONFIGURATION FILE
+                                         |
+                                         |
+  3. A STATEFUL COPY OF THE DESIRED CONFIGURATION IS STORED IN CLUSTER STORE AS REFERENCE
+                                         |
+                                         |
+                    4. API SERVER CREATES DEAMONSET OBJECTS
+                                         |
+                                         |
+          5. DEAMONSET CONTROLLER MONITOR THE STATE OF PODS RUNNING SERVICE
+
+
+
+UPDATE/ROLLOUT A DEAMON SET
+---------------------------
+
+1. CREATE A NEW CONFIGURATION FILE FOR DEAMONSET (SERVICE LABEL AND DEPLOYMENT LABEL MUST BE SAME)
+                                         |
+                                         |
+              2. RUN COMMAND IN KUBECTL POINTING TO CONFIGURATION FILE
+                                         |
+                                         |
+  3. A STATEFUL COPY OF THE DESIRED CONFIGURATION IS STORED IN CLUSTER STORE AS REFERENCE
+                                         |
+                                         |
+                    4. API SERVER CREATES DEAMONSET OBJECTS
+                                         |
+                                         |
+          5. DEAMONSET CONTROLLER ROLLS OUT PODS BASED ON UPDATESTRADEGY 
+
+
+DELETE A DEAMON SET
+--------------------
+
+                       1. ISSUE DELETE COMMAND IN KUBECTL
+                                        |
+                                        |
+                       2. API SERVER DELETES THE DEAMONSET
+
+--------------------------------------------------------------------------------------------
+
+YAML DEFINITION
+---------------
+1. WITHOUT NODE SELECTOR
+-------------------------
+apiVersion: apps/v1
+kind: DeamonSet
+metadata:
+ name:<name>
+spec:
+ stradegy:
+  type: <Rollingupdate/Ondelete>
+  rollingUpdate:
+   maxUnavailable: <number>    (default 1)
+   maxSurge: <number>
+ selector:
+  matchLabels:
+   <key>: <value>
+   .
+   .
+ template:
+  metadata:
+   labels:
+     <key>: <value>
+     .
+     .
+  spec:
+   container:
+   . 
+   .
+   ....
+
+
+2. WITH NODE SELECTOR
+----------------------
+apiVersion: apps/v1
+kind: DeamonSet
+metadata:
+ name:<name>
+spec:
+ stradegy:
+  type: <Rollingupdate/Ondelete>
+  rollingUpdate:
+   maxUnavailable: <number>    (default 1)
+   maxSurge: <number>
+ selector:
+  matchLabels:
+   <key>: <value>
+   .
+   .
+ template:
+  metadata:
+   labels:
+     <key>: <value>
+     .
+     .
+  spec:
+   nodeSelector:
+    <key>:<value>
+    .
+    .
+   container:
+   . 
+   .
+   ....
+
+----------------------------------------------------------------------------------------
+
+COMMANDS
+---------
+
+CREATING A DEAMON SET
+----------------------
+kubectl apply -f <config file path>
+
+
+QUERINING DEAMON SET STATUS
+---------------------------
+kubectl get deamonsets <name>
+
+kubectl describe deamonsets <name>
+
+
+UPDATE/ROLLOUT A DEAMON SET
+---------------------------
+kubectl apply -f <config file path>
+
+kubectl rollout status deamonsets <name>
+
+
+DELETE A DEAMON SET
+--------------------
+kubectl delete deamonsets <name>

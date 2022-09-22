@@ -1,0 +1,231 @@
+THEORY
+-------
+- Deployment objects are the once which maintain the desired state of services.
+- The desired state of service (configuration yaml) is maintianed in Cluster Store.
+- They take care of :-
+  1. DYNAMICALLY SCALLING / SELF HEAING / DELETING PODS
+  2. PERFORMING ROLLING UPDATES / ROLLBACKS AT RUNTIME
+
+- The deployments objects are made up to Kubernetees objects.
+  1. REPLICA SETS  ===> Handle dynamic scalling of pods ===> Taken care by ReplicaSet controller
+  2. DEPLOYMENT ===> Handle rolling updates and rollback ===> Taken care by Deployment controller
+
+
+CREATING DEPLOYMENT OBJECTS
+---------------------------
+
+1. CREATE CONFIGURATION FILE FOR DEPLOYMENTS ( SERVICE LABEL AND DEPLOYMENT LABEL MUST BE SAME)
+                                         |
+                                         |
+              2. RUN COMMAND IN KUBECTL POINTING TO CONFIGURATION FILE
+                                         |
+                                         |
+  3. A STATEFUL COPY OF THE DESIRED CONFIGURATION IS STORED IN CLUSTER STORE AS REFERENCE
+                                         |
+                                         |
+               4. API SERVER CREATES DEPLOYMETS AND REPLICA SET OBJECTS
+                                         |
+                                         |
+      5. DEPLOYMENT AND REPLICA SET CONTROLLER MONITOR THE STATE OF PODS RUNNING SERVICE
+
+
+
+DEPLOYMENT OPERATIONS
+---------------------
+
+1. ROLLOUT ( UPDATING TO NEW VERSION ) 
+   ------------------------------------
+   - Changes to the template (Pod config) section of the deployment only triggers new version of roll out. 
+   - Changes to the deployment config doesn't initiate rollout it just changes the existing deployment state. 
+   - Every deployment has a replica set which manages the configuration file for that deployment.
+   - When rollout/Update is intitiated the older replicaset configuration is replaced by a new configuration file.
+   - So now deployment roll's out new configuration and replicaset uses the deployment UpdateStradegy to start new pods for that deployment version.
+
+    ROLLOUT STATES
+    --------------
+    - A rollout can result in any of these 3 states :
+      1. PROGESSING
+      2. COMPLETED
+      3. FAILED
+   
+   a. NORMAL WORKFLOW
+   --------------------
+
+   1. Changes made in the  older deployment configuration file and apply command initialted in kubectl
+   						 |
+						 |
+             2. API server makes a persistant copy of config file in Cluster Store
+                                                 |
+                                                 |
+          3. Deployment controller follows the update stradegy and initiates roll out
+                                                 |
+                                                 |
+  4. ReplicaSet controller deploys the necessary number of replices keeping in check if the updatestradegy is met
+
+ 
+  b. RESTARTING DEPLOYMENT WORKFLOW 
+  ----------------------------------
+  - It is a process of restart a the existing deployment.
+  - It recreate a new revision of the same replicaset configuration file.
+
+                            1. Initiate a restart command in kubectl
+                                                 |
+                                                 |     
+        2. API server makes a persistant copy of existing replicaset config file in Cluster Store
+                                                 |
+                                                 |
+          3. Deployment controller follows the update stradegy and initiates roll out
+                                                 |
+                                                 |
+  4. ReplicaSet controller deploys the necessary number of replices keeping in check if the updatestradegy is met
+
+
+
+  b. PAUSING/RESUMING DEPLOYMENT WORKFLOW 
+  -----------------------------------------
+  - It is a process of pausing and ongoing deployment and restart it after making changes to the config file.
+  - It recreate a new revision of the replicaset configuration file and start roolout.
+
+                             1. Initiate a pause command in kubectl
+                                                 |
+                                                 |
+                      2. Make Changes to the  older deployment configuration file
+                                                 |
+                                                 |
+                            3. Initiate a resume command in kubectl
+                                                 |
+                                                 |     
+        4. API server makes a persistant copy of existing replicaset config file in Cluster Store
+                                                 |
+                                                 |
+          5. Deployment controller follows the update stradegy and initiates roll out
+                                                 |
+                                                 |
+  6. ReplicaSet controller deploys the necessary number of replices keeping in check if the updatestradegy is met
+
+
+2. ROLLBACK 
+------------
+   - Rollback refers to resetting to the older version of the deployment.
+   - This can be done by changing the deployment configuration to the older replicaset config in cluster store
+  
+   WORKFLOW
+   ---------
+1. Changes made in the  older deployment configuration file and apply command initialted in kubectl
+                                             |
+                                             |
+      2. API server fetches the previous version of replicaset config file in cluster store
+                                             |
+                                             |
+        3. Deployment controller follows the update stradegy and initiates roll out
+                                             |
+                                             |
+4. ReplicaSet controller deploys the necessary number of replices keeping in check if the updatestradegy is met
+
+
+3. SCALING
+-----------
+   - This includes changing the the number of replicas.
+   - This is taken care by the Replicaset controller.
+ 
+   WORKFLOW
+  ----------                              
+
+1. Changes made in the  older deployment configuration file and apply command initialted in kubectl
+                                             |
+                                             |
+            2. API server makes a persistant copy of config file in Cluster Store
+                                             |
+                                             |
+            3. ReplicaSet controller deploys the necessary number of replices.
+
+------------------------------------------------------------------------------------------------------------------
+
+YAML CONFIGURATION
+-------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: <deployment name>
+spec:
+ replicas: <number of replicas>
+ progressDeadLineSeconds: <number>    ( default to 10mins, it the time period for which the deployment controller will wait to confirm the status of rollout)
+ revisionHistoryLimit: <number>       ( default 10, specifies the number of previous replica set to maintain in cluster store )
+ stradegy:
+  type:<RollingUpdate/Recreate>
+  rollingUpdate:
+   maxUnavailable: <number/percentage>   |====> only only them can be percentage
+   macSurge: <number/percentage>         | 
+ selector:
+  matchlabel:
+   <key>:<value>  ===============================>(should match the labels in template)
+  matchExpression:
+   <key><=/!=/in/not in><value>
+ template:
+  metadata:
+   name: <name of pods>
+   labels:
+    <key>:<value>
+    .
+    .
+    .
+   spec:
+    container:
+     .....
+  ......
+
+--------------------------------------------------------------------------------------------------------------
+
+COMMANDS
+---------
+
+CREATING DEPLOYMENT OBJECTS
+--------------------------- 
+kubectl create deployment --name=<name> --image=<image path> --replicas=<number>     ===> imperative
+
+kubectl apply -f <path to deployment configuration yaml file > ===> declaritive
+
+
+QUERYING DEPLOYMENT/REPLICA SET INFORMATION
+---------------------------------------------
+kubectl get deploy <name of deployment> 
+
+kubectl get rs <name of replicaset>
+
+kubectl describe deploy <label of deployment> 
+
+kubectl describe rs <label of replica set>
+
+
+ROLLOUT 
+-------
+kubectl apply -f < path to new deployment configuration yaml file >
+
+kubectl apply -f < path to new deployment configuration yaml file > --record   ===> To record annotaion in rollout history
+
+
+QUERYING ROll OUT INFORMATION
+------------------------------
+kubectl rollout status deployment <name>  ====> gives the progess of rollout
+
+kubectl rollout history deployment <name>  ===> give all the revision history 
+
+kubectl rollout history deployment <name> --revision=<number>  ===> give the revision details
+
+PAUSING/RESUMING DEPLOYMENT  
+----------------------------
+kubectl rollout pause deployment <name>
+
+kubectl rollout resume deployment <name>
+
+
+RESTARTING DEPLOYMENT
+----------------------
+kubectl rollout restart deployment <name>
+
+
+ROLLBACK 
+---------
+kubectl rollout undo deployment <name>  ---> to rollback to previous deployment
+
+kubectl rollout undo deployment <name> -to--revision = <number> ---> to rollback to specific revision of the deployment
