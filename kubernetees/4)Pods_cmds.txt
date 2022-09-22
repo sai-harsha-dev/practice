@@ -195,6 +195,7 @@ spec:
    failureThreshold: <number>
    successThreshold: <number>
  restartPolicy: <never/alawys/onFailure>
+ terminationGracePeriodSeconds: <seconds>
    
 
 2. MULTI CONTAINER POD
@@ -234,6 +235,7 @@ spec:
    failureThreshold: <number>
    successThreshold: <number>
  restartPolicy: <never/alawys/onFailure>
+ terminationGracePeriodSeconds: <seconds>
 
 3. INIT CONTAINERS PODS
 ------------------------
