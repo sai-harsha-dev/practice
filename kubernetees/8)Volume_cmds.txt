@@ -1,0 +1,238 @@
+THEORY
+-------
+- They are mainly used for stateful application.
+
+DRAWBACKS OF PODS
+------------------
+ - Pods are emphemeral meaning that the changes made on in the pods filesystem are non persistant.
+ - They cannot support stateful applications.
+ 
+CHARACTERISTICS
+---------------
+ - They are stateful.
+ - Allow concurrent access to the same data cluster wide.
+ - There are 4 main kubernetes objects which are used to create persistant storage.
+  
+   1. PERSISTANT VOLUME
+   ---------------------
+   - This is the kubernetes object which contains the definitions/configuration details for the actual storage.
+   - Some of the main properties defined here are :-
+     a. TYPE
+        ----
+        - This denotes the type of storage eg:- nfs,iscsi,blob etc..
+        - Include the server ip , config file details based on the storage type to be accessed.
+        
+     b. CAPACITY
+        ----------
+        - This defines the amount of capacity eg:-30Gib 
+        
+     c. ACCESS MODE:-
+        --------------
+        - This defines the accessiblity characteristics of the storage.
+        - There are 3 options :-
+          1. ReadWriteMany ===> Read & Write access to multiple pods/containers at the same time.
+          2. ReadWriteOnce ===> Read & Write access to single pod/container at the same time.
+          3. ReadOnlyMany ===> Read only access to multiple pods/containers at the same time.
+
+     d. PERSISTANT VOLUME RECLAIM POLICY
+       ----------------------------------
+        - This property defines how the persistant colume should behave when a bound pvc is deleted.
+        - It has two mechanisms
+          1. Delete ===> this is default, and deletes the persistant volume when the bind pvc is deleted.
+          2. Reclaim ===> doesn't delete the persistant colume when bound pvc is deleted itis sent to released state, 
+                          we need to manually delete the Persistant volume to rebind it to other pvc.
+
+
+     2. STORAGE CLASS ( Used for dynamin persistant volume provisioning)
+        ----------------------------------------------------------------
+        - This is an alternative to Persistant Volume object.
+        - This defines the infrastructure specific parameter for the Volume type to be provisioned.
+        - The difference is that these volumes are created and deleted on request (dynamically) and not static.
+        - This defines the following property :-
+         
+          parameters: ===> defines infrastructure specific properties different for different provisioners.
+
+          
+    3. PERSISTANT VOLUME CLAIMS
+       ------------------------
+       - This is kubernetes object which pods talk to claim the persistant volume.
+       - NEEDS
+         ------
+          - This is used so as to decouple the the configuration details of the underlying storage from pods spec.
+          - This makes pod definitions more flexible and allow reuse of the same pod definition in different environments, since environment specific details are metioned in PVC's which are inturn bound in pod config.
+       
+       - Some of the main properties defined here are :-
+       
+          a. ACCESS MODE:-
+          --------------
+             - This defines the accessiblity characteristics of the storage.
+             - There are 3 options :-
+                1. ReadWriteMany ===> Read & Write access to multiple pods/containers at the same time.
+                2. ReadWriteOnce ===> Read & Write access to single pod/container at the same time.
+                3. ReadOnlyMany ===> Read only access to multiple pods/containers at the same time.
+                
+          b. RESOURCE
+          ------------
+             - This defines the type of resource and the capacity.
+             
+         (** Usually the Persistant Volumes are bind to PVC by match the accessmode, recource capacity value, but labels and selectors can also be used)
+
+
+         c. STORAGE CLASS NAME ( used only when storage class object is defined)
+           ---------------------------------------------------------------------
+           - This defines an storage class which the pvc is bound to.    
+
+
+     4. VOLUME ( defined within the pod spec )
+       --------
+       - This defines the PVC the pod should used and the mount point.
+       - There 2 main properties defined within the pod spec.
+
+         1. VOLUMES (defined at pod level) 
+         -----------
+         - This defines the following
+           a. name: ====> This is the name for the persistant volume.
+           b. Type ====> This defines the type of volume thats being mounted i.e. PersistantVolumeClaim
+           c. claimName: ===> The name of associated PVC.
+
+        2. VOLUMEMOUNT (defined at container level)
+        --------------
+        - This defines the where a specific volume should be mounted in a container.
+        - It defines
+          a. name: ===> The name of volume being used defined under spec:volumes:name
+          b. mountPath: ===> The filesystem path where the volume needs to be mounted within the container.
+
+
+CREATION & ALLOCATION PROCESS 
+------------------------------
+- The persistant volume creation and allocation has 4 phases.
+
+  1. CREATE  ====> 1) Incase of static provisioning the persistant volumes are created manually before hand.
+      |            2) Incase of dynamic provisioning the persistant volumes are created on demand by the storage class.
+      |
+      |
+      |
+  2. BIND    =====> This phase involves binding a persistant volume to the PVC.
+      | 
+      |
+      |    
+  3. USE     =====> This phase involves binding the pods with the PVC.
+      |
+      |
+      |
+  4. RECLAIM =====> This phase involves how the Persistant Volume behaves when the PVC bind withit is deleted.
+
+
+----------------------------------------------------------------------------------------------------------------------------
+YAML DEFINITION
+----------------
+
+1. PERSISTANT VOLUME
+--------------------
+apiVersion: v1
+kind: PersistantVolume
+metadata:
+ name: <name>
+spec:
+ capacity:
+  storage: <capacity>
+ accessModify:
+  -<ReadWriteMany/ReadWriteOnce/ReadOnlyMany>
+ <type>:
+ .
+ .
+ .
+
+
+
+2. STORAGE CLASS
+-----------------
+apiVersion: v1
+kind: StorageClass
+metadata:
+ name: <name>
+spec:
+ parameters:
+ . 
+ .
+ .
+
+
+3. PERSISTANT VOLUME CLAIM
+--------------------------
+apiVersion: v1
+kind: PersistantVolumeClaim
+metadata:
+ name: <name>
+spec:
+ accessMode:
+ -<ReadWriteMany/ReadWriteOnce/ReadOnlyMany>
+ resources:
+  capacity:
+   storage: <capacity>
+ selector:
+  matchLabel:
+  .
+  .
+ matchExpression:
+ .
+ .
+
+
+4. VOLUME
+----------
+apiVersion: v1
+kind: Pod
+metadata:
+ name: <name>
+ labels:
+  <key>:<value>
+  .
+  .
+spec:
+ volumes:
+  name: <name>
+  persistantVolumeClaim:
+   claimName: <name of the PVC>
+ countainers:
+ -name: <name for container>
+  image: <image iso>
+  volumeMount:
+   name: <name of volumes>
+   mountPath: <path for filesystem mount directory>
+   .
+   .
+   .
+
+-----------------------------------------------------------------------------------------------------------------------------         
+
+COMMANDS
+---------
+
+1. CREATING
+------------
+kubectl apply -f <yaml configuration>
+
+
+2. QUERYING DETAILS
+--------------------
+Kubectl get PersistantVolume <name>
+          
+Kubectl get PersistantVolumeClaim <name>
+
+Kubectl get StorageClass <name>
+
+Kubectl describe PersistantVolume <name>
+          
+Kubectl describe PersistantVolumeClaim <name>
+
+Kubectl describe StorageClass <name>
+
+
+3.DELETION
+-----------
+Kubectl delete PersistantVolume <name>
+          
+Kubectl delete PersistantVolumeClaim <name>
+
+Kubectl delete StorageClass <name>

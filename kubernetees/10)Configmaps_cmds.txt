@@ -1,0 +1,55 @@
+THEORY
+-------
+- Configmaps store configuration data for cluster wide access.
+
+CHARACTERISTICS
+----------------
+- Store data in key:value format
+- Stored in etcd for cluster wide access.
+- Can be accessed accross namespaces.
+
+USES
+----
+- Decouple configuration inforamtion information from pods, making them more scalable.
+- Decouple sensitive information from pods spec, making them more publically sharable.
+
+USING CONFIGMAPS
+-----------------
+1. CREATE THE CONFIGMAP ----> 2. ACCESS USING ENVIRONMENT VARAIBLE/VOLUMES IN PODS.
+
+------------------------------------------------------------------------------------------
+YAML DEFINITIONS
+----------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: <name>
+data:
+ <key>: <value>
+ .
+ .
+...
+
+--------------------------------------------------------------------------------------------
+COMMANDS
+--------
+CREATION  ---> can be done imperatively and declaritively
+--------
+ 1. FROM LITERALS
+ -----------------
+ kubectl create configmap <name> \
+ --from-literal=<keyname>=<value> .....
+
+ 2. FROM FILE
+ -------------
+ kubectl create configmap <name> \
+ --from-file=<file path>
+(* define value in key=value format inside the file)
+
+ 3. FROM YAML
+ -------------
+ kubectl apply -f <yaml file path>
+
+DELETION
+--------
+kubectl delete configmap <name> 

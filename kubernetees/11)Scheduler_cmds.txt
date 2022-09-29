@@ -1,0 +1,293 @@
+THEORY
+------
+- Scheduler is the component in kubernetes which schedules pods onto nodes.
+
+OPERATION
+----------
+- The scheduler main job is to fill the nodeName field for a in a specific pod spec
+- It can be done in 2 ways.
+- TYPES
+  ------
+  1. MANUAL SCHEDULING
+  --------------------
+  - This can be done by manually filling the nodeName: field while writting the pod spec.
+ 
+  2. AUTOMATIC SCHEDULING
+  -------------------------
+  - Here the kube-scheduler takes care of scheduling the pods
+  - Kube-scheduler is default kubernetes scheduler.
+  - We can also deploy our own scheduler in kubernetes.
+ 
+  - WORKFLOW
+    --------
+    
+                 1. Kube-Scheduler checks for unscheduled pods in API SERVER.
+                                         |     
+                                         |
+          2. Kube-Scheduler performs checks on node to see if it can schedule that pod.
+                                         |
+                                         |
+              3. Kube-Scheduler places the node name in nodeName: field spec
+                                         |
+                                         |
+        4. Kubelet of the specific node checks the API SERVER for pods to that node
+                                         |
+                                         |
+                     5.kubelet deploys and monitors the pods
+ 
+
+DEPLOYMENT PROCESS
+------------------
+- This phase invovles verifiying if the pod can satisfy the necessarry constrains to run a pod.
+- There are 2 types of constrains.
+
+  a. RESOURCE CONSTRAINS
+    ---------------------
+    - This basically takes into account the hardware level constrains.
+    - They are defined using resources: requests: tag under contianers spec
+    - Eg:- Cpu, Memory, etc..
+
+  b. POLICY CONSTRAINS 
+     -----------------
+     - This include rules that the node need to satify
+     - They of the following types:-
+
+       1. NODESELECTOR 
+          -------------
+          - Used to match nodes with specific labels.
+          - Only makes use of label selection using key:value match.
+          - Defined under pod spec using nodeSelector: tag.
+
+       2. AFFINITY & ANTIAFFINITY
+          ------------------------
+          - They are applied at pod level.
+          - They allow more complex matching using matchExpression as well.
+
+          - Affinity rules
+            ---------------
+            - This allows pods to be scheduled in nodes that match these specification.
+            - They are defined under the affinity: tag in pod spec.
+            - They are off 2 level :-
+              a. podAffinity ===> checks for match with specific pods in nodes using matchLabels/matchExpression
+              b. nodeAffinity ===> checks for match with specific nodes using matchLabels/matchExpression
+
+           - Anti-Affinity rules
+            ---------------
+            - This allows pods not to be scheduled in nodes that match these specification.
+            - They are defined under the antiAffinity: tag in pod spec.
+            - They are off 2 level :-
+              a. podAntiAffinity ===> checks for non-match with specific pods in nodes using matchLabels/matchExpression
+              b. nodeAntiAffinity ===> checks for non-match with specific nodes using matchLabels/matchExpression
+            
+           - TYPES OF SCHEDULING
+             --------------------
+             - Each of them have two types of scheduling.
+               
+               a. requiredDuringschedulingandAvoidDuringExecution
+                 ------------------------------------------------
+                 - pods are scheduled to node that strictly meet the criteria 
+                 - if no nodes are available to match criteria they are left pending
+           
+               b. preferDuringschedulingandAvoidDuringExecution
+                 ------------------------------------------------
+                 - pods are scheduled to nodes even if they dont meet the criteria 
+                 - if no nodes are available to match criteria they are scheduled to a random node.
+        
+
+       3. TAINS AND TOLERATIONS
+       -------------------------
+       - They are applied at the node level specification.
+       - Many it possible for some nodes to not be available to schedule pods.
+       - Privision pods to not be deployed in the node with tains.
+       - Only pods with tolerations can be deployed in nodes with tains.
+       
+       - TAINTS
+         -------
+         - Defined at the node level using kubectl taint command.
+         - syntax ==> <key>:<value>:EFFECT
+         - There are 3 types of effect:
+           
+           1. NoSchedule
+           --------------
+           - FUTURE PODS ==> scheduled only if toleration match the taint.
+           - RUNNING PODS ==> left undisturbed
+
+           2. NoExecute
+           -------------
+           - FUTURE PODS ==> scheduled only if toleration match the taint.
+           - RUNNING PODS ==> deleted
+
+           3. NoPreferSchedule
+           --------------------
+           - FUTURE PODS ==> scheduled only if toleration match the taint and no other nodes are available for the pod.
+           - RUNNING PODS ==> left undisturbed
+
+       - TOLERATIONS
+         -----------
+         - Defined in pod spec under tolerations:
+         - used key: value: operator: effect: to match the taint.
+
+
+       3. CORDEN/UNCORDEN 
+          -----------------
+         - Defined at the node level.
+         - CORDEN ==> makes a node unavailable for scehduling, running pods are left undistrubed.
+         - DRAIN ===> Deletes the running pods.
+         - UNCORDEN ===> Agains makes a node available for scheduling.
+  
+--------------------------------------------------------------------------------------------
+YAML DEFINITIONS
+----------------
+a. NODENAME ===> used for manual scheduling
+------------
+apiVersion: v1
+kind: Pod
+.
+.
+spec: 
+ nodeName: <name>
+ containers:
+ .
+ . 
+
+
+b.NODESELECTOR
+---------------
+apiVersion: v1
+kind: Pod
+.
+.
+spec: 
+ nodeSelector:
+  <key>: <value>
+  . 
+  .
+ containers:
+ .
+ . 
+
+
+c.RESOURCES  ===> defined under pod spec
+------------
+apiVersion: v1
+kind: Pod
+.
+.
+spec: 
+ containers:
+ .
+ . 
+ resources:
+  requests:
+   <cpu/storage/etc..>: "<value>"
+.
+.
+.
+ 
+
+d. AFFINITY
+------------
+apiVersion: v1
+kind: Pod
+.
+.
+spec: 
+ containers:
+ .
+ . 
+ affinity:
+  <podAffinity/nodeAffinity>:
+    <matchLabel/matchExpression>:
+     - key: <key>
+       operator: <Equal/In/NotIn>
+       value: <value>
+
+
+e. ANTI-AFFINITY
+------------
+apiVersion: v1
+kind: Pod
+.
+.
+spec: 
+ containers:
+ .
+ . 
+ antiAffinity:
+  <podantiAffinity/nodeantiAffinity>:
+    <matchLabel/matchExpression>:
+     - key: <key>
+       operator: <Equal/In/NotIn>
+       value: <value>
+
+
+f.TAINTS  ===> can be defined inperatively since they are at node level
+---------
+
+g. TOLERATIONS
+--------------
+apiVersion: v1
+kind: Pod
+.
+.
+spec: 
+ containers:
+ .
+ . 
+ tolerations:
+   - key: <key>
+     operator: <Equal/In/NotIn>
+     value: <value>
+     effect: <effect>
+
+
+h. CORDEN/UNCORDEN/DRAIN ---> can be applied only imperatively since its node level operation
+------------------------
+
+----------------------------------------------------------------------------------------------
+COMMANDS
+--------
+CREATION
+----------
+ a. NODENAME ===> used for manual scheduling
+ ------------
+ kubectl apply -f <yaml file path>
+
+
+ b.NODESELECTOR
+ ---------------
+ kubectl apply -f <yaml file path>
+ 
+
+ c.RESOURCES  
+ ------------
+ kubectl apply -f <yaml file path>
+
+
+ d. AFFINITY
+ ------------
+ kubectl apply -f <yaml file path>
+ 
+
+ e. ANTI-AFFINITY
+ ------------
+ kubectl apply -f <yaml file path>
+
+ 
+ f. TAINTS ---> can be defined imperaively since its at the node level.
+ ----------
+ kubectl taint node <name> <key>=<value>:<effect>
+
+
+ g. TOLERATIONS
+ --------------
+ kubectl apply -f <yaml file path>
+
+
+ h. CORDEN/UNCORDEN/DRAIN ---> can be applied only imperatively since its node level operation
+ ------------------------
+ kubectl corden node <name>
+ 
+ kubectl drain node <name> --ignore-deamon-sets
+
+ kubectl uncorden node <name>
