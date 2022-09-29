@@ -196,7 +196,8 @@ spec:
  .
  . 
  affinity:
-  <podAffinity/nodeAffinity>:
+  <requiredDuringschedulingandAvoidDuringExecution/preferDuringschedulingandAvoidDuringExecution>:
+   <podAffinity/nodeAffinity>:
     <matchLabel/matchExpression>:
      - key: <key>
        operator: <Equal/In/NotIn>
@@ -214,7 +215,8 @@ spec:
  .
  . 
  antiAffinity:
-  <podantiAffinity/nodeantiAffinity>:
+  <requiredDuringschedulingandAvoidDuringExecution/preferDuringschedulingandAvoidDuringExecution>:
+   <podantiAffinity/nodeantiAffinity>:
     <matchLabel/matchExpression>:
      - key: <key>
        operator: <Equal/In/NotIn>
