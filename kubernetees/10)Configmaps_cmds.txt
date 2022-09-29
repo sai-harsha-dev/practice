@@ -20,6 +20,8 @@ USING CONFIGMAPS
 ------------------------------------------------------------------------------------------
 YAML DEFINITIONS
 ----------------
+a. CREATION
+------------
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -29,6 +31,75 @@ data:
  .
  .
 ...
+
+b. ACCESS IN PODS USING ENVIRONMENT VARIABLES ===> Doesn't support runtime updation.
+----------------------------------------------
+1) NORMAL ENV TAG ====> Creates only specified number of enviroment varaible for secret key.                              
+------------------                                      
+apiVersion: v1                                          
+kind: Pod                                               
+metadata:                                               
+ name: <name>                                           
+ labels:
+  <key>: <value>
+spec:
+ containers:
+  - name: <name>
+    image: <image path>
+    env:
+     - name: <name of enviroment variable>
+       valueFrom:
+        configMapRef:
+         name: <name of the secret>
+         key: <specific key within secret>
+    - name: <name of enviroment variable>
+       valueFrom:
+        secretKeyRef:
+         name: <name of the secret>
+         key: <specific key within secret>
+     .
+     .
+...
+
+2) ENVFROM TAG ====> Creates enviroment varaible for all keys within the secret.
+----------------
+apiVersion: v1                                          
+kind: Pod                                               
+metadata:                                               
+ name: <name>                                           
+ labels:
+  <key>: <value>
+spec:
+ containers:
+  - name: <name>
+    image: <image path>
+    envFrom:
+        configMapRef:
+         name: <name of the secret>
+         key: <specific key within secret>
+
+
+c. ACCESS IN PODS USING VOLUMES AS FILES  ===> Supports runtime updation, creates a file per key value.
+----------------------------------------
+apiVersion: v1                                          
+kind: Pod                                               
+metadata:                                               
+ name: <name>                                           
+ labels:
+  <key>: <value>
+spec:
+ volumes:
+  - name: <name>
+    configMap:
+    name: <name of the secret>
+ containers:
+  - name: <name>
+    image: <image path>
+    volumeMounts:
+      name: <name of the volume>
+      mountPath: <path to mount volume>
+  ...
+
 
 --------------------------------------------------------------------------------------------
 COMMANDS
