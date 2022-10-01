@@ -4,16 +4,68 @@ THEORY
 - Pods are not easily accessible, because pods are dynamic in nature and dont have stable IP.
 - Service object act a layer on top of pods to provide stable access to pods running a service.
 
+BASIC KUBERNETES NETWORKING
+---------------------------
+- Network access in kubernetes is performed by using Container Network Interface (CNI) plugin.
+- There two kinds CNI plugins:-
+  
+  a. DEFAULT
+  -----------
+  - This is CNI plugin used by kubernetes by default.
+  - This is known as kubenet.
+
+  - LAYOUT
+    -------
+
+    1. PODS    ===> 1. Each pod is given an specific IP from PodCIDR range
+        |           2. PodCIDR range is specific to each node.
+        |           
+    2. BRIDGES ===> 1. Each PodCIDR network has a bridge. 
+        |           2. Each Pod is given an software ethernet interface which is connected to the Software bridge.
+        |
+    3. NODES   ===> 1. Each node is given a static IP (private) depending physical network infrastructure design. 
+        |           2. This is in the physical network range
+        |
+    4. PHYSICAL LAYER 3/2 NETWORKS ===> 1. Nodes are connected through physical connections.
+
+
+  - WORKING
+    -------
+    1. INTERPOD ACCESS (container within pods)
+       ---------------------------------------
+       - They communicate through the localhost interface of the pod.
+
+    2. INTERNODE ACCESS (pods in same nodes)
+       -------------------------------------
+       - Each node has gateway bridge to which is ethernet interface is connected too.
+       - Traffic flow 
+         ------------
+         SOURCE POD INTERFACE -----> VIRTUAL BRIDGE -----> DESTINATION POD INTERFACE
+   
+    3. EXTERNAL NODE ACCESS
+       ---------------------
+       - Each node has gateway bridge to which is ethernet interface is connected too.
+       - Bridge is connected to the node host interface which is further connected to the physical network infrastructure.
+       - Traffic flow 
+         ------------
+         SOURCE POD INTERFACE -----> VIRTUAL BRIDGE -----> SOURCE NODE NETWORK INTERFACE -----> PHYSICAL NETWORK -----> DESTINATION NODE NETWORK INTERFACE -----> DESTINATION POD INTERFACE
+      
+
+  b. THIRD PARTY 
+     ------------
+     - Each function differently but adhere to the concept that pods can reach talk other pods using their IP's.
+
+
 SERVICE OBJECT WORKING:-
 ---------------------------
-- Service object run in control plain of the Kubernetees cluster.
-- They constantly look for new service label within the cluster and create DNS mapping
+- Service object provide an mechanism of stable access to different services running in the cluster.
+- Service/endpoint controller run in control plain of the Kubernetees cluster and monitor the status of these objects.
 - They work as follows
   -Service object have two endpoints :-
   
   1. FRONT END ( PROVIDES DNS-IP-PORT MAPPING)
   ---------------------------------------------
-  - The service object registers the service label and provides a cluster IP and port maapping.
+  - The service object registers the service label and provides a cluster IP and port mapping.
   - It makes use of COOREDNS service running in control paint to create these enteries.
   - Every node/Pod in the cluster is can access this CoreDNS through the mappings present in /etc/resolv.confg file.
 
@@ -28,8 +80,8 @@ SERVICE OBJECT WORKING:-
   1. CLUSTER IP ( Internal Cluster Access )
   ------------------------------------------
   - This makes the pods running service accessible to all the other pods within the cluster.
-  - This is achieved by providing each specific service with a common Cluster wide IP CALLED CLUSTER ip
-  - The cluster ip is registered in CoreDNS.
+  - This is achieved by providing each specific service with a common Cluster wide IP called CLUSTER ip
+  - The cluster ip is registered in CoreDNS against the pods running the service.
 
   - TRAFFIC ROUTING PROCESS 
   --------------------------
@@ -42,7 +94,8 @@ SERVICE OBJECT WORKING:-
                                                 |
        3. THE CLUSTER IP SERVICE OBJECT ROUTES THE TRAFFIC TO THE PODS RUNNING THE SERVICE
 
-  2) NODEPORT ( External Acesses via Common port published across cluster ) - SIMILAR TO INGRESS
+
+  2. NODEPORT ( External Acesses via Common port published across cluster )
   ------------------------------------------------------------------------
   - This publishes a specific port across the whole cluster.
   - Each service is given a specific port in the range between 30000 - 32737.
@@ -63,7 +116,7 @@ SERVICE OBJECT WORKING:-
        4. THE CLUSTER IP SERVICE OBJECT ROUTES THE TRAFFIC TO THE PODS RUNNING THE SERVICE
 
 
-  3) LOAD BALANCER ( External Access via a single Load balanced Public IP)
+  3) LOAD BALANCER ( External Access via a single Load balanced Public IP:NODEPORT)
   ----------------------------------------------------------
   - Creates a load balancer for all the worker node and maps it to the NODEPORT.
   - Services can be accessed just with public ip of load balancer.
@@ -87,10 +140,31 @@ SERVICE OBJECT WORKING:-
 
 (Its not necessary create all service individually, if the top level serive is created bottom level service are automatically created by kubernetees)
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+YAML DEFINITION
+---------------
+apiVersion: v1
+kind: Service
+metadata:
+ name: <name>
+spec:
+ selecter:
+  <deployment key>: <value>
+ type: <ClusterIP/NodePort/LoadBalancer>
+ clusterIp: <IP>                         ======> not needed kubernetes create's automatically
+ ports:
+  -port: <port the service listens on>
+   nodePort: <node port>                 ======> only defined for nodeport/loadbalacer service,not needed kubernetes create's automatically
+   protocol: <TCP/UDP/ETC..>
+   targetPort: <port the deployment containers listens>
+
+------------------------------------------------------------------------------------------------------------------------------
+
 Commands :-
 ----------
 kubectl apply -f <yaml configuration file path> ===> to create service 
 
 kubectl describe svc <service name> ===> detailed information about the service
 
+kubectl delete service <name> ====> to delete a service.
 

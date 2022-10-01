@@ -1,0 +1,180 @@
+THEORY
+------
+- Ingress facilitates more advanced routing for incoming external traffic to cluster.
+
+USES
+-----
+- Provides named based virtual host access.
+- Procides path based access (URL layer 7 based load balancing)
+- Provides TLS encryption for traffic flow.
+
+COMPONENTS
+-----------
+- The ingress mechanism is made up 2 components:-
+ 
+  1. INGRESS CONTROLLER
+  ----------------------
+  - This is code which implements ingress mechanism within the kubernetes cluster.
+  - Kubernetes doesn't provide any inbuild controller for ingress.
+  - Kubernetes specific the object implement specification.
+  - Third party controller implement this sepcifications.
+  - This makes it possible for cloud vendors implement controllers based on their infrastructure.
+  - Multiple ingress controllers can be installed in the same kubernetes cluster at the same time.
+  
+ 2. INGRESS API OBJECT/RESOURCE
+ -------------------------------
+  - This is the kubernetes API object which defines ingress object.
+  - The mechanism for routing is defined using this object.
+  - Configuration are defined using yaml file.
+
+IMPLEMENTING INGRESS IN CLUSTER
+--------------------------------
+
+                     1. DEPLOY INGRESS CONTROLLERS AS A DEPLOYMENT
+                                           |
+                                           |
+                          2. CREATE INGRESS RESOURCE YAML FILE.
+                                           |
+                                           |
+                       3. DEPLOY THE INGRESS RESOURCE FROM KUBECTL   
+
+
+
+WORKING OF INGRESS
+-------------------
+- Ingress works on top of the services associated with a deplyment.
+- Ingress creates a routing using the cluster Ip provided by resources and routes traffic to the individual pods.
+- Futher the ingress exposes itself outside the cluster using a service (nodeport/loadbalancer).
+- Traffic hitting that service is routed to the ingress and to the deployment pods.
+
+- TRAFFIC FLOW
+  -------------
+     External traffic hits the PUBLIC HOST IP : NODEPORT / PUBLIC LOADBALANCER IP : NODEPORT for the ingress service
+                                                         |
+                                                         |
+  Ingress resource checks the rules mentioned in the API config and figures out the service associated to the traffic
+                                                         |
+                                                         | 
+                          Ingress routes this traffic to the pods servicing the traffic
+ 
+
+- EXPOSING DEPLOYMENTS USING INGRESS
+  ----------------------------------
+ 
+                              1. CREATE & DEPLOY DEPLOYMENT FOR THE APPLICATION 
+                                                     |
+                                                     |
+                          2. CREATE & DEPLOY SERVICE (CLUSTER IP) FOR THE APPLICATION
+                                                     |
+                                                     |
+             3. CREATE INGRESS RESOURCE YAML FILE ASSOCIATIG RULES AND SERVICE MAPPING FOR THE RULES.
+                                                     |
+                                                     |
+                                4. DEPLOY THE INGRESS RESOURCE FROM KUBECTL.
+
+(* deploying the ingress resouce will automatically create a service for it)
+          
+---------------------------------------------------------------------------------------------------------------------------
+YAML DEFINITION
+---------------
+1. DEAFULT SERVICE ( all traffics routed to a single service)
+-------------------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: <name>
+spec:
+ ingressClassName: <name of the associated ingress controller>
+ defaultBackend:
+  service:
+   name: <service name>
+   port:
+    number: <port the associated service listens on>
+
+
+2. MULTIPLE HOSTS SINGLE PATH ( name based virtual host)
+------------------------------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: <name>
+spec:
+ ingressClassName: <name of the associated ingress controller>
+ defaultBackend:
+  service:
+   name: <service name>
+   port:
+    number: <port the associated service listens on>
+ rules:
+  -host: <url path>
+    http:
+     paths:
+      - path: <url>
+        type: <Prefix/Exact> 
+        backend:
+         service:
+          name: <service name>
+          port:
+           number: <port the associated service listens on>
+  -host: <url path>
+    http:
+     paths:
+      - path: <url>
+        type: <Prefix/Exact> 
+        backend:
+         service:
+          name: <service name>
+          port:
+           number: <port the associated service listens on>
+    .
+    '
+    .
+
+
+3. SINGLE HOST MULTIPLE PATH ( Path based routing )
+-----------------------------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: <name>
+spec:
+ ingressClassName: <name of the associated ingress controller>
+ defaultBackend:
+  service:
+   name: <service name>
+   port:
+    number: <port the associated service listens on>
+ rules:
+  -host: <url path>
+    http:
+     paths:
+      - path: <url>
+        type: <Prefix/Exact> 
+        backend:
+         service:
+          name: <service name>
+          port:
+           number: <port the associated service listens on>
+      - path: <url>
+        type: <Prefix/Exact> 
+        backend:
+         service:
+          name: <service name>
+          port:
+           number: <port the associated service listens on>
+     .
+     .
+     .
+
+----------------------------------------------------------------------------------------------------------------------
+COMMANDS
+--------
+Kubectl apply -f <yaml path> ===> create resurce
+
+kubectl describe ingress <name> ====> get details of ingress resource
+
+kubectl describe ingressController <name> ====> get details of ingress controller
+
+kubectl delete ingress <name> ===> delete ingress resource
+
+kubectl delete deployment <name> ===> delete ingress controller
