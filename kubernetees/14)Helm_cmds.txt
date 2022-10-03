@@ -1,0 +1,265 @@
+THEORY
+-------
+- Helm is package manager for kubernetes.
+
+NEEDS
+-----
+- The application deployed in kubernetes are usually made up multiple kubernetes resources.
+- Eg:- to deploy a front end we need deployment, service, ingress, configmaps, sercet kubernetes resources.
+- Helm deploys all the resources in predefined order with just single command.
+
+HELM COMPONENTS
+----------------
+- The Helm makes use of following components.
+
+  1. HELM CHARTS
+     ------------
+     - This is package of all the necessary YAML definitions for the kubernetes resources to be created for any application.
+     - It is a folder made up off mulitple sub-folders and files, they are :-
+       
+       a. Chart.yml
+       ------------
+       - This is a yaml definition consisting of all the metadata of the package.
+       - The data present here includes :- 
+
+         a) apiVersion
+            ----------
+            1. v1 --> helm version 2
+            2. v2 --> helm version 3
+
+         b) name 
+            ----
+            - The name of application 
+
+         c) description
+            -----------
+            - Description of the application (String)
+     
+         d) type
+            -----
+            1. Application ---> charts the build application artifacts
+            2. file ---> used to run helper functions for the actual application charts 
+    
+         e) appVersion
+            ----------
+            - The version of the application
+            - Not related to version
+
+         f) version
+            -------
+            - The version of the chart
+            - Must follow major_no.minor_no.patch_no syntax
+            - Not related to appVersion
+
+         g) dependencies
+            ------------
+            - List the dependent charts that make up this application, for helm version3
+            - Common properties defined under this tag are:- 
+              1. name ---> name of the dependency chart
+              2. version ---> version of the chart (~no. means >=, ^no. means <=, no-no means range)
+              3. repository ---> URL of helm repository
+              4. conditions ---> list of comma seperated value, if mentioned value is true in value.yaml the depency chart is installed.
+              5. tag(overides conditions) ---> list of values, if mentioned value is true in value.yaml the depency chart is installed.
+           
+            - Once the dependencies are built then helm creates a Chart.lock file which has the single version of depency.
+            - This is done so as to have copy of the single supported version of the depencies charts.
+
+       b. requirements.yaml     
+       --------------------       
+        - List the dependent charts that make up this application, for helm version2
+        - Same as dependecies tag, only difference is that depencies tag is defined in a seperate requirments.yaml file
+
+       c. charts (folder)
+       -------------------
+       - This is folder where the dependecy chart are stored.
+       - Is created by user when depencies are not defined under Chart.yaml or requirements.yaml.
+       - Is automatically created if depencies are defined under Chart.yaml or requirements.yaml.
+       - All the dependencies are pulled , but installed based on the conditions and tag value evalutation.
+
+       d. templates (folder)
+       ---------------------
+       - This folder consists of the template yaml definitions files needed for the application.
+       
+       e. values.yaml
+       ---------------
+       - Consists of the values for the palceholders in templates yaml files.
+  
+       f. values.schema.json
+       ---------------------
+       - JSON definition the values.yaml file.
+       - Used to perform checks on the fields in values.yaml file. eg:- missing values, datatype mismatch
+
+       g. LINCENSE
+      -------------
+       - Contains the license for the chart
+ 
+       h. README.md
+       ------------
+       - Contains useful data needed by the users of the chart.
+       - Eg:- description of the application, Installation instructions etc.
+
+
+  2. HELM TEMPLATES
+  ------------------
+  - The are yaml configuration definition files.
+  - The only contain the configuration structure for a kubernetes resource i.e the key property fields.
+  - The values are placeholders/directives.
+    eg :- {{path}}
+  - Usually the values are defined in different yaml file values.yaml.
+  - USES
+    -----
+    - Resource configuration can be changed dynamically without changing the yaml file.
+    - Changes to resource configuration can be made based on the release.
+
+
+  3. HELM REPOSITORIES
+  ---------------------
+  - These are the public/private respositories which store these application packages.
+  - Process
+    -------
+    Create the charts folder ----> Package the charts ----> Create the Index file -----> Upload to repository.
+ 
+
+  4. HELM RELEASE
+  ---------------
+  - These are the running instance of the application charts.
+  - Each release is set of kubernetes resources created from charts definitions in a perticular namespace.
+  - Same charts can have different release eg:- dev, test, prod.
+  - Release running the same namespace must have different names.
+  
+
+DEPLOYMENT PROCESS 
+------------------
+- The Helm deployment consists of following stages.
+
+                            1. UPLOAD THE PACKAGE TO THE HELM REPOSITORY
+                                                 |
+                                                 |
+                      2. TRIGGER THE INSTALL COMMAND FROM THE HELM COMMAND LINE TOOL
+                                                 |
+                                                 |
+        3. HELM CREATES A SECRET OF THE FINAL CONFIGURATION , RELEASE HISTORY AND STORES IN CLUSTER.
+                                                 |
+                                                 |
+                         4. API SERVER DEPLOYES THE KUBERNETES RESOURCES.  
+
+------------------------------------------------------------------------------------------------------------------------------
+YAML DEFINITION
+----------------
+1. Chart.yaml
+--------------
+apiVersion: v1/v2
+name: <name of chart>
+description: <description>
+type: Application/File
+appVersion: <version of app>
+version: <major_no>.<minor_no>.<patch_no>
+dependencies:
+ - name: <name of dependency chart>
+   version: <version of chart>
+   repository: <URL>
+   condition: <list of comma seperated tags>
+   tags:
+    - <key>
+    ..
+  - name: <name of dependency chart>
+   version: <version of chart>
+   repository: <URL>
+   condition: <list of comma seperated tags>
+   tags:
+    - <key>
+    ..
+......
+
+
+2. values.yaml
+-------------
+key: value
+.
+.
+.......
+
+
+3. Config YAML files
+--------------------
+key: {{.Values/Chart/Release.property....}}
+.
+.
+...
+
+............................................................................................................................
+COMMONDS
+---------
+a. WORKING WITH REPOSITORY
+------------------------
+ 1. ADDING AND REMOVING REPOSITORY TO HELM
+ ----------------------------------------
+ helm repo add <name> <URL>  ----> used to add a repository
+
+ helm repo remove <name> ----> remove a repository
+  
+
+ 2. PACKING CHARTS
+ -----------------
+ helm package <path to the chart folder> <path to the chart folder> . . .  ----> to package the charts
+ 
+ helm repo index .  --------> to create index.yaml for the packages (do it in the folder/file where packages are present)
+
+
+ 3. UPLOADING PACKAGES TO REPOSITORY
+ -----------------------------------
+ Copy the package files to repository storage folder 
+          
+              OR
+
+ Create a http request to the HTTP repository server.
+
+
+ 4. SEARCHING DETAILS IN REPOSITORY
+ ----------------------------------
+ helm repo list ---> list all the available repositories and url
+
+ helm repo update ----> pull the updates in repository
+
+ helm search repo <name of chart> ----> search for the charts in repository
+
+
+b. WORKING WITH PACKAGES
+-------------------------
+
+ 1. INSTALLING & UNINSTALLING PACKAGE FROM REPOSITORY
+ -----------------------------------------------------
+ helm install <release name> <repository>/<package name>  ----> install package
+
+ helm unistall <release> ----> unistall package
+
+ kubectl delete secret <name> ----> delete the secret having final manifast for the package.
+
+ 
+ 2. GETTING PACKAGE DETAILS
+ ---------------------------
+ helm list ---> list all the releases
+ 
+ helm get  all <release name> ---> get the information stored in the secret created for the release
+ 
+ helm get manifest <release name> ---> get the final configuration for the release
+
+ helm history <release> ----> print the revisions in a release
+ 
+ helm status <release> ----> print the status of release (deployment status)
+
+
+ 3. UPDATING AND ROLLING BACK
+ ----------------------------
+ helm upgrade <release> <repository>/<package name>
+ 
+ helm rollback <release> <revision no>
+
+
+c. WOKRKING WITH DEPENCIES
+---------------------------
+helm dependency update <repository>/<package name> ---> update the depencies for a package (after making changes to depencies chart config)
+
+helm dependency list <repository>/<package name>  ----> list all the dependency chart installed for the particular package
+
+helm dependency build <repository>/<package name>  ---> build depencies from the chart.lock file
