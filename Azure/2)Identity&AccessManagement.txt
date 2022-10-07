@@ -1,0 +1,83 @@
+AZURE ACTIVE DIRECTORY
+-----------------------
+- Azure Active directive is the primary cloud based identity access management service in azure.
+- It can handle the following types of resource management mechanisms.
+- Makes us of OAuth 2.0 and OpenID connect web based protocols for authentication
+ 
+ 1. IDENTITY MANAGEMENT
+ --------------------
+ - Refers to the management of users, groups, applications and their identities.
+ - FACILITIES
+   ----------
+   a. GROUPS & USER MANAGEMENT
+   ----------------------------
+    - Management of Loginids(username.<onmicrosoft/custom domain.com>)
+    - Password Management
+    - Custom Domain Management
+    - Multi Factor Authentication
+
+   b. APPLICATION MANAGEMENT
+   --------------------------
+    - Third party/ custom application login.
+    - Single Sign On.(facilitates single sign in to multiple applications)
+ 
+
+ 2. ACCESS MANAGEMENT
+ ---------------------
+  - Refers to management of user access to resources.
+  - FACILITIES
+    ----------
+    a. RBAC ( Role Based access control )
+    -------------------------------------
+    - Role based user access to resources (can be applied at any level, inherited to lower level).
+    - Types
+      a. OWNER  ===> read/edit/provide premission to others
+      b. CONTRIBUTER ===> read/edit
+      c. READER ===> read
+
+  
+  3. RESOURCE MANAGEMENT
+  ----------------------
+   - Refers to applying constrains on the resources.
+   - Facilitates rules on ceating resources all particular level.
+   - FACILITIES
+     ----------
+     a. POLICIES
+     ------------
+     - Constrains on individual resources.
+     - Makes use of tags.
+     - Eg:- restricting VM's in resource group to be of particular type.
+     - Types
+       a. DEFAULT ====> Azure provided ( JSON templates )
+       b. CUSTOM ====> User created ( created by editing default )
+
+     b. INITIATIVES
+     --------------- 
+     - Collecation of multiple policies.
+
+
+AZURE ACTIVE DIRECTORY DOMAIN SERVICES
+--------------------------------------
+- It intends to extend the Active Directory Domain Service functions to the cloud.
+- PROCEDURE
+  ---------
+                     1. Create a Azure Active Directory Domain service.
+                                          |
+                                          |
+              2. Connect the physical Active Directory to Azure Active Directory (use app)
+
+- WORKING
+  --------
+  - Azure AD creates Domains controller in Azure.
+  - Replicates all the physical groups and users to the Domain controllers.
+  - Local group and users can be authenticated via Azure AD since they are replicated in Azure AD.
+
+- USES
+ ------
+  - Provided more granual functionalities provided by Active Directory such as :-
+    1. SCHEMA MANAGEMENT ( Create organisation, tree, forests)
+    2. LDAP
+    3. CREATE TRUSTS
+    4. AUTHENTICATION USING KEEBROS & NTLM
+  - Support Legacy softwares that use Windows Integrated Authentication (WIA).
+  

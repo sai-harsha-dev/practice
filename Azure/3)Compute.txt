@@ -1,0 +1,156 @@
+- Compute services are the azure resources which are used to run compute intensive workload.
+
+- IAAS Compute services
+  ----------------------
+  1. Virtual Machine
+  -------------------
+    - Used to create physical server on cloud.
+    - Useful for lift and shift migration.
+
+    - CHARACTERISTICS
+      ---------------
+      a. OS  ===> User configured
+      b. DISKS ===> User configured
+      c. NETWORKS ===> User configured
+      d. RUNTIME ===> User configured
+      e. APPLICATION & DATA ===> User configured
+
+    - FEATURES
+      ---------
+      a. CONTROL ===> Full user control. User manages all the components.
+      b. SCALABILITY ===> No autoscaling. Very low
+      c. DISASTER RECOVERY ===> Azure Backup Service 
+      d. HIGH AVAILABILITY ===> Availability set (Across Update domain, failure domain), 
+                                Availability zone ( Across regional data centers), 
+                                Scale sets (Across Update domain, failure domain, Across regional data centers)
+   
+
+  2. Virtual Machine Scale Sets
+  ------------------------------
+    - Used to create bunch of VM across regional datacenters.
+    - Provides more scalability, High Availability.
+   
+    - CHARACTERISTICS
+      ---------------
+      a. OS  ===> User configured
+      b. DISKS ===> User configured
+      c. NETWORKS ===> User configured ( Cluster ip using load balancer )
+      d. RUNTIME ===> User configured
+      e. APPLICATION & DATA ===> User configured
+
+    - FEATURES
+      ---------
+      a. CONTROL ===> Full user control. User manages all the components.
+      b. SCALABILITY ===> Autoscaling, Manual Scaling
+      c. DISASTER RECOVERY ===> Azure Backup Service 
+      d. HIGH AVAILABILITY ===> Across Update domain, failure domain, Across regional data centers.
+   
+
+- PAAS Compute services
+  ---------------------
+  1. Azure App Service
+  ---------------------
+    - Used for web hosting, running containers, api, web jobs.
+    - Default domain <app name>.azurewebsites.net
+
+    - CHARACTERISTICS
+      ---------------
+      a. OS  ===> Service provider (User can choose the, service provider takes care of updates and patching)
+      b. DISKS ===> Service provider 
+      c. NETWORKS ===> Service provider
+      d. RUNTIME ===> Service provider (User can choose the, service provider takes care of updates and patching)
+      e. APPLICATION & DATA ===> User configured
+
+    - FEATURES
+      ---------
+      a. CONTROL ===> User on maintains application and data.
+      b. SCALABILITY ===> Autoscaling ( Based on service plans )
+      c. DISASTER RECOVERY ===> Based on service plans   
+      d. HIGH AVAILABILITY ===> Highly available ( Based on service plans )
+   
+  2. Functions
+  -------------
+    - Used to run pieces of code based on triggers.
+    - trigger types 
+      a. TIMER
+      b. HTTP REQUEST
+      c. EVENT FROM AZURE RESOURCE
+
+    - CHARACTERISTICS
+      ---------------
+      a. OS  ===> Service provider ( user can choose linux or windows )
+      b. DISKS ===> Service provider
+      c. NETWORKS ===> Service provider
+      d. RUNTIME ===> Service provider
+      e. APPLICATION & DATA ===> User configured
+
+    - FEATURES
+      ---------
+      a. CONTROL ===> Service provider full control.
+      b. SCALABILITY ===> autoscaling.
+      c. DISASTER RECOVERY ===> Yes 
+      d. HIGH AVAILABILITY ===> Yes
+
+ 3. Logic Apps
+  -------------
+    - Used to perform workflow.
+    - Used when there are API available to a service.
+    - trigger types 
+      a. TIMER
+      b. HTTP REQUEST
+      c. EVENT FROM AZURE RESOURCE
+
+    - CHARACTERISTICS
+      ---------------
+      a. OS  ===> Service provider ( user can choose linux or windows )
+      b. DISKS ===> Service provider
+      c. NETWORKS ===> Service provider
+      d. RUNTIME ===> Service provider
+      e. APPLICATION & DATA ===> User configured
+
+    - FEATURES
+      ---------
+      a. CONTROL ===> Service provider full control.
+      b. SCALABILITY ===> autoscaling.
+      c. DISASTER RECOVERY ===> Yes 
+      d. HIGH AVAILABILITY ===> Yes
+
+   
+  4. Azure Container Instances
+  ----------------------------
+    - Used to run single/multi container instances with no orchiestration.
+    - Default domain <container name>.azurecontainers.io 
+
+    - CHARACTERISTICS
+      ---------------
+      a. OS  ===> Service provider (user can choose)
+      b. DISKS ===> Service provider
+      c. NETWORKS ===> Service provider (user can configure based on plan)
+      d. RUNTIME ===> Service provider
+      e. APPLICATION & DATA ===> User configured
+
+    - FEATURES
+      ---------
+      a. CONTROL ===> Service provider full control.
+      b. SCALABILITY ===> No autoscaling. Very low
+      c. DISASTER RECOVERY ===> No
+      d. HIGH AVAILABILITY ===>Based on plan 
+                                
+
+  5. Azure Kubernetes Services
+  ----------------------------
+    - CHARACTERISTICS
+      ---------------
+      a. OS  ===> Linux (user can choose for the worker nodes alone)
+      b. DISKS ===> Service provider (user can choose for the worker nodes alone)
+      c. NETWORKS ===> Service provider 
+      d. RUNTIME ===> Service provider
+      e. APPLICATION & DATA ===> User configured
+
+    - FEATURES
+      ---------
+      a. CONTROL ===> Service provider full control.
+      b. SCALABILITY ===> No autoscaling.
+      c. DISASTER RECOVERY ===> Yes 
+      d. HIGH AVAILABILITY ===> Yes
+    

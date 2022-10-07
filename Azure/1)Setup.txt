@@ -1,0 +1,125 @@
+ARCHIECTECTURE
+---------------
+                              GEOGRAPHIES
+                                   |
+                      ------------------------- ...................
+                      |            |           |
+                   REGION       REGION         .....
+                     |             |
+                ......             |
+                           AVAILABILITY ZONES
+                                   |
+                      ------------------------- ...................
+                      |            |           |
+                 DATA CENTERS   ......        .....
+
+
+ 1. GEOGRAPHIES
+ ---------------
+  - This is a area containing multiple regions.
+  - Eg India, Canada, Us etc.
+
+ 2. REGIONAL PAIRS
+ ------------------
+  - Each region within the same geography is paired to one another region.
+  - Each regions are 300miles apart.
+  - This provides disaster recovery with geo-redundant services.
+
+ 3. REGION
+ ----------
+  - Each region is a set of data centers.
+  - Eg:- Central India, North India
+   
+ 4. AVAILABILITY ZONES ( Not applicable to all regions )
+ ---------------------
+  - Each data centers in a region is connected with the other datacenters
+  - This provides High availability in case of particular data center failure.
+  - zonal, zone redundant service are some example.
+
+ 5. DATA CENTERS
+ ----------------
+  - Actual sites hosting the servers.
+  - Might be sigle or multiple data centers.
+
+AZURE PORTAL
+-------------
+- This the web interface through which we provision and work with the azure cloud platform resource.
+
+
+SETTING UP AZURE ACCOUNT
+------------------------
+
+            1. Login to azure using a microsoft account
+                                |
+                                |
+                     2. Create a subscription
+                                |
+                                |
+                   3. Link to a Management group
+                                |
+                                |
+               4. Link to default or User created AAD
+                           
+
+RESOURCES LAYOUT
+----------------
+
+                             GLOBAL ADMINISTRATIVE ACCOUNT
+                                         | 
+                                         |
+                                MANAGEMENT GROUPS ====> AZURE ACTIVE DIRECTORY TENENT
+                                         |
+              ----------------------------------------------------------- ..................
+             |                                                          |
+      MANAGEMENT GROUPS ====> AZURE ACTIVE DIRECTORY TENENT        SUBSCRIPTION
+              |                                                         |
+              .                                              ------------------------- ...........
+              .                                              |                        |
+              .                                        RESOUCE GROUPS           RESOUCE GROUPS
+                                                             |                        |
+                                                          RESOURCES                RESOURCES     
+
+
+1. GLOBAL ADMINISTRATIVE ACCOUNT
+---------------------------------
+ - This the account which is used first to create a azure account (billing account).
+ - Supported account are only microsfoft or github accounts.
+
+2. AZURE ACTIVE DIRECTORY TENENT(AAD)
+---------------------------------
+ - It is a cloud Authincation service.
+ - Uses
+   a. Identity access management (IAM) 
+   b. Access Control 
+ - An azure billing account can have multiple AAD and can be a part of multiple AAD.
+ - Default domain created under AAD is usermailid.onmicrosoft.com
+ - Multiple custom registered domains can be added.
+
+3. MANAGEMENT GROUPS
+--------------------
+ - Used to group subscription and management group.
+ - Useful to setup an organizational structure for different teams and level.
+ - Allows maintaining different subscription for different levels.
+ - Making billing and cost maintainence and auditing easy.
+
+4. SUBSCRIPTION
+----------------
+ - It used for billing.
+ - There are many types of plans.
+   a. FREE
+   b. STUDENT 
+   c. PAY AS U GO
+   d. ENTERPRICE AGGREMENT  ---> annaual fixed aggerment, resource given at bulk and lower cost.
+   e. DIRECT BILLING  ----> Annual bill directly from microsoft
+   f. CLOUD SERVICE PARTNER -----> Subscription maintained by CSP.
+
+5. RESOUCE GROUPS
+------------------
+ - All azure resource are grouped into a resource groups.
+ - Maintain all the metadata for resources under it (to create IAC DOCUMENT)
+ - Fecilitated grouping of resources based on teams, environments, Applications etc.
+ - Resource group can be in different region than it resources.
+
+6. RESOURCES
+------------
+ - All the various azure resources 
