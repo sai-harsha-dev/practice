@@ -1,0 +1,57 @@
+CLOUD COMPUTING
+----------------
+USES
+-----
+ 1. ELASTIC
+ -----------
+  - Meaning that resources are more scalable compared to private infrastructure.
+  - This is because of the fast that there are many abundent resources and cloud providers can provision resource on demand.
+  - In private data centers its not the case since server are bought on demand.
+
+ 2. RELIABLE
+ ------------
+  - Cloud providers provide higher uptime (as per Service level agreement).
+  - They have very robust  infrastructure since they are maintained by market leading cloud providers.
+ 
+ 3. LOWER ECONOMICS OF SCALE
+ ----------------------------
+  - Since its a consumption based model where everyone uses the same infrastructure.
+  - So the cost baring is spread by all the consumers and not my an individual company.
+
+ 4. LOWER CAPEX HIGHER OPEX
+ ---------------------------
+  - Capital expenditure is low since the upfront cost is low.
+  - Operational expenditure is where all the capital is spent on hence ROI is high.
+
+
+CLOUD SERVICES
+---------------
+ 1. IAAS
+ -------
+  - Infrastructure as Service.
+  - CLOUD PROVIDER ====> Bare metal servers are provisioned as per need.
+  - USERS ====> application, OS , patching, middleware, data.
+  - CONTROL ====> Full user control.
+  - Eg :- VM's
+
+ 2. PAAS
+ --------
+  - Platform as a Service
+  - CLOUD PROVIDER ====> OS, patching,middleware, hardware
+  - USERS ====> Application, data.
+  - CONTROL ====> Partial user control
+  
+ 3. SAAS
+ --------
+  - Software as a service
+  - CLOUD PROVIDER ====> OS, patching,middleware, hardware, Application, data.
+  - USERS ====> Nothing
+  - CONTROL ====> Full service provider control.
+  - Eg :- Microsoft 365
+
+
+CLOUD DEPLOYMENT METHODS
+------------------------
+ 1. PUBLIC CLOUD  ---> All infra in cloud providers.
+ 2. PRIVATE CLOUD ---> Individually maintained infra.
+ 3. COMMUNITY CLOUD ---> Organisation with cloud providers providing seperate isolated infra.
