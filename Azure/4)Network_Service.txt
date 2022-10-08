@@ -44,13 +44,13 @@
 
   b. NETWORK SECURITY GROUP
   -------------------------
-  - Used to applying port rules at different level.(not firewall)
+  - Used to applying inbound & outbound traffic rules at different level.(not firewall)
   - PROPERTIES
     -----------
     a. SCOPE
     --------
     - By default its created with the virtual network interface of VM
-    - Can be applied either to VNET or subnet level.
+    - Can be applied either to subnet level.
 
     b. RULES
     ---------
@@ -58,7 +58,16 @@
     - Protocols filtering ===> Allow traffic to the specific portocols
     - Priority ====> Lower priority rules are given precedence over higher priority rules.
 
-  c. VPN GATEWAY
+
+  c. APPLICATION SECURITY GROUP
+  -----------------------------
+  - Gives more granual level inbound & outbound traffic rules at individual resource level.
+  - WORKING
+    -------
+    - APPLICATION SECURITY GROUP resource are created and associated with a resource.
+    - APPLICATION SECURITY GROUP are associated with the a NSG rule.
+
+  d. VPN GATEWAY
   ---------------
   - Provide connectivity among private external networks and VNET in azure.
   - WORKING
@@ -67,6 +76,11 @@
     - Provides a public IP for VPN server which other network devices can access
     - External traffic is routed through a encrypted tunnel to the VPN server via internet
     - VPN servers route the traffic to the VNET.
+  
+  - TRAFFIC FLOW
+    ------------
+    a. SERVICE---EXTERNAL  ====> defined through route table (user defined routes)
+    b. EXTERNAL---SERVICES ====> VPN encryted tunnel
 
   - TYPES
     ------
@@ -91,22 +105,55 @@
       - Private lanes lied down directly or through Service providers to microsoft END networks.
       - Traffic goes throught the dedicated lanes to the Azure backbone network.
 
-  d. LOAD BALANCER
+  e. LOAD BALANCER
   ----------------
   - Provides layer7 load balancing.
   - Used to club multiple VM's/Azure resources within a single public ip and expose to the public internet.
   - Provides HA and loadbalacing to different resources
 
-  e. APPLICATION GATEWAY
+  f. APPLICATION GATEWAY
   ----------------------
   - Similar to Load balancer but provides additional features.
   - Its more specific to HTTP traffic.
+
+  - WORKING
+    -------
+    - Azure create seperate VM's acting a APPLICATION GATEWAY in a seperate subnet within the VNET.
+    - Provides a public IP for APPLICATION GATEWAY  which other network devices can access
+    - APPLICATION GATEWAY route the traffic to the VNET.
+
+  - TRAFFIC FLOW
+    ------------
+    a. SERVICE---EXTERNAL  ====> defined through route table (user defined routes)
+    b. EXTERNAL---SERVICES ====> VPN encryted tunnel
+
   - ADDITIONAL FEATURES
     --------------------
     - LAYER 7 LOAD BALANCING
     - CUSTOM ROUTING
+
+  g. AZURE FIREWALL
+  ------------------
+  - Function a point of interface between external traffic and service within a VNET.
+
+  - WORKING
+    -------
+    - Azure create seperate VM's acting a  AZURE FIREWALL in a seperate subnet within the VNET.
+    - Provides a public IP for  AZURE FIREWALL  which other network devices can access
+    - AZURE FIREWALL route the traffic to the VNET.  
+
+  - TRAFFIC FLOW
+    ------------
+    a. SERVICE---EXTERNAL  ====> defined through route table (user defined routes)
+    b. EXTERNAL---SERVICES ====> VPN encryted tunnel
+
+  - ADDITIONAL FEATURES
+    --------------------
+    - LAYER 7 LOAD BALANCING
+    - NAT rules.
+    - URL based routing.
  
-  f. AZURE DNS
+  h. AZURE DNS
   -------------
   - This is Domain registering (done via Godaddy) and DNS server provisioning service provided in AZURE.
   - Can do both Domain registering and DNS server provisioning or DNS server provisioning.
@@ -114,7 +161,13 @@
   - If custom domains needed they can be register and exposed in DNS server created in Azure.
   - Also provide private DNS service for just internal use.
 
-  g. CONTANT DELIVERY NETWORKS
+  i. CONTANT DELIVERY NETWORKS
   ----------------------------
   - Similar to azure app service, but exposes the resources across geographies.
   - Improves the access time to App service resources.
+
+  j. PRIVATE ENDPOINTS
+  ---------------------
+  - Used to revoke the public IP access to a resource.
+  - Makes the resource a part of the VNET with private ip with CIDR range.
+  - Restricts public access to a resource. 

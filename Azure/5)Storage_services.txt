@@ -1,0 +1,132 @@
+- Storage services refers to a set of storage IAAS and PAAS offering provided by azure.
+- STORAGE ACCOUNT
+  ---------------
+  - It is the management account for all types of storages.
+  - Each storage account maintains all the types of storage service created under it.
+  - Each storage account must have a unique name with an associated resource group.
+  - TYPES
+    ------
+    a. GENERAL V2 TYPE
+    -------------------
+     - DISK TYPE ====> HDD
+     - RENDUNDANCY (Depends on region selected)
+       -----------------------------------------
+       a. LOCAL REDUDANT ===> 3 copies per data center 
+       b. ZONE REDUNDANT ===> 3 Copies with 1 copy per Availability zone within region
+       c. GEO REDUNDANT ===> 3 LRC per reginal pairs
+       e. RA-GRS ===> 3 LRC per reginal pairs both read write
+       d. GEO ZONE REDUNDANT ===> 3 ZRC with 3 LRC in regional pair.
+       f. RA-GZR ===> 3 ZRC with 3 LRC in regional pair with both read write.
+                           
+    B. PREMIUM BLOB
+    ----------------
+     - DISK TYPE ====> SDD
+     - RENDUNDANCY 
+       ------------
+       a. LOCAL REDUDANT ===> 3 copies per data center
+
+    C. PREMIUM FILE
+    ---------------
+     - DISK TYPE ====> SDD
+     - RENDUNDANCY 
+       ------------
+       a. LOCAL REDUDANT ===> 3 copies per data center
+
+    D. PREMIUM PAGE BLOB
+    --------------------
+     - DISK TYPE ====> SDD
+     - RENDUNDANCY 
+       ------------
+       a. LOCAL REDUDANT ===> 3 copies per data center
+
+  - ACCESS
+    ------
+    - All storage resources can be accessed via the public url. 
+    - ACCESS RESTRICTION
+      -------------------
+      1. Using RBAC
+      2. TOKEN ====> provide storage account token to user, which gives the full access to that storage account.
+      3. SHARED ACCESS SECRET ====> Private URL shared to an individual
+                                    provided more granual level restrictions such as:- 
+                                    a. Time based access.
+                                    b. Specific resource based access.etcc..
+
+    
+- CLASSIFICATION
+  --------------
+  1. UN-STRUCTURED
+  -----------------
+  - Refer to raw data storage mediums.
+  - Eg:- pdf, jpg, txt, exel etc..
+  - SERVICE OFFERINGS
+  --------------------
+  a. BLOB (Binary large object)
+  ------------------------------
+   - For large and small unstructed data
+   - TIER
+     -----
+     1. HOT ===> frequent access 
+     2. COOL ===> non-frequent access 
+     3. ARCHIEVE ===> only a backup, rarely accessed.
+ 
+  b. FILE
+  -------
+   - Similar to BLOB by can be used for NFS.
+   - SMB protocol used to attach systems to file storage.
+
+  c. QUEUES
+  ----------
+   - Used to messages from application.
+
+  d. DISKS
+  ---------
+   - Uses to provided disk storage to VM's
+   - TYPES
+     ------
+     1. Managed
+     2. Unmanaged
+   - Access speed, types and storage size varies based on the plan used. 
+  
+  2. STRUCTURED
+  --------------
+  - Used to store structed data like relational databases.
+  - TYPES
+    ------
+    1. IAAS
+    --------
+     - Involves manaully installing VM with SQL package.
+     - Azure also provided VM marketplace images with SQL pre installed.
+     - All updates, patching, availability need to be managed by user.
+     - Used in cases with specific requirements
+  
+    2. PAAS
+    ---------
+     - Managed Azure Databases as service are also provided by azure.
+     - Azure takes care of updates, patching, availability.
+     - Doesn't provide the full fledged feature offering.
+     - OFFERINGS
+       ---------
+       1. AZURE SQL
+       2. AZURE MYSQL
+       3. AZURE POSTGRE
+
+    3. Azure Managed Instances
+    ---------------------------
+     - Azure takes care of updates, patching, availability.
+     - With full fledged feature offering as with the software package.
+     - Best of the both offering.
+
+  3. SEMI-STRUCTURED
+  ------------------ 
+  - Refer to data of No-SQL type where data is stored in the form of Key:values.
+  - OFFERINGS
+    ---------
+    a. AZURE COSMOS DB
+    -------------------
+    - This is assured managed offering as a service.
+    - Provides high availabiliy (CDN support), autoscaling.
+
+    d. TABLES
+    ----------
+    - Used to store semi-structure.
+    - Provides no autoscaling.
