@@ -1,0 +1,120 @@
+- These are service which provide networking capabilities in azure.
+- All of these service come under PAAS.
+- The major services are :-
+  
+  a. AZURE VIRTUAL NETWORK
+  ------------------------
+  - Similar to private networks in physical environment
+  - Used to place resources in a particular network or virtual network in cloud.
+  - PROPERTIES
+    -----------------
+    1. CIDR RANGE
+    -------------
+    - Refer to the ip range given to be used by resources (not only vm's) in the network. 
+    - Notation <1-255>.<1-255>.<1-255>.<1-255>/subnet mask.
+    - Always 5 ip are used to by azure.
+
+    2. SUBNET
+    ---------
+    - Refer to segementation of specific ip address range within virtual networks.
+    - Notation <1-255>.<1-255>.<1-255>.<1-255>/subnet mask.
+    - Always 5 ip are used to by azure.
+    
+    3. SCOPE
+    --------
+    - Associated with a single resource groups.
+
+    4. CONNECTIVITY
+    ----------------
+    - 1. INTERNAL CONNECTIVITY (Within the same vnet)
+      ------------------------
+      - Resource within the same network, 
+        and subnets under that network can communicate with each other (only if port opened for VM)
+      - Traffic flows within the Azure backbone network.
+
+    - 2. INTERVNET CONNECTIVITY (Between 2 different vnets)
+      -------------------------
+      - Done using vnet peering.
+      - Traffic flows within the Azure backbone network. 
+
+    - 3. EXTERNAL CONNECTIVITY (Networks outside Azure)
+      -------------------------
+      - Done with help of VPN gateway, Application gateway.
+ 
+
+  b. NETWORK SECURITY GROUP
+  -------------------------
+  - Used to applying port rules at different level.(not firewall)
+  - PROPERTIES
+    -----------
+    a. SCOPE
+    --------
+    - By default its created with the virtual network interface of VM
+    - Can be applied either to VNET or subnet level.
+
+    b. RULES
+    ---------
+    - Ports filtering  ====> Allow traffic through specific ports
+    - Protocols filtering ===> Allow traffic to the specific portocols
+    - Priority ====> Lower priority rules are given precedence over higher priority rules.
+
+  c. VPN GATEWAY
+  ---------------
+  - Provide connectivity among private external networks and VNET in azure.
+  - WORKING
+    -------
+    - Azure create seperate VM's acting a VPN server in a seperate subnet with the VNET.
+    - Provides a public IP for VPN server which other network devices can access
+    - External traffic is routed through a encrypted tunnel to the VPN server via internet
+    - VPN servers route the traffic to the VNET.
+
+  - TYPES
+    ------
+    1. SITE-TO-SITE VPN
+    --------------------
+    - Connects a whole private network/ multiple networks via VPN to the VPN gateway.
+    - Used to connect individual office networks to the VNET
+    - Traffic is sent throught the encrypted tunnel in the public internet
+
+    2. SITE-TO-POINT VPN
+    --------------------
+    - Connects individual computers via VPN to the VPN gateway.
+    - Used to connect individual PC's to the VNET
+    - Traffic is sent throught the encrypted tunnel in the public internet
+
+    3. EXPRESS ROUTE
+    ----------------
+    - Used to create private network connection to the resources in VNET.
+    - Different bandwidths and different plans(up front(unlimited egress traffic), pay as go) possible.
+    - WORKING
+      -------
+      - Private lanes lied down directly or through Service providers to microsoft END networks.
+      - Traffic goes throught the dedicated lanes to the Azure backbone network.
+
+  d. LOAD BALANCER
+  ----------------
+  - Provides layer7 load balancing.
+  - Used to club multiple VM's/Azure resources within a single public ip and expose to the public internet.
+  - Provides HA and loadbalacing to different resources
+
+  e. APPLICATION GATEWAY
+  ----------------------
+  - Similar to Load balancer but provides additional features.
+  - Its more specific to HTTP traffic.
+  - ADDITIONAL FEATURES
+    --------------------
+    - LAYER 7 LOAD BALANCING
+    - CUSTOM ROUTING
+ 
+  f. AZURE DNS
+  -------------
+  - This is Domain registering (done via Godaddy) and DNS server provisioning service provided in AZURE.
+  - Can do both Domain registering and DNS server provisioning or DNS server provisioning.
+  - By default Azure provides DNS enteries to resource in its own domains(.azurewebsies.net etc..) for public access via URL.
+  - If custom domains needed they can be register and exposed in DNS server created in Azure.
+  - Also provide private DNS service for just internal use.
+
+  g. CONTANT DELIVERY NETWORKS
+  ----------------------------
+  - Similar to azure app service, but exposes the resources across geographies.
+  - Improves the access time to App service resources.

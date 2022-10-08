@@ -57,7 +57,7 @@
       ---------------
       a. OS  ===> Service provider (User can choose the, service provider takes care of updates and patching)
       b. DISKS ===> Service provider 
-      c. NETWORKS ===> Service provider
+      c. NETWORKS ===> Service provider (user can choose the VNET to be used) 
       d. RUNTIME ===> Service provider (User can choose the, service provider takes care of updates and patching)
       e. APPLICATION & DATA ===> User configured
 
@@ -80,7 +80,7 @@
       ---------------
       a. OS  ===> Service provider ( user can choose linux or windows )
       b. DISKS ===> Service provider
-      c. NETWORKS ===> Service provider
+      c. NETWORKS ===> Service provider (user can choose the VNET to be used) 
       d. RUNTIME ===> Service provider
       e. APPLICATION & DATA ===> User configured
 
@@ -104,7 +104,7 @@
       ---------------
       a. OS  ===> Service provider ( user can choose linux or windows )
       b. DISKS ===> Service provider
-      c. NETWORKS ===> Service provider
+      c. NETWORKS ===> Service provider (user can choose the VNET to be used) 
       d. RUNTIME ===> Service provider
       e. APPLICATION & DATA ===> User configured
 
@@ -125,7 +125,7 @@
       ---------------
       a. OS  ===> Service provider (user can choose)
       b. DISKS ===> Service provider
-      c. NETWORKS ===> Service provider (user can configure based on plan)
+      c. NETWORKS ===> Service provider (user can choose the VNET to be used) 
       d. RUNTIME ===> Service provider
       e. APPLICATION & DATA ===> User configured
 
@@ -143,7 +143,7 @@
       ---------------
       a. OS  ===> Linux (user can choose for the worker nodes alone)
       b. DISKS ===> Service provider (user can choose for the worker nodes alone)
-      c. NETWORKS ===> Service provider 
+      c. NETWORKS ===> Service provider (user can choose the VNET to be used) 
       d. RUNTIME ===> Service provider
       e. APPLICATION & DATA ===> User configured
 
