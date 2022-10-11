@@ -1,0 +1,66 @@
+- Azure provides various facilities to monitor health and take preventive action on different resources.
+- The main porvision are:-
+  
+  1. GLOBAL CHANGES NOTIFICATION
+  ------------------------------
+  - This facility provides information regarding the following factors which affect resources.
+    A. Maintaince (Regional maintainance)
+    B. Updates (Feature updates and deprication)
+ 
+  - The portals wherein these can be monitored are:- 
+
+    1. AZURE SERVICE HEALTH PORTAL 
+    ------------------------------
+    - This is seperate portal outside azure.
+    - Contains information regarding global updates and maintainance of all regions in azure.
+
+    2. SERVICE HEALTH
+    ------------------
+    - This is section within the azure portal.
+    - Contains information regarding global updates and maintainance in regions where our resource are residing.
+
+    3. RESOURCE HEALTH
+    -------------------
+    - This is section within the azure portal.
+    - Contains information regarding global updates and feature deprecation for resources we are using.
+   
+
+ 2. HEALTH NOTIFICATION 
+ --------------------
+ - This facility provides health informations of the resources we are using
+ - They provide the following types of information
+
+   1. METRICS
+   -----------
+   - These provide numerical data about the resource usage.
+   - These include CPU, memory etc.
+   - Available under Monitoring > Metric section.
+   
+   2. LOGS 
+   -------
+   - These provide the logs of resources.
+   - Can be useful for Log analytics
+   - Available under Monitoring > logs
+
+ - FACILITIES
+  ------------
+  - Functionalities provided for corrective actions are.
+  - These include.
+    a. INSIGHTS  ===> Proived dashboards to view the collected data in tabular, graphical , visual format.
+    b. ALERTS    ===> Create alerts and send notification via mail, voice, mobile, text 
+    c. LOG ANALYTICS ===> Collect log for specific resources 
+                          Query the generated logs for specific resources
+    d. RESOURCE CREATION ===> Create workflows based on alerts and create new resources.
+
+
+ 3. AZURE ADVISOR
+ ------------------
+ - This is tool within the azure portal which provides best practice advices.
+ - Highlights the security flaws within the resource and provides advisory actions.
+ - Can also implement the actions on its own
+
+ 4. AZURE ARC
+ ------------
+ - This is a tool witin the azure portal ssed to monitor resources which are running outside azure.
+ - This facility needs an microsoft application to be installed the private server.
+ - Provides all the monitoring, health status data of the server.

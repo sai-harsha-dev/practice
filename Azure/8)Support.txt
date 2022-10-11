@@ -1,0 +1,9 @@
+- Support refers to the assistance that Azure provides us to handle our azure resources such as:-
+- The plans include
+    
+  1. BASIC       ===> No support
+  2. DEVELOPER   ===> Generic, email support reponse within 8 hours
+  3. STANDARD    ===> email, phone support reponse within 1 hour
+  4. PROFESSIONAL DIRECT ===> email, phone support reponse within 1 hour with ProDirect Manager.
+  5. PREMIER      ===> email, phone support reponse within 1 hour with ProDirect Manager, Account Manager.
+

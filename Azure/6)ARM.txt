@@ -1,0 +1,24 @@
+Azure Resource Manager
+-----------------------
+- It acts as an API end point to perform actions with azure resources.
+- Interacting with ARM can be done through various methods.
+ 
+  1. Azure web portal   ====> Web interface
+  2. CLI                ====> Install azure package in command prompt 
+  3. Powershell         ====> Install azure package in powershell
+  4. Web CLI/Powershell ====> Integrated with Azure web portal (needs Storage account, Azure File share)
+  5. SDK's              ====> Through progamming languages
+  6. Azure mobile App   ====> Through mobile application 
+
+- FEATURES
+  ---------
+  a. ARM templates
+  -----------------
+   - Resource templates are one of the important features of ARM.
+   - This facilitates Infrastruce as Code capability.
+   - Provides resource templates in the form of JSON files (under resource > export templates)
+   - Deployments can done using templates through Github Action, Azure pipeline etc..
+
+ b. RESOURCE GROUPS
+ c. TAGS
+
