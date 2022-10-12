@@ -39,6 +39,15 @@ ARCHIECTECTURE
   - Actual sites hosting the servers.
   - Might be sigle or multiple data centers.
 
-AWS PORTAL
+
+ACCESSING AWS
 -------------
-- This the web interface through which we provision and work with the aws cloud platform resource.
+- The AWS can be accessed and control through different mediums.
+  
+  1. AWS PORTAL
+  -------------
+  - This the web interface through which we provision and work with the aws cloud platform resource.
+
+  2. AWS MOBILE APP
+  3. CLI
+  4. SDK ===> To create resource from program code.
