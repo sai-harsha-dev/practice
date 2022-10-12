@@ -1,0 +1,123 @@
+- Compute service provide compute workload.
+
+- There two types cloud offering for compute services in AWS.
+ 
+   1. IAAS 
+   --------
+   - These are compute service which provide full configuration access to user.
+   - The service offering under this tear in aws is :-
+     
+     EC2
+     ----
+     - This is virtual machine running the cloud.
+
+     - CHARACTERISTICS
+      ---------------
+      a. OS  ===> User configured
+      b. DISKS ===> User configured
+      c. NETWORKS ===> User configured
+      d. RUNTIME ===> User configured
+      e. APPLICATION & DATA ===> User configured
+
+     - TYPES
+     --------
+      a. GENERIC
+      b. COMPUTE OPTIMISED
+      c. MEMORY OPTIMISED (used for in memory databases)
+      d. STORAGE OPTIMISED (used for high IO speeds)
+      e. SPECIAL (GPU for ai,ml tasks)
+
+     - PAYMENT MODEL
+      ---------------
+      - AWS offers different payment models for the EC2 instances:-
+        1. ON-DEMAND
+        -------------
+         - This is the payment in which is done as per the rate on the spot.
+         - Offers no savings
+         - Useful for workloads such as testing which dont run for long predetermined amount of time.
+
+        2. RESERVED
+        ------------
+         - This is plan where in the user can reserve an amount of compute instance for a lower prize upfront
+         - These are used for instances where the workload will run for long predetermined amount of time.
+        
+         - VM TYPES
+           ---------
+           1. STANDARD     ===> The VM type cannot be changed after reservation
+           2. CONVERTABLE  ===> The VM type can be changed after reservation
+           3. SCHEDULED    ===> The VM can used at scheduled time frames
+         
+        - PAYMENT TYPES
+          -------------
+           1. UPFRONT (most savings)     ===> Total cost payment done upfront
+           2. PARTIAL                    ===> Partial sum of the total cost is made upfront
+           3. NO-UPFRONT (least savings) ===> Payment made after the reservation period
+     
+
+        3. DEDICATED
+        ------------
+         - This used incases where in the company need the whole server unit and not just instance.
+
+        4. SAVINGS
+        ----------
+         - Similar to reserved but compute capacity cannot be reserved.
+         - Applies for Lamda,AWS beanstack
+
+        5. SPOT
+        -------
+         - Offers un-used compute instances at a lower rate.
+         - Cannot gaurentee the presence of an instance (notified before 2mins of decommisiong)
+         - Used for workload that need not run continuosly (batch jobs)
+
+  
+   2. PAAS
+   --------
+   - These are offering where the user doesn't manage all of the configuration.
+   - Useful when control is not need but scalability, availability is need.
+ 
+   - SERVICES
+   -----------
+   1. ELASTIC BEANSTACK
+   ---------------------
+   - This is used to run web application.
+   - User can choose the runtime and deploy the code/container.
+   - AWS handles provisioning, scaling of the service.
+
+   - CHARACTERISTICS
+      ---------------
+      a. OS  ===> Service provider (User can choose the, service provider takes care of updates and patching)
+      b. DISKS ===> Service provider 
+      c. NETWORKS ===> Service provider (user can choose the VNET to be used) 
+      d. RUNTIME ===> Service provider (User can choose the, service provider takes care of updates and patching)
+      e. APPLICATION & DATA ===> User configured
+
+    - FEATURES
+      ---------
+      a. CONTROL ===> User on maintains application and data.
+      b. SCALABILITY ===> Autoscaling 
+      c. DISASTER RECOVERY ===> Based on service plans   
+      d. HIGH AVAILABILITY ===> Highly available 
+
+
+   2. AWS LAMBDA
+   --------------
+    - Used to run pieces of code based on triggers.
+    - trigger types 
+      a. TIMER
+      b. HTTP REQUEST
+      c. EVENT FROM AZURE RESOURCE
+
+    - CHARACTERISTICS
+      ---------------
+      a. OS  ===> Service provider ( user can choose linux or windows )
+      b. DISKS ===> Service provider
+      c. NETWORKS ===> Service provider (user can choose the VNET) 
+      d. RUNTIME ===> Service provider
+      e. APPLICATION & DATA ===> User configured
+
+    - FEATURES
+      ---------
+      a. CONTROL ===> Service provider full control.
+      b. SCALABILITY ===> autoscaling.
+      c. DISASTER RECOVERY ===> Yes 
+      d. HIGH AVAILABILITY ===> Yes

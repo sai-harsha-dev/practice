@@ -1,0 +1,165 @@
+This are AWS offerings which provide newtorking capabilities in the cloud.
+
+a. VIRTUAL PRIVATE CLOUD
+-------------------------
+ - This is aws service which facilitates creation of networks in the cloud.
+ 
+ - PROPERTIES
+  -----------------
+    1. CIDR RANGE
+    -------------
+    - Refer to the ip range given to be used by resources (not only vm's) in the network. 
+    - Notation <1-255>.<1-255>.<1-255>.<1-255>/subnet mask.
+    - Always 5 ip are used to by aws (first 4 and last 1).
+    - Single vpc can contain mutiple CIDR ranges
+
+    2. SUBNET
+    ---------
+    - Refer to segementation of specific ip address range within virtual networks.
+    - Notation <1-255>.<1-255>.<1-255>.<1-255>/subnet mask.
+    - Always 5 ip are used to by azure (first 4 and last 1).
+    - Each subnet must be always in a specific Availability zone
+    
+    3. SCOPE
+    --------
+    - The VPC is available all across the region.
+
+    4. CONNECTIVITY
+    ----------------
+    - 1. INTERNAL CONNECTIVITY (Within the same vnet)
+      ------------------------
+      - Resource within the same network, and subnets under that network can
+        communicate with each other (only if port opened in Security group, routes
+        specified in the route table)
+      - Traffic flows within the Azure backbone network.
+
+    - 2. INTERVPC CONNECTIVITY (Between 2 different vpc's)
+      -------------------------
+      - Done using vpc peering.
+      - Traffic flows within the AWS backbone network.
+      - Cannot handle intermediate transit, only used to instance to instance conectivity.
+      - To create vpc peering the admin has to accept from the other VPC 
+
+    - 3. EXTERNAL CONNECTIVITY (Networks outside AWS)
+      -------------------------
+      - Done with help of 
+        a. Internet gateway ===> To allow connection to internet ( Needs Elastic IP )
+        b. VPN gateway ===> To connect a on prem network, other clud network 
+
+
+b. SECURITY GROUP
+------------------
+ - Is used to configure the Inbound/ Outbound port access.
+ - Can be created while creating EC2 or can be create seperately and connected to ENI of EC2 instance.
+
+ - PROPERTIES
+    -----------
+    a. SCOPE
+    --------
+    - Applied to subnet level.
+    - Needs to be connected to the Elastic Network Interface of an instance.
+
+    b. RULES
+    ---------
+    - Ports filtering  ====> Allow traffic through specific ports
+    - Protocols filtering ===> Allow traffic to the specific portocols
+    - Destination filtering ===> Specfic Ip, Service Ip, All 
+    
+
+
+c. ELASTIC NETWORK INTERFACE
+-----------------------------
+ - It performs the work done by NIC cards in the cloud.
+ - Single ENI can connect to multiple SECURITY GROUPS.
+ - PROPERTIES
+   -----------
+   IP ADDRESS
+   -----------
+   - The private Ip and Public IP ( Elatic IP ) of the EC2 instance should be specified here.
+   SCOPE
+   --------
+   - Applied to subnet level.
+
+
+d. ROUTE TABLE / IMPLICIT ROUTER
+--------------------------------
+ - Used to defined custom routes for traffic flow
+ - PROPERTIES
+  -----------
+   SCOPE
+   --------
+   - Applied to VPC.
+   - A VPC can have multiple route tables.
+
+
+e. AWS LOAD BALANCER
+--------------------
+  - Used to club multiple EC2/Azure resources within a single public ip and expose to the public internet.
+  - Provides HA and loadbalacing to different resources
+  - TYPES
+    ------
+    1. NETWORK LOAD BALANCER ===> layer 7 loadbalancing
+    2. APPLICATION LOAD BALANER ===> layer 4 loadbalancing ( advanced features )
+    3. ELASTIC LOAD BALANCER ===> Classic AWS load balancer
+
+
+f. INTERNET GATEWAY
+--------------------
+ - Used to provide internet access to the resources in a VPC.
+ - Unlike azure where public access is default, aws provides public access through IGW only.
+ - PROPERTIES
+   -----------
+   HIGH AVAILABILITY
+   --------------------
+   - AWS maintains multiple copies.
+ 
+   SCOPE
+   ------
+   - Resides at VPC level.
+  
+   WORKING MECHANISM
+   ------------------
+   - NAT the CIDR IP with the Elastic IP.
+ 
+
+g. VPN
+--------
+- There are 2 types of offering available 
+
+ 1.VPN GATEWAY
+ -------------
+ - Used to connect onprem, other cloud network to VPC in cloud.
+ - PROPERTIES
+   -----------
+   HIGH AVAILABILITY
+   --------------------
+   - AWS maintains multiple copies.
+
+   SCOPE
+   ------
+   - Resides at VPC level.
+  
+   WORKING MECHANISM
+   ------------------
+   - Tunnels the traffic in encrypted format through the public internet.
+
+ 
+ 2. DIRECT CONNECT
+ -----------------
+ - Used to directly connect on prem network through physical cables to the AWS backbone network.
+ - Can be done by directly connecting to AWS EDGE loactions or Through AWS PARTNER NETWORKS.
+
+
+h. API GATEWAY
+---------------
+  - Used to provide API endpoint to application.
+
+i. ROUTE 53
+------------
+  - Its a highely available DNS registration/DNS server service.
+
+j. CDN
+-------
+  - These are globla POP(point of propogation) available all over the world.
+  - Usually used to provide low lantency static connenct delivery.
+  - Makes use of the AWS edge locations.
