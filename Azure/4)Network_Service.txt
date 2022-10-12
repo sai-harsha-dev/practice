@@ -12,7 +12,7 @@
     -------------
     - Refer to the ip range given to be used by resources (not only vm's) in the network. 
     - Notation <1-255>.<1-255>.<1-255>.<1-255>/subnet mask.
-    - Always 5 ip are used to by azure.
+    - Always 5 ip are used to by azure (first 4 and last 1).
 
     2. SUBNET
     ---------

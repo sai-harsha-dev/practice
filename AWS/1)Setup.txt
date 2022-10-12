@@ -1,0 +1,44 @@
+ARCHIECTECTURE
+---------------
+                              GEOGRAPHIES
+                                   |
+                      ------------------------- ...................
+                      |            |           |
+                   REGION       REGION         .....
+                     |             |
+                ......             |
+                           AVAILABILITY ZONES
+                                   |
+                      ------------------------- ...................
+                      |            |           |
+                 DATA CENTERS   ......        .....
+
+
+ 1. GEOGRAPHIES
+ ---------------
+  - This is a area containing multiple regions.
+  - Eg India, Canada, Us etc.
+
+ 2. REGIONAL PAIRS ( No regional pairs in AWS )
+ ------------------
+
+ 3. REGION
+ ----------
+  - Each region is a set of data centers.
+  - Eg:- us-east1. us-east2 etc...
+   
+ 4. AVAILABILITY ZONES ( Not applicable to all regions )
+ ---------------------
+  - Each data centers in a region is connected with the other datacenters
+  - This provides High availability in case of particular data center failure.
+  - zonal, zone redundant service are some example.
+  - Eg:- us-east-2a. us-east-2b etc...
+
+ 5. DATA CENTERS
+ ----------------
+  - Actual sites hosting the servers.
+  - Might be sigle or multiple data centers.
+
+AWS PORTAL
+-------------
+- This the web interface through which we provision and work with the aws cloud platform resource.

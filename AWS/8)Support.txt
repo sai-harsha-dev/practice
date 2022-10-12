@@ -1,0 +1,53 @@
+- Support refers to the assistance that AWS provides us to handle our aws resources such as:-
+  
+  1. AWS PERSONAL HEALTH
+  -----------------------
+  - This is built in service within the AWS, which provides global information about
+    a. Updates
+    b. Maintainance
+    c. Service failures
+
+  - Useful in knowing if our resource are affected due to global changes 
+
+  2. AWS TRUSTED ADVISOR
+  -----------------------
+  - This is a built in service which provides best practice suggestion based on our resource state.
+  - Provides suggestions on 5 categories :-
+    1. COST OPTIMIZATION
+    2. PERFORMANCE
+    3. SECURITY
+    4. FAULT TOLERANCE
+    5. SERVICE LIMITES
+
+- The support plan tier purchased determined the features provided.
+
+- There are various support plans that are available :-
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+| S.no |   PLANS     |  AWS PERSONAL HEALTH |     AWS TRUSTED ADVISOR        | CUSTOMER SUPPORT |            RESPONSE TIME                        |
+---------------------------------------------------------------------------------------------------------------------------------------------------
+|   1  |   BASIC     |          YES         | 1. COST OPTIMIZATION - no      |      24*7        |1. GENERAL GUIDANCE - NO TIME LIMIT              |
+|      |             |                      | 2. PERFORMANCE - no            |                  |2. SYSTEM IMPAIRED - NO TIME LIMIT               |
+|      |             |                      | 3. SECURITY - few              |                  |3. PRODUCTION SYSTEM IMPAIRED - NO TIME LIMIT    |
+|      |             |                      | 4. FAULT TOLERANCE - no        |                  |4. PRODUCTION SYSTEM DOWN - NO TIME LIMIT        |
+|      |             |                      | 5. SERVICE LIMITES - few       |                  |5. BUSINESS CRITICAL SYSTEM DOWN - NO TIME LIMIT |
+---------------------------------------------------------------------------------------------------------------------------------------------------
+|   2  |   DEVELOPER |          YES         | 1. COST OPTIMIZATION - yes     |24*7 - email      |1. GENERAL GUIDANCE - 24 BUSINESS HOURS          |
+|      |             |                      | 2. PERFORMANCE - yes           |Dedicates support |2. SYSTEM IMPAIRED - 12 BUSINESS HOURS           |
+|      |             |                      | 3. SECURITY - yes              |Engineer only for |3. PRODUCTION SYSTEM IMPAIRED - NO TIME LIMIT    |
+|      |             |                      | 4. FAULT TOLERANCE - yes       |root user         |4. PRODUCTION SYSTEM DOWN - NO TIME LIMIT        |
+|      |             |                      | 5. SERVICE LIMITES - yes       |                  |5. BUSINESS CRITICAL SYSTEM DOWN - NO TIME LIMIT |
+---------------------------------------------------------------------------------------------------------------------------------------------------
+|   3  |   BUSSINESS |          YES         | 1. COST OPTIMIZATION - yes     |24*7-email, phone,|1. GENERAL GUIDANCE - 24 HOURS                   |                
+|      |             |                      | 2. PERFORMANCE - yes           |message           |2. SYSTEM IMPAIRED - 12 HOURS                    |
+|      |             |                      | 3. SECURITY - yes              |Dedicates support |3. PRODUCTION SYSTEM IMPAIRED - 4 HOURS          |
+|      |             |                      | 4. FAULT TOLERANCE - yes       |enginner for all  |4. PRODUCTION SYSTEM DOWN - 1 HOUR               |
+|      |             |                      | 5. SERVICE LIMITES - yes       |user in account   |5. BUSINESS CRITICAL SYSTEM DOWN - NO TIME LIMIT |
+---------------------------------------------------------------------------------------------------------------------------------------------------
+|   4  |  ENTERPRISE |          YES         | 1. COST OPTIMIZATION - yes     |24*7-email,phone, |1. GENERAL GUIDANCE - 24 HOURS                   |
+|      |             |                      | 2. PERFORMANCE - yes           |message           |2. SYSTEM IMPAIRED - 12 HOURS                    |
+|      |             |                      | 3. SECURITY - yes              |Dedicates support |3. PRODUCTION SYSTEM IMPAIRED - 4 HOURS          |  
+|      |             |                      | 4. FAULT TOLERANCE - yes       |engineer, Account |4. PRODUCTION SYSTEM DOWN - 1 HOUR               |
+|      |             |                      | 5. SERVICE LIMITES - yes       |Manager           |5. BUSINESS CRITICAL SYSTEM DOWN - 15 MINS       |
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
