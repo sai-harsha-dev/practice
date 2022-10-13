@@ -1,5 +1,26 @@
 This are AWS offerings which provide newtorking capabilities in the cloud.
 
+TRAFFIC FLOWS IN AWS
+--------------------
+                                  CDN / ROUTE 53
+                                       |
+                                       |
+            INTERNET GATEWAY / VPN GATEWAY / API GATEWAY / LOAD BALANCER
+                                       |
+                                       |
+                            ROUTE TABLE/IMPLIED ROUTER 
+                                       |
+                                       |
+                            NETWORK ACCESS CONTROL LIST
+                                       |
+                                       |
+                                 SECURITY GROUP
+                                       |
+                                       | 
+                            ELASTIC NETWORK INTERFACE
+                                              
+
+
 a. VIRTUAL PRIVATE CLOUD
 -------------------------
  - This is aws service which facilitates creation of networks in the cloud.
@@ -18,7 +39,8 @@ a. VIRTUAL PRIVATE CLOUD
     - Refer to segementation of specific ip address range within virtual networks.
     - Notation <1-255>.<1-255>.<1-255>.<1-255>/subnet mask.
     - Always 5 ip are used to by azure (first 4 and last 1).
-    - Each subnet must be always in a specific Availability zone
+    - Each subnet must be always in a specific Availability zone.
+    - By default AWS creates subnets for all Availability zones of VPC region.
     
     3. SCOPE
     --------
@@ -26,12 +48,12 @@ a. VIRTUAL PRIVATE CLOUD
 
     4. CONNECTIVITY
     ----------------
-    - 1. INTERNAL CONNECTIVITY (Within the same vnet)
+    - 1. INTERNAL CONNECTIVITY (Within the same vpc)
       ------------------------
       - Resource within the same network, and subnets under that network can
         communicate with each other (only if port opened in Security group, routes
         specified in the route table)
-      - Traffic flows within the Azure backbone network.
+      - Traffic flows within the AWS backbone network.
 
     - 2. INTERVPC CONNECTIVITY (Between 2 different vpc's)
       -------------------------
@@ -47,30 +69,75 @@ a. VIRTUAL PRIVATE CLOUD
         b. VPN gateway ===> To connect a on prem network, other clud network 
 
 
-b. SECURITY GROUP
+b. NETWORK ACCESS CONTROL LIST
+------------------------------
+- Is used to define traffic that is blocked to enter the subnet.
+
+- PROPERTIES
+    -----------
+    a. SCOPE
+    --------
+    - Applied to subnet level.
+
+    b. RULES
+    ---------
+    - Ports filtering  ====> Allow traffic through specific ports
+    - Protocols filtering ===> Allow traffic to the specific portocols
+    - Destination filtering ===> Subnets.
+
+- CREATION
+ ----------
+                             Create NACL
+                                 |
+                                 |
+                         Assign to VPC, Subnet
+                                 |
+                                 |
+                            Define rules
+
+
+c. SECURITY GROUP
 ------------------
- - Is used to configure the Inbound/ Outbound port access.
+ - Is used to configure the allowed Inbound/ Outbound traffic to the instance.
  - Can be created while creating EC2 or can be create seperately and connected to ENI of EC2 instance.
 
  - PROPERTIES
     -----------
     a. SCOPE
     --------
-    - Applied to subnet level.
+    - Applied to ENI level.
     - Needs to be connected to the Elastic Network Interface of an instance.
+    - A security group in same VPC can be connected to multiple instances in different subnets of same VPC.
 
     b. RULES
     ---------
+    - By default allows :-
+      a. INBOUNDS TRAFFIC ===> only from within VPC.
+      b. OUTBOUND TRAFFIC ===> All traffic
     - Ports filtering  ====> Allow traffic through specific ports
     - Protocols filtering ===> Allow traffic to the specific portocols
     - Destination filtering ===> Specfic Ip, Service Ip, All 
-    
+
+    c. STATEFULL
+    ------------
+    - Meaning that by default all traffic allowed through inbound is allowed through outbound as well.
+
+- CREATION
+ ----------
+                       Create SECURITY GROUP
+                                 |
+                                 |
+                         Assign to VPC, Subnet
+                                 |
+                                 |
+                            Define rules
 
 
-c. ELASTIC NETWORK INTERFACE
+d. ELASTIC NETWORK INTERFACE
 -----------------------------
  - It performs the work done by NIC cards in the cloud.
  - Single ENI can connect to multiple SECURITY GROUPS.
+
  - PROPERTIES
    -----------
    IP ADDRESS
@@ -80,10 +147,21 @@ c. ELASTIC NETWORK INTERFACE
    --------
    - Applied to subnet level.
 
+- CREATION
+  ----------
+                             Create ENI
+                                 |
+                                 |
+                         Assign to EC2 instance
+                                 |
+                                 |
+                         Assign to SECURITY GROUP
 
-d. ROUTE TABLE / IMPLICIT ROUTER
+
+e. ROUTE TABLE / IMPLICIT ROUTER
 --------------------------------
  - Used to defined custom routes for traffic flow
+ 
  - PROPERTIES
   -----------
    SCOPE
@@ -91,8 +169,18 @@ d. ROUTE TABLE / IMPLICIT ROUTER
    - Applied to VPC.
    - A VPC can have multiple route tables.
 
+ - CREATION
+ ----------
+                        Create ROUTE TABLE
+                                 |
+                                 |
+                          Assign to VPC
+                                 |
+                                 |
+                          Define routes
 
-e. AWS LOAD BALANCER
+                      
+f. AWS LOAD BALANCER
 --------------------
   - Used to club multiple EC2/Azure resources within a single public ip and expose to the public internet.
   - Provides HA and loadbalacing to different resources
@@ -103,10 +191,11 @@ e. AWS LOAD BALANCER
     3. ELASTIC LOAD BALANCER ===> Classic AWS load balancer
 
 
-f. INTERNET GATEWAY
+g. INTERNET GATEWAY
 --------------------
  - Used to provide internet access to the resources in a VPC.
- - Unlike azure where public access is default, aws provides public access through IGW only.
+ - By default, aws provides public access through IGW if public ip is available.
+ 
  - PROPERTIES
    -----------
    HIGH AVAILABILITY
@@ -120,15 +209,24 @@ f. INTERNET GATEWAY
    WORKING MECHANISM
    ------------------
    - NAT the CIDR IP with the Elastic IP.
+   - Allows both ingress and egress.
  
+ - CREATION
+  ----------
+                        Create INTERNET GATEWAY
+                                 |
+                                 |
+                           Assign to VPC
+                              
 
-g. VPN
+h. VPN
 --------
 - There are 2 types of offering available 
 
  1.VPN GATEWAY
  -------------
  - Used to connect onprem, other cloud network to VPC in cloud.
+ 
  - PROPERTIES
    -----------
    HIGH AVAILABILITY
@@ -138,10 +236,24 @@ g. VPN
    SCOPE
    ------
    - Resides at VPC level.
+   - A VPC can contain multiple VPN gateway.
   
    WORKING MECHANISM
    ------------------
    - Tunnels the traffic in encrypted format through the public internet.
+
+ - CREATION
+   ----------
+                        Create VPN GATEWAY
+                                 |
+                                 |
+                          Assign to VPC
+                                 |
+                                 |
+          Define the public ip of other endpoint, provide AS number
+                                 |
+                                 |
+                Change Route propogation to yes in ROUTE TABLE
 
  
  2. DIRECT CONNECT
@@ -150,15 +262,15 @@ g. VPN
  - Can be done by directly connecting to AWS EDGE loactions or Through AWS PARTNER NETWORKS.
 
 
-h. API GATEWAY
+i. API GATEWAY
 ---------------
   - Used to provide API endpoint to application.
 
-i. ROUTE 53
+j. ROUTE 53
 ------------
   - Its a highely available DNS registration/DNS server service.
 
-j. CDN
+k. CDN
 -------
   - These are globla POP(point of propogation) available all over the world.
   - Usually used to provide low lantency static connenct delivery.
