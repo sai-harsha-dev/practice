@@ -5,7 +5,7 @@ TRAFFIC FLOWS IN AWS
                                   CDN / ROUTE 53
                                        |
                                        |
-            INTERNET GATEWAY / VPN GATEWAY / API GATEWAY / LOAD BALANCER
+INTERNET GATEWAY / VPN GATEWAY / API GATEWAY / LOAD BALANCER / AZURE FIREWALL / VIRTUAL NETWORK APPLIANCE
                                        |
                                        |
                             ROUTE TABLE/IMPLIED ROUTER 
@@ -186,11 +186,68 @@ f. AWS LOAD BALANCER
   - Provides HA and loadbalacing to different resources
   - TYPES
     ------
-    1. NETWORK LOAD BALANCER ===> layer 7 loadbalancing
-    2. APPLICATION LOAD BALANER ===> layer 4 loadbalancing ( advanced features )
+    1. NETWORK LOAD BALANCER 
+    -------------------------
+     - This offers a basic layer 4 based load balancing.
+     
+     - PROPERTIES
+       -----------
+       a. TYPES :- INTERNAL ( PRIVATE IP ) / INTERNET FACING ( PUBLIC IP )
+       b. REDUNDANCY :- DUPLICATES IN MULTIPLE ZONE ( can be configured bu user during config)
+       c. DELAY TIMER : YES
+       d. LOADBALANCING TECHNIQUE :- Hashing of multiple properties. 
+
+    2. APPLICATION LOAD BALANER
+    ---------------------------
+     - Layer 7 based load balancing
+     - This provides more advanced features such as :-
+
+       a. STICKY ACCESS
+       -----------------
+        - Allows the client to presist connect to the same server for specific time period.
+        - Can be configured by enabling cookies in the instance (Time period max 7 days)
+
+       b. PATH BASED LOADBALNCING ( Need Registered DNS names )
+       ---------------------------
+        - Allows the load balancer to direct traffic to a specific host based on URL path.
+        - Can be configured in load balancer properties by editing rule and providing rule based on path.
+        - Needs editing the enteries in DNS
+
+       c. HOST BASED LOADBALANCING
+       ----------------------------
+        - Allows the load balancer to direct traffic to a specific host based on host header in HTTP/HTTPS request.
+
+
+     - PROPERTIES
+       -----------
+       a. TYPES :- INTERNAL ( PRIVATE IP ) / INTERNET FACING ( PUBLIC IP )
+       b. REDUNDANCY :- DUPLICATES IN MULTIPLE ZONE ( can be configured bu user during config)
+       c. DELAY TIMER : YES
+       d. LOADBALANCING TECHNIQUE :- Round Robin 
+
+
     3. ELASTIC LOAD BALANCER ===> Classic AWS load balancer
 
 
+   - CREATION
+   -----------
+                           
+                               CREATE A TARGET GROUP ( incl. configuring health checks TCT/HTTP/HTTPS based )
+                                         |
+                                         |
+                        ASSIGN INSTANCE TO THE TARGET GROUP
+                                         |
+                                         |
+                              CREATE ELASTIC PUBLIC IP
+                                         |
+                                         |
+                            CREATE LOAD BALANCER (incl. associating with VNET,public ip)
+                                         |
+                                         |
+    ASSIGN TARGET GROUP AND RULE TO LOADBALANCER (if HTTPS is configured its necessary to create TLS certification ON ACM and provide in load balancer settings)
+                                           
+
+ 
 g. INTERNET GATEWAY
 --------------------
  - Used to provide internet access to the resources in a VPC.

@@ -14,7 +14,8 @@
      - CHARACTERISTICS
       ---------------
       a. OS  ===> User configured
-      b. DISKS ===> User configured
+      b. DISKS ===> User configured (By default provides instance volumes(non presistant), 
+                                     for peristant use EBS volume( must in the same availability zone as EC2))
       c. NETWORKS ===> User configured (by default aws creates a default VPC, Subnet, Public)
       d. RUNTIME ===> User configured
       e. APPLICATION & DATA ===> User configured
@@ -45,7 +46,7 @@
            ---------
            1. STANDARD     ===> The VM type cannot be changed after reservation
            2. CONVERTABLE  ===> The VM type can be changed after reservation
-           3. SCHEDULED    ===> The VM can used at scheduled time frames
+           3. SCHEDULED    ===> The VM can be used at scheduled time frames
          
         - PAYMENT TYPES
           -------------

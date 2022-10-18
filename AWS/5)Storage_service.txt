@@ -1,0 +1,147 @@
+AWS offers storage service on the following storage categories :-
+
+a. UN-STRUCTURED
+-----------------
+1. BLOCK STORAGE
+-----------------
+ - These include services which provide persistant block storage to EC2 instances.
+ - Similar to local hard drive.
+
+ - SERVICE OFFERINGS
+   -----------------
+   a. ELASTIC BLOCK STORAGE
+   -------------------------
+   - CHARACTERISTICS
+     ---------------
+     1. PERSISTANT STORAGE ===> unit is called volume
+     2. SCOPE ===> particular availability zone
+     3. REPLICATION ===> Within the availability zone by default.
+
+   - TIER
+     ----
+     1. GENERAL PURPOSE SSD
+     2. THROUGHPUT OPTIMISED SSD
+     3. PROVISIONED IOPS SSD
+     4. COLD SSD 
+     
+   - FEATURES
+     --------
+     1. ENCRYTPTION ===> needs an encryption key
+     2. ACCESS ==> Allows public access through link.
+     3. SANPSHOT
+     ------------
+     - This is an incremental backup facility.
+     - Store the backup in S3 storage
+
+     - FUNCTIONS
+       ----------
+       a. CREATE ==> - EC2 instance can make changes to EBS while snapshot is being taken,
+                       but these changes wont be rescorded,but must be disconneted while starting.
+  
+                     - Maximum of 5 concurrent copies allowed for a EBS volume
+
+       b. COPY ==> Can be copied to different availability zone for resilience
+
+       c. DELETE ==> Deleting a previous copy not affect the new precedding copy.
+
+       d. RESTORE ==> Can be used restore EC2 states and migrate EC2 to different zones/regions.
+
+     
+   
+    
+2. NETWORK STORAGE
+-------------------
+ - This is a fully managed NFS storage service offering in aws.
+ - SERVICE OFFERINGS
+ -----------------
+   a. ELASTIC FILE STORAGE (for linux based systems)
+   -------------------------
+   - CHARACTERISTICS
+     ---------------
+     1. PERSISTANT STORAGE 
+     2. SCOPE ===> all availability zones in the region.
+     3. REPLICATION ===> all availability zones in the region.
+
+   - TIER
+     ----
+     1. GENERAL 
+     2. INFREQUENT ACCESS
+     
+   - FEATURES
+     --------
+     1. ENCRYTPTION ===> needs an encryption key
+     2. ACCESS ==> Allows public access through link.
+     3. LIFECYCLE DATA RULES ===> Allows SDK/CLI based configuration rules to change data tier
+                                  based on rules.
+                            
+    - FUNCTIONS
+      ----------
+      a. CREATE
+      b. MOUNT
+      c. UNMOUNT
+
+  B. FXS 
+  -------
+  -  This is the SMB offering for windows based machines.
+ 
+        
+3. OBJECT STORAGE
+------------------
+- This is storage offering from AWS which is used to store Files.
+ - SERVICE OFFERINGS
+ -----------------
+   a. S3
+   -------
+   - CHARACTERISTICS
+     ---------------
+     1. PERSISTANT STORAGE 
+     2. SCOPE ===> within a specific availability zone in the region.
+     3. REPLICATION ===> all availability zones in the region.
+
+   - TIER
+     ----
+     1. STANDARD
+     2. S3 INTELLIGENT TIERING ===> Allows moving data between INFREQUENT and STANDARD tier based on access frequency.
+     3. S3 STANDARD INFREQUENT ACCESS
+     4. S3 ONE ZONE INFREQUENT ACCESS ===> Data only replicated within the same zone
+
+   - FEATURES
+     --------
+     1. ENCRYTPTION ===> needs an encryption key
+     2. ACCESS ==> Allows public access through link.
+     3. LIFECYCLE DATA RULES ===> Allows SDK/CLI based configuration rules to change data tier
+                                  based on rules, versioning, deletion rules etc..
+
+
+   b. S3 GLACIER
+   --------------
+   - Used to store archieve data.
+   - Lower retrival times (from minutes to hours)
+   - Retrival Cost per GB
+   - Minimum 90 days storage time.
+
+   c. S3 GLACIER DEEP ARCHIEVE
+   -----------------------------
+   - Used to store archieve data.
+   - Lower retrival times (in hours)
+   - Retrival Cost per GB
+   - Minimum 180 days storage time.
+
+
+B. SEMI-STRUCTURED
+-------------------
+- Amazon DynamoDB
+  ----------------
+  - SAAS offering
+  - no SQL database
+
+C. STRUCTURED
+-----------------
+- RELATIONAL DATABSE SERVICE (RDS)
+----------------------------------
+ - PAAS offering
+ - support for :-
+   a. SQL
+   b. MYSQL
+   c. POSTGREE
+   d. AURORA

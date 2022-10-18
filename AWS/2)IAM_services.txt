@@ -1,0 +1,43 @@
+- Amazon Identity and Access Management service is  free service provided by AWS 
+
+- FEATURES
+  ---------
+  a. AUTHENTICATION
+  ------------------
+  - This provides identity management facility for AWS resources.
+  - Administrator created user accounts and configurations are managed here.
+  - Provides facilities such as :-
+
+    1. MULTI FACTOR AUTHENTICATION
+    2. SINGLE SIGN ON 
+    3. FEDERATION SERVICES ===> provides facility to integrate on-prem identity managers like Active Directory
+    4. AMAZON COGNITO
+       ---------------
+       - This is a seperate service provided by AWS.
+       - FEATURES
+         ---------
+         a. Identity management for custom user applications.
+         b. Intergrate 3rd party identity service with custom application such as:-
+            - Google
+            - Facebook
+            - Amazon
+            - Active Directory
+            - any SAML 2.0 based identity providers.
+
+
+  b. AUTHERICATION
+  -----------------
+  - Provides facilities to control user access to service.
+  - Provides facilities such as :-
+
+    a. ACCESS MANAGEMENT
+    ---------------------
+    - These can be done with the help of policies.
+    - Policies control user permission to AWS resources.
+    - Policies are JSON templates.
+    - TYPES
+      ------
+      1. DEFAULT POLICIES ===> AWS provided policy templates
+      2. CUSTOM POLICIES ===> Custom policy templates
+      
+    

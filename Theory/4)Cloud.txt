@@ -5,8 +5,8 @@ USES
  1. ELASTIC
  -----------
   - Meaning that resources are more scalable compared to private infrastructure.
-  - This is because of the fast that there are many abundent resources and cloud providers can provision resource on demand.
-  - In private data centers its not the case since server are bought on demand.
+  - This is because of the fact that there are many abundent resources and cloud providers can provision resource on demand.
+  - In private data centers its not the case since servers are bought on demand.
 
  2. RELIABLE
  ------------
@@ -16,7 +16,7 @@ USES
  3. LOWER ECONOMICS OF SCALE
  ----------------------------
   - Since its a consumption based model where everyone uses the same infrastructure.
-  - So the cost baring is spread by all the consumers and not my an individual company.
+  - So the cost baring is spread to all the consumers and not an individual company.
 
  4. LOWER CAPEX HIGHER OPEX
  ---------------------------
@@ -50,8 +50,8 @@ CLOUD SERVICES
   - Eg :- Microsoft 365
 
 
-CLOUD DEPLOYMENT METHODS
+CLOUD DEPLOYMENT MODELS
 ------------------------
- 1. PUBLIC CLOUD  ---> All infra in cloud providers.
- 2. PRIVATE CLOUD ---> Individually maintained infra.
- 3. COMMUNITY CLOUD ---> Organisation with cloud providers providing seperate isolated infra.
+ 1. PUBLIC CLOUD  ---> All infra maintained in publically shared cloud resources.
+ 2. PRIVATE CLOUD ---> All infra maintained in restricted access cloud or on-premise recources.
+ 3. COMMUNITY CLOUD ---> All infra maintained in isolated sections of publoc cloud with no public access.( used by government agencies )
