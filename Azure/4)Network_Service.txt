@@ -1,5 +1,23 @@
 - These are service which provide networking capabilities in azure.
 - All of these service come under PAAS.
+
+TRAFFIC FLOWS IN AZURE
+-----------------------
+                                 CDN / AZURE DNS
+                                       |
+                                       |
+VPN GATEWAY / APPLICATION GATEWAY / LOAD BALANCER / AZURE FIREWALL / VIRTUAL NETWORK APPLIANCE
+                                       |
+                                       |
+                                  ROUTE TABLE (UDR) 
+                                       |
+                                       |
+                NETWORK SECURITY GROUP / APPLICATION SECURITY GROUP
+                                       |
+                                       | 
+                            ELASTIC NETWORK INTERFACE
+
+
 - The major services are :-
   
   a. AZURE VIRTUAL NETWORK
