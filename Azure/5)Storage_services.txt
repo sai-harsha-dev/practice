@@ -1,4 +1,5 @@
 - Storage services refers to a set of storage IAAS and PAAS offering provided by azure.
+
 - STORAGE ACCOUNT
   ---------------
   - It is the management account for all types of storages.
@@ -58,6 +59,7 @@
   -----------------
   - Refer to raw data storage mediums.
   - Eg:- pdf, jpg, txt, exel etc..
+
   - SERVICE OFFERINGS
   --------------------
   a. BLOB (Binary large object)
@@ -90,6 +92,7 @@
   2. STRUCTURED
   --------------
   - Used to store structed data like relational databases.
+  
   - TYPES
     ------
     1. IAAS
