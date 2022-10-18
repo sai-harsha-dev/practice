@@ -1,9 +1,9 @@
 AZURE ACTIVE DIRECTORY
 -----------------------
 - Azure Active directive is the primary cloud based identity access management service in azure.
+- Makes use of OAuth 2.0 and OpenID connect web based protocols for authentication
 - It can handle the following types of resource management mechanisms.
-- Makes us of OAuth 2.0 and OpenID connect web based protocols for authentication
- 
+
  1. IDENTITY MANAGEMENT
  --------------------
  - Refers to the management of users, groups, applications and their identities.
@@ -39,7 +39,7 @@ AZURE ACTIVE DIRECTORY
   3. RESOURCE MANAGEMENT
   ----------------------
    - Refers to applying constrains on the resources.
-   - Facilitates rules on ceating resources all particular level.
+   - Facilitates rules on creating resources at particular level.
    - FACILITIES
      ----------
      a. POLICIES
