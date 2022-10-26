@@ -155,7 +155,7 @@ spec:
   type:<RollingUpdate/Recreate>
   rollingUpdate:
    maxUnavailable: <number/percentage>   |====> only only them can be percentage
-   macSurge: <number/percentage>         | 
+   maxSurge: <number/percentage>         | 
  selector:
   matchlabel:
    <key>:<value>  ===============================>(should match the labels in template)
