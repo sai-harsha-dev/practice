@@ -36,10 +36,10 @@ CHARACTERISTICS
 
      d. PERSISTANT VOLUME RECLAIM POLICY
        ----------------------------------
-        - This property defines how the persistant colume should behave when a bound pvc is deleted.
+        - This property defines how the persistant volume should behave when a bound pvc is deleted.
         - It has two mechanisms
           1. Delete ===> this is default, and deletes the persistant volume when the bind pvc is deleted.
-          2. Reclaim ===> doesn't delete the persistant colume when bound pvc is deleted itis sent to released state, 
+          2. Reclaim ===> doesn't delete the persistant volume when bound pvc is deleted it is sent to released state, 
                           we need to manually delete the Persistant volume to rebind it to other pvc.
 
 
