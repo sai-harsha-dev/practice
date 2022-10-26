@@ -67,7 +67,7 @@ KUBERNETEES CLUSTER
     
     1. KUBELET (RESPONSIBLE TO SHARE STATUS PODS TO MASTER NODE)
     ------------------------------------------------------------
-    - It is the manager for all the Pods running within a node.
+    - It is responsible for spinning up Kubernetes resources scheduled to that node.
     - This component communicates with manager controller in the master nodes.
     - It shares the status of all Pods running in a node.
 
@@ -75,11 +75,17 @@ KUBERNETEES CLUSTER
     --------------------------------------------------------
     - It is responsible to communicate with the OS and create containers.
     - Similar to containerd in docker engine.
+    - It is user configerable, kubernetes provides a default runtime (runc).
+    - Any OCI complaint runtime can be used.
+    - Kubernetes provides an Container runtime interface to use a OCI complaint runtime of our choice.
 
     3. KUBEPROXY (MANAGES NETWORKS FOR PODS)
     ----------------------------------------
-    - Responsible to provide IP's to the all the pods within the container.
-    - Maintain routing to all the different pods within each node.
+    - Responsible to provide networking to all pods running within the node.
+    - Responsibilities include :-
+      1. Provides IP to pods.
+      2. DNS enteries to service, deployments.
+      3. Maintaining routing tables.
 
 
 DEPLOYING WORK TO KUBERNETEES CLUSTER
