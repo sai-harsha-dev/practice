@@ -1,6 +1,6 @@
 THEORY
 -------
-- The networking module in docker can be split into following modules
+- The docker networking model in docker can be split into following sections
 
 1. CONTAINER NETWORK MODEL
 -------------------------

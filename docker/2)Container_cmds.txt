@@ -23,7 +23,7 @@ RUNNING IMAGES/CONTAINERS
 
   3. ALLOCATE OS RESOURCES TO CONTAINERS
   ---------------------------------------
-   - runc process is reponsible for this
+   - runc process is responsible for this
    - Each container is given an isolated area within an OS initialixed by runc, this consists of :-
       1. NAMESPACES ==> Specificying the boundaries of a container
       2. CONTROL GROUPS ==> Specifying the resources the container can use from  OS

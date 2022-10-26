@@ -1,6 +1,6 @@
 THEORY
 -------
-- An image is a package of the the depencies, source code of needed to run an application.
+- An image is a package of the the dependencies, source code needed to build an application.
 
 IMAGE BUILDING BLOCKS
 -------------
@@ -23,13 +23,13 @@ BUILDING AN IMAGE
 - The Dockerfile should be in the root folder of the where the application is written.
 - The image creating process is of 3 steps :-
 
-                     1. RUN THROUGH COMMANDS IN Dockerfile
+       1. RUN THROUGH COMMANDS IN Dockerfile
 					|
 					|
-	       2. BUILD INDIVIDUAL LAYER & CREATE HASH FOR EACH LAYER	
+	   2. BUILD INDIVIDUAL LAYER & CREATE HASH FOR EACH LAYER	
  					|	 
 					|
-		   3. BUILD MANIFEST FILE & CREATE CONTENT HASH
+	   3. BUILD MANIFEST FILE & CREATE CONTENT HASH
 
 
 - The hash of a local manifest file is called Content Hash
@@ -43,7 +43,7 @@ STORING AN IMAGE
  - This is the process of pushing an locally built image to an repository
  - The process of pushing and local image is as foollows
 
-   	                1. COMPRESS EACH LAYER OF IMAGE 
+   	   1. COMPRESS EACH LAYER OF IMAGE 
 					|
 					|
    	2. CREATE AN MANIFEST FILE WITH CONTENT HASH OF COMPRESSED IMAGES
@@ -66,10 +66,10 @@ PULLING IMAGES
     	1. CHECK THE FAT MANIFEST FILE (HAS THE INFORMATION FOR ARCHIECTURE SPECIFIC IMAGE)
 						|
 						|
-    				  2. PULL THE MANIFEST FILE
+             2. PULL THE MANIFEST FILE
 						|
 						|
-    				  3. PULL THE IMAGE LAYERS
+    		 3. PULL THE IMAGE LAYERS
 
 
 
