@@ -21,7 +21,7 @@ YAML DECLERATION
 ---------                    ----------------            ------------  
  apiVersion: v1              ....                        ....
  kind: Pod                   kind: Deployment            kind: Service
- metadata:                   matedata:                   metadata:
+ metadata:                   matadata:                   metadata:
   name: <name of pod>        .....                       ......
   labels:                    spec:                       spec:
     <key1> : <value1>          selector:                  selector: 
