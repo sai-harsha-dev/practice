@@ -45,5 +45,5 @@ DOCKER ENGINE
   - shim maitains the running container
   - runc is shortlived, shim is long lived.
 
-- For windows the containerd and runc are maintainer by a conpute service process.
+- For windows the containerd and runc are maintained by a compute service process.
   
