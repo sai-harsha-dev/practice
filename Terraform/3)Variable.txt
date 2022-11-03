@@ -1,0 +1,165 @@
+- Variables are used to provide, fetch config values.
+- TYPES 
+  -----
+  1. INPUT VARIABLES 
+  ------------------
+   - These are used to provide configuration values during runtime.
+   - USES 
+     -----
+     - Sensitive data protection --> since values are provided during runtime 
+     - Reusablity --> can be defined once and used in multiple blocks 
+   
+   - OPERATION
+    -----------
+    1. DEFINING
+    ------------
+    - This step involved defining the input variable within the configuration.
+    - SYNTAX
+      -------
+      varaible "name"{
+        type = datatype 
+        default = "value"                   ------> Non of them are mandatory
+        sensitive = true/false 
+        description = "value"
+      }
+
+       a. type 
+       --------
+        - This defined the datatype of the input varaible
+        - If not defined any value can be provided
+        - There are different types of datatype
+          1. PRIMITIVE
+          -------------
+           - These are single literal datatypes.
+             a. string  --> alphanumeric value in " "
+             b. number  --> integer, decimal
+             c. boolean --> true/false
+
+          2. COLLECTION
+          -------------
+           - Homogeneous multiple literal values.
+             a. list --> Ordered literals eg:- [1,2,3,4], ["a","b","c"] 
+             b. set  --> Un-Ordered literals
+             c. map  --> Key = value pairs eg:- {
+                                                  key = value
+                                                  .
+                                                  .        }
+
+          3. STRUCTURAL
+          -------------
+           - Non-Homogeneous multiple literal values.
+             a. tuple 
+             b. object
+
+       b. default
+       ----------
+        - Provides a default value to use if not specified during runtime.
+        - If not provided terraform prompts to provide a value if not provided.
+
+       c. sensitive
+       ------------
+        - Makes the value un-readble.
+        - Used to protect sensitive information.
+
+       d. description
+       ---------------
+        - Provides description about the variable.
+
+
+    2. REFERENCING
+    ---------------
+     - This step involves referncing the defined input varaible in place of value.
+     - SYNTAX
+       -------
+        1. PRIMITIVE
+        -------------
+        a. string  --> var.<name>.<key>
+        b. number  --> var.<name>.<key>
+        c. boolean --> var.<name>.<key>
+
+        2. COLLECTION
+        -------------
+        a. list --> var.<name>.<key>[index]   ---> index start from 0
+        b. set  --> var.<name>.<key>[index] 
+        c. map  --> var.<name>.<key>[mapkey] or var.<name>.<key>.<mapkey>  
+
+        3. STRUCTURAL
+        -------------
+        a. tuple 
+        b. object
+
+
+    3. SETTING VALUE 
+    -----------------
+     - This step involves providing values to the defined input variable.
+
+       a. default
+       -----------
+        - Done using default property in variable block definition.
+
+       b. CLI 
+       -------
+        - Value is provided during runtime
+          1. individual ---> -var = variable name = value 
+          2. files ---> -var-file = variable name = file ---> format varaible name = value
+          3. Enviroment variable ----> lin/mac    ==> export TF_VAR_variable name = value
+                                       powershell ==> $env: TF_VAR_variable name = value
+
+       c. CONFIGURATION FILES 
+       ----------------------
+        - Values are provided within a seperate file in configuration files directory.
+        - FORMAT ---> format varaible name = value
+        - FILE NAMES ----> terraform.tfvars, .auto.tfvars ---> Hcl format
+                           terraform.tfvars.json, .auto.tfvars.json ---> json format
+
+  2. LOCAL VARIABLES
+  ------------------
+   - These are similar to varaible in programming.
+   - USES
+     ----
+     1. Computation  --> useful when value must be a combination of multiple input variable.
+
+   - OPERATION
+   ------------
+    1. DEFINING
+    ------------
+     - SYNTAX 
+       -------
+       locals{
+        key = value
+       }
+        
+         a. key = name of local varaible
+         b. value = can be 
+         --> 1. value 
+         --> 2. input variable reference
+         --> 3. computed value --> "${input variable reference}<formating>${input variable reference}..."
+         
+    2. REFERENCING
+    ---------------
+     - SYNTAX 
+       -------
+       1. value ---> locals.<key>
+       1. list  ---> locals.<key>[index]
+       2. tuple ---> locals.<name>.<key>[mapkey] or locals.<name>.<key>.<mapkey> 
+
+
+  3. OUTPUT VARIABLES
+  -------------------
+   - This type of variable can be used to display 
+     properties of the configuration items  after deployment.
+
+   - The refernced properties are diplayed on the CLI or 
+     can be piped to a file using -out filename flag
+     
+   - OPERATION
+     ---------
+      DEFINING
+      --------
+      - SYNTAX
+        -------
+        output "name" {
+            value = label.name_label.property
+            description = "value"
+            sensitive = true/false
+        }
