@@ -1,0 +1,7 @@
+- These are inbuilt functions that terraform provides to perform certain actions.
+- There are many different types of functions available.
+- SYNTAX
+  ------
+  {
+    key = funtion_name(arg1,arg2.....)
+  }
