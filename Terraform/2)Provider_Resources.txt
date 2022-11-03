@@ -1,0 +1,39 @@
+
+  1. TERRAFORM 
+  ------------
+  - This is used to provide configuration details for terraform and provider pulgins.
+  - SYNTAX
+    -------
+    terraform{
+      required_providers{
+        "official provider name"{
+          source = "path to the pulgin"
+          version = =/>/</~>"version"
+        }
+      }
+    }
+
+  2. PROVIDER 
+  ------------
+  - This is used to mention the crendentials for the provider pulgins. 
+  - Multiple instances of the same provider can be used (eg :- aws west, aws east)
+  - SYNTAX
+    -------
+     provider "name of the provider plugin" {
+      name : "alias name"                       ---> Used to identify multiple instance of the same provider.
+      key : "value"/reference/variable          ---> varies based on provider
+     }
+
+  2. RESOURCE
+     ---------
+     - These are blocks which mention the resources to be created and their  configuration.
+     - SYNTAX
+       ------
+       resource "label" "name_label"{
+        key = "value"/reference/variable
+       }
+        
+        - label, key, value - specific to provider plugin
+        - name_label - generic 
+
+  
