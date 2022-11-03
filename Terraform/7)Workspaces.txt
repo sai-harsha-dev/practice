@@ -1,0 +1,17 @@
+- Workspaces are used to spin up multiple environments(dev,test,  prod) of the same config.
+- By default the terraform creates a default workspace which cannot be deleted.
+
+- ADVANTAGES
+  -----------
+  - No need to maintain different config for each environments.
+  - Re-usability
+
+- WORKING
+  -------
+  - Terraform creates seperate directories under terraform.tflock directory
+    and maintains the STATE DATA for each Workspaces seperately.
+
+  - Updates are done to that specific state data during every deployment.
+
+  - terraform.workspace can be used access the workspace under use.
+  
