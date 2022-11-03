@@ -1,0 +1,60 @@
+- Expressions are used to perform action based on a specific crieteria.
+
+- TYPES
+  -----
+  1. CONDITIONAL
+  ---------------
+   - IF 
+
+  2. LOOPING
+  -----------
+  - Preform a action repitively until a crieteria is met.
+  - TYPES
+    ------
+     a.COUNT
+     --------
+     - Perform an action for specific number to times based on numberic value.
+     - SYNTAX
+       -------
+       {
+        count = number/variable/reference  ---> defines the number of times for loop to execute
+        key = count.index   ---> to extract the loop number in progress 
+       }
+
+
+     b.FOREACH
+     ----------
+     - Perform an action for specific number to times based on key=value pairs.
+     - Supported inputs un-ordered collection i.e set, map.
+     - SYNTAX
+       -------
+       {
+        for_each = {           
+            key = value
+            .
+            .
+        }/variable/reference      ---> defined the map/set to use
+
+        key = each.key    ---> extract key of the specific iteration
+        key = each.value  ---> extract value of the specific iteration
+       }
+
+
+     c.FOR
+     ------
+     - Perform an action specific number of times based on homo/heterogenous datatypes.
+     - It produces an output tuple/object.
+     - Supported inputs - collection,structures.
+     - SYNTAX
+       -------
+       a. PRODUCE TUPLE 
+       ----------------
+       {
+        key = [for <variable_name> in <input_refernce> : < expression for tuple element to produce>]
+       }
+
+       b. PRODUCE OBJECT 
+       -----------------
+       {
+        key = {for <variable_name> in <input_refernce> : <object_key> => <object_value>}
+       }
