@@ -1,6 +1,6 @@
 THEORY
 --------
-- Service provide external and internal access to pods.
+- Service provide external and internal access to pods referring the deployments running in them.
 - Pods are not easily accessible, because pods are dynamic in nature and dont have stable IP.
 - Service object act a layer on top of pods to provide stable access to pods running a service.
 
@@ -18,9 +18,9 @@ BASIC KUBERNETES NETWORKING
     -------
 
     1. PODS    ===> 1. Each pod is given an specific IP from PodCIDR range
-        |           2. PodCIDR range is specific to each node.
+        |           2. PodCIDR range is changes in each node.
         |           
-    2. BRIDGES ===> 1. Each PodCIDR network has a bridge. 
+    2. BRIDGES ===> 1. Each PodCIDR network has a bridge (similar to physical switch)
         |           2. Each Pod is given an software ethernet interface which is connected to the Software bridge.
         |
     3. NODES   ===> 1. Each node is given a static IP (private) depending physical network infrastructure design. 
@@ -53,7 +53,7 @@ BASIC KUBERNETES NETWORKING
 
   b. THIRD PARTY 
      ------------
-     - Each function differently but adhere to the concept that pods can reach talk other pods using their IP's.
+     - Each function differently but adhere to the concept that pods can reach talk other pods using their IP's within the cluster.
 
 
 SERVICE OBJECT WORKING:-
@@ -66,14 +66,15 @@ SERVICE OBJECT WORKING:-
   1. FRONT END ( PROVIDES DNS-IP-PORT MAPPING)
   ---------------------------------------------
   - The service object registers the service label and provides a cluster IP and port mapping.
-  - It makes use of COOREDNS service running in control paint to create these enteries.
-  - Every node/Pod in the cluster is can access this CoreDNS through the mappings present in /etc/resolv.confg file.
+  - It makes use of COREDNS service running in control paint to create these enteries.
+  - The CoreDNS is service runs in 2 pods within the cluster.
+  - Every node/Pod in the cluster can access this CoreDNS through the mappings present in /etc/resolv.confg file.
 
   2. BACKEND (LOADBALANCER)
   --------------------------
   - This is and endpoint object.
-  - It load balances the traffic to each service.
-  - This is doe by equally routing traffic to all the pods running that specifc service.
+  - It load balances the traffic to each pod running in a service.
+  - This is done by equally routing traffic to all the pods running that specifc service.
  
 -Service objects are of 3 types
 
@@ -95,8 +96,8 @@ SERVICE OBJECT WORKING:-
        3. THE CLUSTER IP SERVICE OBJECT ROUTES THE TRAFFIC TO THE PODS RUNNING THE SERVICE
 
 
-  2. NODEPORT ( External Acesses via Common port published across cluster )
-  ------------------------------------------------------------------------
+  2. NODEPORT ( External Acesses via Real Node private ip:Common port published across cluster )
+  ---------------------------------------------------------------------------------------------
   - This publishes a specific port across the whole cluster.
   - Each service is given a specific port in the range between 30000 - 32737.
   - External traffic hitting any node in cluster to that port is routed to the service pods.
@@ -117,7 +118,7 @@ SERVICE OBJECT WORKING:-
 
 
   3) LOAD BALANCER ( External Access via a single Load balanced Public IP:NODEPORT)
-  ----------------------------------------------------------
+  ---------------------------------------------------------------------------------
   - Creates a load balancer for all the worker node and maps it to the NODEPORT.
   - Services can be accessed just with public ip of load balancer.
 
