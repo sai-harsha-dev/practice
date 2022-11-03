@@ -1,0 +1,25 @@
+terraform init    ---> download the provider plugins
+
+terraform fmt    ----> Format the config files
+
+terraform validate  ---> Validate the config (only syntax)
+
+terraform workspace new <workspace name> ---> Create a move to a new workspace
+
+terraform workspace list ---> list all workspaces
+
+terraform workspace <workspace name>  --> Move to an existing workspace
+
+terraform plan -out <file>  ---> Create a plan and prase the output a file in a workspace
+
+terraform apply <file> ---> Apply the changes in a plan in a workspace
+
+terraform state list ---> View the state data in a workspace
+
+terraform state show ADDRESS ---> View the state data of particular resource in a workspace
+
+terraform state mv SOURCE DESTINATION ---> Move resurces from one module to another
+
+terraform state rm ADDRESS ---> Remove the resource from the state data.
+
+terraform destroy ---> Destory all the resource in an environment
