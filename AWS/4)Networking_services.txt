@@ -221,7 +221,7 @@ f. AWS LOAD BALANCER
      - PROPERTIES
        -----------
        a. TYPES :- INTERNAL ( PRIVATE IP ) / INTERNET FACING ( PUBLIC IP )
-       b. REDUNDANCY :- DUPLICATES IN MULTIPLE ZONE ( can be configured bu user during config)
+       b. REDUNDANCY :- DUPLICATES IN MULTIPLE ZONE ( can be configured By user during config)
        c. DELAY TIMER : YES
        d. LOADBALANCING TECHNIQUE :- Round Robin 
 
@@ -232,7 +232,7 @@ f. AWS LOAD BALANCER
    - CREATION
    -----------
                            
-                               CREATE A TARGET GROUP ( incl. configuring health checks TCT/HTTP/HTTPS based )
+                               CREATE A TARGET GROUP ( incl. configuring health checks TCP/HTTP/HTTPS based )
                                          |
                                          |
                         ASSIGN INSTANCE TO THE TARGET GROUP
