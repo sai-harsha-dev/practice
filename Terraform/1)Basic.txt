@@ -1,0 +1,59 @@
+- Terraform is a infrastructure automation tool.
+
+- INSTALLATION
+  -------------
+  - Download and install the software from hassicorps terraform webside
+                           
+                           OR 
+
+  - Download and install using package managers.
+
+- CHARACTERISTICS
+ -----------------
+ - BLOCK SYNTAX - Can use json/yaml/hassicorp configuration language (most preferred)
+   - The syntax for each block definition is as follows:-
+     
+       block type "label" "name_label"*{
+        key = "value"/reference/variable
+        nested_block{
+          key = "value"/reference/variable
+        }
+       }  (* - not need for all)
+
+    - block type :- different block types supported by terraform eg- providers,resource,var,local etc..
+    - label :- mentions the resources of a block to use eg:- aws, ec2 etc..
+    - name_label :- identification string for the resource
+    - key :- Configuration of a resource
+    - value :- Value for the configuration
+    - nested_block :- to use resources within resources (not predefined)
+    - <label>.<name_label>.<key> :- used to reference an existing resource.
+
+ - PUSH DEPLOYMENT.
+ - IDEMPOTENT - Mantains state of infrastructure by comparing State data with configuration files
+ - NON VENDOR AGNOSTIC - Works with any vendor using vendor plugins
+
+- WORKFLOW
+  --------
+  - There are 3 main compents that terraform uses to perform changes.
+    1. STATE DATA - This contains the details of infrastructure components in use.
+    2. CONFIGURATION FILE - This is commulative data of all configuration(.tf files) mentioned by the user that terraform creates.
+    3. PLAN - Set of changes that need to be made to existing infra, created by comparing STATE DATA & CONFIGURATION FILE
+
+ - STEPS
+  -------
+                1) User makes changes to the configuration files
+                                      |
+                                      |
+          2) Terraform downloads the provider pulgins (terraform init command)
+    ( ** NOTE                                                                           )
+    ( - This is performed only when pulgins are not already present in local directory  )
+    ( - By default downloads from Hassicorp official pulgins unless explicitly mentioned)
+                                      |
+                                      |
+             3) Terraform creates a cummilative CONFIGURATION FILE
+                                      |
+                                      | 
+ 4) Compares the STATE DATA with the CONFIGURATION FILE and creates the PLAN (terraform plan)
+                                      |
+                                      |
+5) Makes the changes in the PLAN to existing infra and updates the STATE DATA with new changes
