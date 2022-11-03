@@ -1,0 +1,16 @@
+IAS 
+----
+- This term stands for Infrastructure as code.
+- It is mechanism in which the Infrastructure components are defined as code files.
+
+- Advantages
+  ----------
+  a. Easy documentation - Makes it easy to analyse how the whole infra works.
+  b. Automate changes - Deploying new components automated since the same code can be used repeatably.
+  c. Easy Administration - Upgrade, Patching can all be done from any end point.
+
+- Mechanism
+  ---------
+  1. PULL --> End points pull changes from central server.
+  2. PUSH --> Central server pushes changes to all end points.
+  
