@@ -19,6 +19,10 @@ COMPONENTS
   - Kubernetes specific the object implement specification.
   - Third party controller implement this sepcifications.
   - This makes it possible for cloud vendors implement controllers based on their infrastructure.
+  - There are multiply types of ingress controls available :-
+     a. Running as pods in cluster :- eg nginx controller
+     b. External load balancers :- eg:- Citrix, F5
+     c. Cloud based :- AWS, Azure, Google Application Load balancers
   - Multiple ingress controllers can be installed in the same kubernetes cluster at the same time.
   
  2. INGRESS API OBJECT/RESOURCE
@@ -42,7 +46,7 @@ IMPLEMENTING INGRESS IN CLUSTER
 
 WORKING OF INGRESS
 -------------------
-- Ingress works on top of the services associated with a deplyment.
+- Ingress works on top of the services associated with a deployment.
 - Ingress creates a routing using the cluster Ip provided by resources and routes traffic to the individual pods.
 - Futher the ingress exposes itself outside the cluster using a service (nodeport/loadbalancer).
 - Traffic hitting that service is routed to the ingress and to the deployment pods.
