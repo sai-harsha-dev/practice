@@ -1,0 +1,51 @@
+- Modules are set of configuration files under a specific directory.
+
+- USES
+  -----
+  - Provide reusability  --> resources with similar configuration can be re-used
+  - Multilevel reference --> each module can reference multiple modules.
+
+- PROPERTIES
+  ----------
+  - ROOT-SUB module hierarchy 
+  - COMMUNICATION --> 1. ROOT--SUB :- through input varaiable
+                      2. SUN--ROOT :- through output variable
+                      3. Local variable in module cannot be accessed by another module.
+  
+  - TYPES --> 1. PUBLIC  --> Hassicorp repository
+              2. PRIVATE --> private repository
+              3. LOCAL   --> Local system
+
+- SYNTAX
+  -------
+  a. DEFINING
+  ------------
+   - Creating a directory with multiple configuration files.
+
+  b. ACCESSING
+  -------------
+   module "name-label"{
+    source = "path"
+    version = <version>
+    provider = {
+        child provider = root provider
+    }
+    # Input variable
+   }
+
+  c. PROVIDING VALUES
+  --------------------
+   - To pass value to the sub module, the module should have defined internal variable
+   - Passing value during runtime can be done using :-
+     a. WITH IN module block itself
+     ------------------------------
+      module "name-label"{
+        .
+        .
+        .
+        internal variable  name = value
+      }
+
+     b. ENVIRONMENT VARIABLE 
+     
+     c. WITHIN THE CONFIGURATION FILES OF ROOT MODULE
