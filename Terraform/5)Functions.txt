@@ -5,3 +5,8 @@
   {
     key = funtion_name(arg1,arg2.....)
   }
+
+----------------------------------------------------------------------------------------------
+COMMANDS
+---------
+ terraform console ----> Starts up an interactive terraform console to check functions.
