@@ -14,4 +14,22 @@
   - Updates are done to that specific state data during every deployment.
 
   - terraform.workspace can be used access the workspace under use.
+
+
+- STORING STATE DATA & VARIABLES CONFIG FILES IN REMOTE 
+--------------------------------------------------------
+  - This is supported by terraform.
+  - Just update the backend configuration in terraform block and 
+    create seperate directories for each workspace.
+  - Use the terraform.workspace refernce to reference the state data and config being used.
   
+----------------------------------------------------------------------------------------------
+COMMANDS
+---------
+  terraform workspace new <workspace name> ---> Create a move to a new workspace
+
+  terraform workspace list ---> list all workspaces
+
+  terraform workspace <workspace name>  --> Move to an existing workspace
+
+  terraform destroy ---> Destory all the resource in an environment
