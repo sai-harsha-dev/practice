@@ -1,0 +1,77 @@
+- State data where the actual configuration of the existing resources is maintained.
+
+- PROPERTIES
+  -----------
+  a. FORMAT - json
+  b. LOCATION
+     ---------
+     1. LOCAL
+     ---------
+     - This state data is stored in the local systems files.
+     - Found in terraform.tfstate file in config files directory itself.
+     - DIS-ADV
+       --------
+       - No redundancy
+       - Cannot be used for collaberation
+       - No access control restrictions/ policies can be applied
+    
+     2. REMOTE BACKEND
+     ------------------
+     - This state data is stored in remote server/data stores.
+     - Eg :- hassicorp consul, aws s3, azure storage account, gcp.
+     - ADV
+       ----
+       - Highly available
+       - Can be used for collaberation 
+       - Access restrictions/ policies can be applied
+
+    c. LOCK 
+    --------
+     - Terraform creates lock,lock.info files to provide resiliance for state data updation
+     - This prevents from state data being updated by multiple people at the same time.
+     - lock ---> lock of the state data
+       lock.info ---> information about person allowed to make changes.
+
+    - CONFIGURING REMOTE BACKENDS
+      ---------------------------
+                      1. SET-UP/CONFIGURE THE SERVER OR DATA STORE.
+                                           |
+                                           |                                       
+                     2. UPDATE THE BACKEND CONFIG FOR TERRAFORM 
+                   (mention new backend config in terraform block)
+                                           |
+                                           |
+                        3. RUN TERRAFORM INIT TO UPDATE CONFIG.
+    (mentional additional parameter under -backend-config falg if not mentioned in config)
+                                           |
+                                           |
+                               4. MIGRATE STATE DATA
+                      (only if state data already exist in local) 
+
+
+UPDATING BACKEND CONFIG (in terraform block)
+---------------------------------------------
+terraform "label of remote backend"{
+    source = "ip"                  ---> usually not mentioned if not static ip.
+    type = http/https
+}
+
+----------------------------------------------------------------------------------------------
+COMMANDS
+---------
+  terrafrom init -backend-config="path=filepath to store statedata"   ----> to update backend config
+
+  terraform state list ---> View the state data in a workspace
+
+  terraform state show ADDRESS ---> View the state data of particular resource in a workspace
+
+  terraform state mv SOURCE DESTINATION ---> Move resurces from one module to another
+
+  terraform state rm ADDRESS ---> Remove the resource from the state data. 
+  (can be done if existing resource need not be destoryed but not be tracked by terraform)
+ 
+  terraform state pull  ---> create a local copy of the remote state data 
+                              (for auditing,passing to other software)
+
+  terraform state push  ---> Overwrite remote state data with local state data
+                              (only done when remote state data is corrupt)
