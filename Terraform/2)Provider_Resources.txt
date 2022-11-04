@@ -36,4 +36,13 @@
         - label, key, value - specific to provider plugin
         - name_label - generic 
 
-  
+----------------------------------------------------------------------------------------------
+COMMANDS
+---------
+  terraform init    ---> downloads the provider plugins, modules if not already available
+   
+  terraform fmt    ----> Format the config files
+
+  terraform plan -out <file>  ---> Create a plan and prase the output a file in a workspace
+
+  terraform apply <file> ---> Apply the changes in a plan in a workspace
