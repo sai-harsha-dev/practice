@@ -1,0 +1,31 @@
+TROUBLESHOOTING COMMANDS
+-------------------------
+  terraform validate  ---> Validate the config (only syntax)
+
+  terraform taint ADDRESS ----> to recreate an resource. (used when there is config mistake)
+
+  terraform untaint ADDRESS ----> to stop terraform from recreating resources.
+
+
+LOGGING COMMANDS
+-----------------
+- TF_LOG 
+----------
+ - Setting this environment varaible to a particular values changes the level of verbose.
+ - Value :-
+    1. error (lowest)
+    2. warn
+    3. info
+    4. debug
+    5. trace (highest)
+
+- TF_LOG_PATH
+--------------
+ - This environment hold the file path to parse the log data into.
+ - value = filepath.
+
+- CRASH LOG
+------------
+ - Terraform creates Crashlog in the config direc when it panics/crashes.
+ - This generally happens when there is something wrong with pulgins used.
+ - Raise a issue in Terraform github repo to get it addressed.
