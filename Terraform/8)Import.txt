@@ -1,0 +1,28 @@
+- Importing is mechanism of enabling terraform to track 
+  pre-existing resources/resources not created by terraform.
+
+- This is done by updating the state data by adding the new resources 
+
+- PROCEDURE
+  ---------
+      1. CREATE THE RESOURCE MANUALLY IN THE TERRAFORM CONFIG FILES.
+                                   |
+                                   |
+     2. RUN TERRAFORM PLAN TO GET THE RESOURCE ADDRESS , IDENTIFIER.
+                                   |
+                                   |
+            3. RUN THE TERRAFORM IMPORT TO ENABLE TRACKING  
+
+- LIMITATIONS
+  -----------
+  - No auto import is available, meaning terraform need the config files to be updated with the
+    new resources to import the resources.
+
+--------------------------------------------------------------------------------------------------
+COMMANDS
+--------
+terraform import -var-file='path to variable file' ADDRESS IDENTIFIER 
+
+   ADDRESS - name label identifier 
+   IDENTIFIER - unique id generated to a resource (has to be noted while running script
+    for resource creation not available in terraform state data)
