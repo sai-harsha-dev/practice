@@ -2,9 +2,10 @@ This are AWS offerings which provide newtorking capabilities in the cloud.
 
 TRAFFIC FLOWS IN AWS
 --------------------
-                                  CDN / ROUTE 53
-                                       |
-                                       |
+                                  CDN / ROUTE 53                                                        
+                                       |                                                                
+                                       |                                                                
+-------------------------------------------------------------------------------------------------------------------  VPC
 INTERNET GATEWAY / VPN GATEWAY / API GATEWAY / LOAD BALANCER / AZURE FIREWALL / VIRTUAL NETWORK APPLIANCE
                                        |
                                        |
@@ -31,8 +32,6 @@ a. VIRTUAL PRIVATE CLOUD
     -------------
     - Refer to the ip range given to be used by resources (not only vm's) in the network. 
     - Notation <1-255>.<1-255>.<1-255>.<1-255>/subnet mask.
-    - Always 5 ip are used to by aws (first 4 and last 1).
-    - Single vpc can contain mutiple CIDR ranges
 
     2. SUBNET
     ---------
@@ -45,7 +44,8 @@ a. VIRTUAL PRIVATE CLOUD
     3. SCOPE
     --------
     - The VPC is available all across the region.
-
+    - By default AWS creates VPC for all regions in AWS.
+    
     4. CONNECTIVITY
     ----------------
     - 1. INTERNAL CONNECTIVITY (Within the same vpc)
@@ -59,14 +59,14 @@ a. VIRTUAL PRIVATE CLOUD
       -------------------------
       - Done using vpc peering.
       - Traffic flows within the AWS backbone network.
-      - Cannot handle intermediate transit, only used to instance to instance conectivity.
+      - Cannot handle intermediate transit(huge data flow), only used to instance to instance conectivity.
       - To create vpc peering the admin has to accept from the other VPC 
 
     - 3. EXTERNAL CONNECTIVITY (Networks outside AWS)
       -------------------------
       - Done with help of 
         a. Internet gateway ===> To allow connection to internet ( Needs Elastic IP )
-        b. VPN gateway ===> To connect a on prem network, other clud network 
+        b. VPN gateway ===> To connect a on prem network, other cloud network (Can use private IP)
 
 
 b. NETWORK ACCESS CONTROL LIST
