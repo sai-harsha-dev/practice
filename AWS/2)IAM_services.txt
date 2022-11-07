@@ -32,12 +32,12 @@
 
     a. ACCESS MANAGEMENT
     ---------------------
-    - These can be done with the help of policies.
-    - Policies control user permission to AWS resources.
-    - Policies are JSON templates.
+    - These can be done with the help of IAM Roles.
+    - Roles control user permission to AWS resources.
+    - Roles are JSON templates.
     - TYPES
       ------
-      1. DEFAULT POLICIES ===> AWS provided policy templates
-      2. CUSTOM POLICIES ===> Custom policy templates
+      1. DEFAULT ROLES ===> AWS provided policy templates
+      2. CUSTOM ROLES ===> Custom policy templates
       
     
